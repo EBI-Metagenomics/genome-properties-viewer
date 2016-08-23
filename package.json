@@ -1,0 +1,41 @@
+{
+  "name": "genome-properties-viewer",
+  "version": "0.0.1",
+  "description": "A heatmap styled viewer for the genome properties",
+  "main": "index.js",
+  "scripts": {
+    "build": "rollup -c  > bin/d3.custom.min.js",
+    "watch": "rollup -c -w -i=index.js -o=bin/d3.custom.min.js",
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ProteinsWebTeam/genome-properties-viewer.git"
+  },
+  "keywords": [
+    "genome",
+    "properties",
+    "heatmap"
+  ],
+  "author": "Gustavo A. Salazar",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ProteinsWebTeam/genome-properties-viewer/issues"
+  },
+  "homepage": "https://github.com/ProteinsWebTeam/genome-properties-viewer#readme",
+  "dependencies": {
+    "d3-array": "^1.0.1",
+    "d3-collection": "^1.0.1",
+    "d3-drag": "^1.0.1",
+    "d3-dsv": "^1.0.1",
+    "d3-request": "^1.0.2",
+    "d3-scale": "^1.0.3",
+    "d3-selection": "^1.0.2"
+  },
+  "devDependencies": {
+    "rollup": "^0.34.10",
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "rollup-watch": "^2.5.0",
+    "uglify-js": "^2.7.3"
+  }
+}

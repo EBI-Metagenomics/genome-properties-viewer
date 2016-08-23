@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+    .background {
+        fill: #fefefe;
+    }
+
+    line {
+        stroke: #fff;
+    }
+
+    text.active {
+        fill: red;
+    }
+    text {
+        font: 10px sans-serif;
+        text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+    }
+</style>
+<body>
+<textarea id="tax-ids-text">10090, 83333, 1033802, 1140,1005058</textarea>
+<button id="upload-button">Upload</button>
+<div id="gp-viewer"></div>
+<script src="bin/d3.custom.min.js"></script>
+<script>
+    const {d3, GenomePropertiesViewer} = gpv;
+    const viewer = new GenomePropertiesViewer({
+        element_selector: "#gp-viewer"
+    });
+    d3.select("#upload-button").on("click", ()=>{
+        const ids = d3.select("#tax-ids-text").node().value
+                .split(/[ ,-]/)
+                .filter(e => e.trim().length>0);
+        for (let id of ids)
+            viewer.load_genome_properties_file(id);
+//        viewer.update_viewer();
+//        console.log(viewer.data);
+
+    });
+</script>
+</body>
