@@ -3,6 +3,7 @@
 <style>
     .background {
         fill: #fefefe;
+        opacity: 0.9;
     }
 
     line {
@@ -10,15 +11,24 @@
     }
 
     text.active {
-        fill: red;
+        fill: #30303f;;
     }
     text {
-        font: 10px sans-serif;
+        font: 10px sans-serif ;
         text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+        fill: #80808f;
+    }
+    text.col_title {
+        cursor: ew-resize;
     }
 </style>
 <body>
 <textarea id="tax-ids-text">10090, 83333, 1033802, 1140,1005058</textarea>
+<select id="order">
+    <option value="ascending">Ascending</option>
+    <option value="descending">Descending</option>
+    <option value="length">Length</option>
+</select>
 <button id="upload-button">Upload</button>
 <div id="gp-viewer"></div>
 <script src="bin/d3.custom.min.js"></script>
@@ -36,6 +46,9 @@
 //        viewer.update_viewer();
 //        console.log(viewer.data);
 
+    });
+    d3.select("#order").on("change", function() {
+        viewer.order_organisms(this.value);
     });
 </script>
 </body>
