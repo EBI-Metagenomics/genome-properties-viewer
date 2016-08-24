@@ -22,7 +22,7 @@ export default class GenomePropertiesViewer {
             "PARTIAL": "rgb(107, 174, 214)",
             "NO": "rgb(210,210,210)"
         };
-
+        this.current_order=null;
         this.svg = d3.select(element_selector).append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
@@ -160,6 +160,8 @@ export default class GenomePropertiesViewer {
 
     }
     load_genome_properties_file(tax_id) {
+        if (this.organisms.indexOf(tax_id) != -1)
+            return;
         d3.text(`${this.options.server}${tax_id}`)
             .get((error, text) => {
                 if (error) throw error;
@@ -198,9 +200,10 @@ export default class GenomePropertiesViewer {
             descending: d3.range(n).sort((a, b) => this.organisms[a] - this.organisms[b]),
             length: d3.range(n).sort((a, b) => this.organisms[a].length -this.organisms[b].length),
         };
-        this.x.domain(this.orders.ascending);
-        this.current_order=this.orders.ascending;
-
+        if (this.current_order==null || this.current_order.length != this.organisms.length) {
+            this.x.domain(this.orders.ascending);
+            this.current_order = this.orders.ascending;
+        }
         let row_p = this.rows.selectAll(".row")
             .data(this.current_props, d=>d.property);
 
@@ -263,6 +266,7 @@ export default class GenomePropertiesViewer {
         }
 
         row.append("text")
+            .attr("class", "row_title")
             .attr("x", -6)
             .attr("y", this.y(1) / 2)
             .attr("dy", ".32em")

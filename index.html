@@ -10,9 +10,6 @@
         stroke: #fff;
     }
 
-    text.active {
-        fill: #30303f;;
-    }
     text {
         font: 10px sans-serif ;
         text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
@@ -20,6 +17,17 @@
     }
     text.col_title {
         cursor: ew-resize;
+    }
+    text.col_title, text.row_title {
+        opacity: 0.5;
+    }
+    text.col_title:hover, text.row_title:hover, text.active {
+        font-size: 12px;
+        opacity: 1 !important;
+    }
+    .cell:hover {
+        stroke: #ffffff;
+        stroke-width: 3px;
     }
 </style>
 <body>
