@@ -49,13 +49,15 @@ export default class GenomePropertiesViewer {
                             Math.min(d3.event.y, 0),
                             _this.options.height
                             + _this.options.margin.bottom
-                            - _this.current_props.length*_this.y(1)
+                            - _this.props.length*_this.y(1)
                             - _this.options.margin.top
                         );
                         d3.select(".gpv-rows-group")
                             .attr("transform", d => "translate(0, " + dy + ")");
+                        _this.update_viewer();
                     }
-                }(this)));
+                }(this))
+            );
 
 
         this.svg.append("rect")
@@ -176,12 +178,19 @@ export default class GenomePropertiesViewer {
     }
 
     update_viewer() {
-        const props = d3.values(this.data);
-        this.current_props = props;
+        this.props = d3.values(this.data);
+
         const visible_rows = Math.min(
-            props.length,
+            this.props.length,
             Math.round(this.options.height/this.options.min_row_height)
         );
+        this.y.domain([0, visible_rows]);
+        let dy = -Math.floor(
+            d3.select(".gpv-rows-group").attr("transform").match(/translate\((.*),(.*)\)/)[2]/this.y(1)
+        )-2;
+        dy = dy<0?0:dy;
+        this.current_props = this.props.slice(dy,visible_rows+dy);
+
         const n = this.organisms.length;
         // Precompute the orders.
         this.orders = {
@@ -191,18 +200,19 @@ export default class GenomePropertiesViewer {
         };
         this.x.domain(this.orders.ascending);
         this.current_order=this.orders.ascending;
-        this.y.domain([0, visible_rows]);
+
         let row_p = this.rows.selectAll(".row")
-            .data(props, d=>d.property);
+            .data(this.current_props, d=>d.property);
 
         row_p
-            .attr("transform", (d,i) => "translate(0," + this.y(i) + ")")
+            .attr("transform", (d,i) => "translate(0," + this.y(i+dy) + ")")
             .each(update_row(this));
 
+        row_p.exit().remove();
         let row = row_p.enter().append("g")
                 .attr("id", d => "row_"+d.property)
                 .attr("class", "row")
-                .attr("transform", (d,i) => "translate(0," + this.y(i) + ")")
+                .attr("transform", (d,i) => "translate(0," + this.y(i+dy) + ")")
                 .each(update_row(this));
         row.append("line")
             .attr("x2", this.options.width);
