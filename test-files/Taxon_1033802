@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ROOT request="Taxon:1033802&amp;display=xml">
+<taxon scientificName="Salinisphaera shabanensis E1L3A" taxId="1033802" parentTaxId="180542" hidden="true" taxonomicDivision="PRO" geneticCode="11">
+        <lineage>
+            <taxon scientificName="Salinisphaera shabanensis" taxId="180542" rank="species" hidden="true"></taxon>
+            <taxon scientificName="Salinisphaera" taxId="180541" rank="genus" hidden="false"></taxon>
+            <taxon scientificName="Salinisphaeraceae" taxId="742031" rank="family" hidden="false"></taxon>
+            <taxon scientificName="Salinisphaerales" taxId="742030" rank="order" hidden="false"></taxon>
+            <taxon scientificName="Gammaproteobacteria" taxId="1236" rank="class" hidden="false"></taxon>
+            <taxon scientificName="Proteobacteria" taxId="1224" rank="phylum" hidden="false"></taxon>
+            <taxon scientificName="Bacteria" commonName="eubacteria" taxId="2" rank="superkingdom" hidden="false"></taxon>
+            <taxon scientificName="cellular organisms" taxId="131567" hidden="true"></taxon>
+            <taxon scientificName="root" taxId="1" hidden="true"></taxon>
+        </lineage>
+        <synonym type="equivalent name" name="Salinisphaera shabanensis strain E1L3A"></synonym>
+        <synonym type="equivalent name" name="Salinisphaera shabanensis str. E1L3A"></synonym>
+    </taxon>
+</ROOT>

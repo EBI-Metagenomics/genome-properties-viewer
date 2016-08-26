@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ROOT request="Taxon:1005058&amp;display=xml">
+<taxon scientificName="Gallibacterium anatis UMN179" taxId="1005058" parentTaxId="750" hidden="true" taxonomicDivision="PRO" geneticCode="11">
+        <lineage>
+            <taxon scientificName="Gallibacterium anatis" taxId="750" rank="species" hidden="true"></taxon>
+            <taxon scientificName="Gallibacterium" taxId="155493" rank="genus" hidden="false"></taxon>
+            <taxon scientificName="Pasteurellaceae" taxId="712" rank="family" hidden="false"></taxon>
+            <taxon scientificName="Pasteurellales" taxId="135625" rank="order" hidden="false"></taxon>
+            <taxon scientificName="Gammaproteobacteria" taxId="1236" rank="class" hidden="false"></taxon>
+            <taxon scientificName="Proteobacteria" taxId="1224" rank="phylum" hidden="false"></taxon>
+            <taxon scientificName="Bacteria" commonName="eubacteria" taxId="2" rank="superkingdom" hidden="false"></taxon>
+            <taxon scientificName="cellular organisms" taxId="131567" hidden="true"></taxon>
+            <taxon scientificName="root" taxId="1" hidden="true"></taxon>
+        </lineage>
+        <synonym type="equivalent name" name="Gallibacterium anatis strain UMN179"></synonym>
+        <synonym type="equivalent name" name="Gallibacterium anatis str. UMN179"></synonym>
+    </taxon>
+</ROOT>

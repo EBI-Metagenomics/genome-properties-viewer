@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ROOT request="Taxon:1140&amp;display=xml">
+<taxon scientificName="Synechococcus elongatus PCC 7942" taxId="1140" parentTaxId="32046" hidden="true" taxonomicDivision="PRO" geneticCode="11">
+        <lineage>
+            <taxon scientificName="Synechococcus elongatus" taxId="32046" rank="species" hidden="true"></taxon>
+            <taxon scientificName="Synechococcus" taxId="1129" rank="genus" hidden="false"></taxon>
+            <taxon scientificName="Synechococcaceae" taxId="1890426" rank="family" hidden="false"></taxon>
+            <taxon scientificName="Synechococcales" taxId="1890424" rank="order" hidden="false"></taxon>
+            <taxon scientificName="Cyanobacteria" commonName="blue-green algae" taxId="1117" rank="phylum" hidden="false"></taxon>
+            <taxon scientificName="Cyanobacteria/Melainabacteria group" taxId="1798711" hidden="true"></taxon>
+            <taxon scientificName="Terrabacteria group" taxId="1783272" hidden="true"></taxon>
+            <taxon scientificName="Bacteria" commonName="eubacteria" taxId="2" rank="superkingdom" hidden="false"></taxon>
+            <taxon scientificName="cellular organisms" taxId="131567" hidden="true"></taxon>
+            <taxon scientificName="root" taxId="1" hidden="true"></taxon>
+        </lineage>
+        <synonym type="equivalent name" name="Synechococcus sp. PCC 7942"></synonym>
+        <synonym type="synonym" name="Anacystis nidulans R2"></synonym>
+        <synonym type="synonym" name="Synechococcus leopoliensis UTEX 2434"></synonym>
+        <synonym type="synonym" name="Synechococcus leopoliensis strain PCC 7942"></synonym>
+        <synonym type="synonym" name="Synechococcus sp. IAM M-200"></synonym>
+    </taxon>
+</ROOT>
