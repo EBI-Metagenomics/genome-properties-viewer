@@ -1,7 +1,16 @@
 "use strict";
 
 import * as d3 from "./d3";
-
+// TODO: Order by tree
+// TODO: Color tree
+// DONE: Drag from inner nodes
+// TODO: Make collapsing tree optional
+// TODO: Genome properties categories
+// TODO: Total column fix width
+// TODO: tree frame resizable
+// TODO: Piechart in bottom frame
+// TODO: Organism name in bottom frame
+// TODO: height and width using window size
 export default class GenomePropertiesViewer {
 
     constructor({
@@ -15,6 +24,7 @@ export default class GenomePropertiesViewer {
     }){
         this.data = {};
         this.organisms = [];
+        this.organism_names = {};
         this.taxonomy_raw = [];
         this.options = {margin, width, height, element_selector, min_row_height, server, server_tax};
         this.x = d3.scaleBand().range([0, width]);
@@ -61,7 +71,8 @@ export default class GenomePropertiesViewer {
                 });
                 d3.xml(this.options.server_tax+tax_id, (error, xml) => {
                     if (error) throw error;
-                    let data = [].map.call(xml.querySelectorAll("lineage taxon"), function(taxon) {
+                    let data = [].map.call(xml.querySelectorAll("lineage taxon"), (taxon) => {
+                        this.organism_names[taxon.getAttribute("taxId")] = taxon.getAttribute("scientificName");
                         return {
                             scientificName: taxon.getAttribute("scientificName"),
                             taxId: taxon.getAttribute("taxId"),
@@ -74,6 +85,7 @@ export default class GenomePropertiesViewer {
                             taxId: taxon.getAttribute("taxId"),
                             rank: taxon.getAttribute("rank"),
                         };
+                    this.organism_names[taxon.getAttribute("taxId")] = taxon.getAttribute("scientificName");
 
                     data = data.reverse().concat([data2]).reduce(
                         (agg, e)=> agg.concat({node:e, parent:agg.length==0?"":agg[agg.length-1].node}), []
@@ -161,7 +173,6 @@ export default class GenomePropertiesViewer {
     update_tree(){
         const root = this.stratify(this.taxonomy_raw);
         this.prune_inner_nodes(root);
-        const order = ["1033802", "1005058", "83333", "10090", "1140"];
         this.tree(this.get_root(root));
         const t = d3.transition().duration(1000);
 
@@ -194,8 +205,59 @@ export default class GenomePropertiesViewer {
         node.exit().remove();
         const node_e = node
             .enter().append("g")
-            .attr("class", d => "node" + (d.children ? " node--internal" : " node--leaf") )
-            .attr("transform", d => "translate(" + d.x + "," + d.y + ")" );
+            .attr("class", d => "node "+ d.label + (d.children ? " node--internal" : " node--leaf") )
+            .attr("transform", d => "translate(" + d.x + "," + d.y + ")" )
+            .call(d3.drag()
+                .subject(function(){
+                    const g = d3.select(this),
+                        t = g.attr("transform").match(/translate\((.*),(.*)\)/);
+                    return {
+                        x:Number(t[1]) + Number(g.attr("x")),
+                        y:Number(t[2]) + Number(g.attr("y")),
+                    };
+                })
+                .on("drag", function() {
+                    d3.event.sourceEvent.stopPropagation();
+                    d3.select(this).attr("transform",
+                        d => "translate(" + d3.event.x + "," + d.y + ")"
+                    );
+                })
+                .on("end", function(_this) {
+                    return function (d) {
+                        const w = _this.x.bandwidth(),
+                            dx = (d3.event.x - d.x);// - w/2,
+                        let d_col = Math.round(dx / w);
+                        move_tree(_this,d,d_col);
+                        var t = d3.transition().duration(500);
+                        d3.select(this).transition(t).attr("transform",
+                            d => "translate(" + d.x + "," + d.y + ")");
+
+                    }
+                }(this))
+            );
+
+        function move_tree(_this,d, d_col) {
+            // const e = d3.select(d).data()[0];
+            if (!d.children) {
+                move_leaf(_this,d,d_col);
+            } else {
+                d.children.sort((a,b)=>d_col>0?b.x-a.x:a.x-b.x);
+                for (let child of d.children)
+                    move_tree(_this,child,d_col);
+            }
+
+        }
+        function move_leaf(_this,d, d_col){
+            const current_i = _this.organisms.indexOf(d.label),
+                current_o = _this.current_order.indexOf(current_i);
+            d_col = current_o+d_col<0?-current_o:d_col;
+            if (d_col != 0) {
+                const e = _this.current_order.splice(current_o, 1);
+                _this.current_order.splice(current_o+d_col, 0, e[0]);
+                _this.order_organisms_current_order();
+            }
+
+        }
 
 
         node_e.append("circle")
@@ -203,9 +265,12 @@ export default class GenomePropertiesViewer {
 
         node_e.append("text")
             .attr("dy", 3)
-            .attr("x", d =>  d.children ? -8 : 8)
-            .style("text-anchor", d => d.children ? "end" : "start")
-            .style("transform", d=>d.children?null:"rotate(-90deg) translate(0, 6px)")
+            .attr("x", d =>  d.children ? (d.parent ? -8 : 0) : 8)
+            .style("text-anchor", d => d.parent ? "start" : "middle")
+            .style("transform", d=>
+                d.children?
+                    (d.parent?"rotate(-90deg) translate(10px, -6px)":"translate(0px, -8px)"):
+                    "rotate(-90deg) translate(0, 6px)")
             .text(d =>  d.label);
 
 
@@ -215,7 +280,7 @@ export default class GenomePropertiesViewer {
         this.rows = this.svg.append("g")
             .attr("class", "gpv-rows-group")
             .attr("transform", "translate(0,0)")
-            .call(d3.drag()
+            .call(d3.drag() // Window panning.
                 .subject(function(){
                     const g = d3.select(this),
                         t = g.attr("transform").match(/translate\((.*),(.*)\)/);
@@ -465,7 +530,7 @@ export default class GenomePropertiesViewer {
 
                 d3.select("#info_property").text(data[0].property);
                 d3.select("#info_name").text(data[0].name);
-                d3.select("#info_organism").text(p);
+                d3.select("#info_organism").text(`${p}: ${_this.organism_names[p]}`);
                 d3.select("#info_value").style("fill", _this.c[data[0].values[p]]);
 
                 if ("TOTAL"==p) {
@@ -511,51 +576,14 @@ export default class GenomePropertiesViewer {
         let column_p = this.cols.selectAll(".column")
             .data(this.organisms.concat(["TOTAL"]), p=>p);
 
-        column_p
-            .attr("transform", (d,i) => "translate(" + this.x(i) + ")rotate(-90)")
-            .selectAll("text")
-                .attr("y", this.x.bandwidth() / 2);
+        column_p.attr("transform", (d,i) => "translate(" + this.x(i) + ")rotate(-90)");
 
         let column = column_p
             .enter().append("g")
             .attr("class", "column")
             .attr("transform", (d,i) => "translate(" + this.x(i) + ")rotate(-90)");
 
-        column.append("line")
-            .attr("x1", -this.options.width);
-
-        column.append("text")
-            .attr("class", "col_title")
-            .attr("x", 6)
-            .attr("y", this.x.bandwidth() / 2)
-            .attr("dy", ".32em")
-            .attr("text-anchor", "start")
-            .text( d => d )
-            .call(d3.drag()
-                .on("drag", function() {
-                    d3.select(this).attr("y", d3.event.y);
-                })
-                .on("end", function(t) {
-                    const _this = t;
-                    return function (e) {
-                        const w = _this.x.bandwidth(),
-                            dx = d3.event.y-w/2,
-                            d_col = Math.round(dx/w),
-                            current_i=_this.organisms.indexOf(e),
-                            current_o = _this.current_order.indexOf(current_i);
-                        if (Math.abs(d_col)>0){
-                            const e = _this.current_order.splice(current_o,1);
-                            _this.current_order.splice(current_o+d_col,0,e[0]);
-                            _this.order_organisms_current_order();
-                        }
-
-                        var t = d3.transition().duration(500);
-                        d3.select(this).transition(t).attr("y", _this.x.bandwidth() / 2);
-
-                    }
-                }(this))
-            );
-        ;
+        column.append("line").attr("x1", -this.options.width);
 
     }
     order_organisms(value) {
