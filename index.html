@@ -57,13 +57,19 @@
         stroke-opacity: 0.4;
         stroke-width: 1.5px;
     }
+    .total_cell {
+        opacity: 0.6;
+    }
+    .total_cell:hover {
+        opacity: 1;
+    }
 </style>
 <body>
 <textarea id="tax-ids-text">10090, 83333, 1033802, 1140,1005058</textarea>
 <select id="order">
-    <option value="ascending">Ascending</option>
-    <option value="descending">Descending</option>
-    <option value="length">Length</option>
+    <option value="tax_id">Taxonomy ID</option>
+    <option value="org_name">Organism Name</option>
+    <option value="tree">Uncluttered Tree</option>
 </select>
 <button id="upload-button">Upload</button>
 <div id="gp-viewer"></div>
