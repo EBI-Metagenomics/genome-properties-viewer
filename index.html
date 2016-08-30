@@ -71,6 +71,8 @@
     <option value="org_name">Organism Name</option>
     <option value="tree">Uncluttered Tree</option>
 </select>
+<input type="checkbox" id="collapse_tree" checked="checked"/>
+<label for="collapse_tree">Collapse tree</label>
 <button id="upload-button">Upload</button>
 <div id="gp-viewer"></div>
 <script src="bin/d3.custom.min.js"></script>
@@ -91,6 +93,10 @@
     });
     d3.select("#order").on("change", function() {
         viewer.order_organisms(this.value);
+    });
+    d3.select("#collapse_tree").on("change", function() {
+        viewer.collapse_tree = d3.select(this).property('checked');
+        viewer.update_viewer();
     });
 </script>
 </body>

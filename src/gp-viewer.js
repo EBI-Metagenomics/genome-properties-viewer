@@ -2,7 +2,7 @@
 
 import * as d3 from "./d3";
 // DONE: Order by tree
-// TODO: Make collapsing tree optional
+// DONE: Make collapsing tree optional
 // TODO: Genome properties categories
 // TODO: tree frame resizable
 // TODO: Piechart in bottom frame
@@ -31,6 +31,7 @@ export default class GenomePropertiesViewer {
         this.x = d3.scaleBand().range([0, width-this.column_total_width]);
         this.y = d3.scaleLinear().range([0, height]);
         this.gp_values =["YES", "PARTIAL", "NO"];
+        this.collapse_tree = true;
         this.c = {
             "YES":"rgb(49, 130, 189)",
             "PARTIAL": "rgb(107, 174, 214)",
@@ -172,7 +173,10 @@ export default class GenomePropertiesViewer {
     }
     update_tree(){
         const root = this.stratify(this.taxonomy_raw);
-        this.prune_inner_nodes(root);
+        if (this.collapse_tree)
+            this.prune_inner_nodes(root);
+        else
+            root.descendants().forEach(e=>e.label=e.id);
         this.tree(this.get_root(root));
         const t = d3.transition().duration(1000),
             ol = this.organisms.length;
@@ -276,11 +280,14 @@ export default class GenomePropertiesViewer {
         node_e.append("text")
             .attr("dy", 3)
             .attr("x", d =>  d.children ? (d.parent ? -8 : 0) : 8)
-            .style("text-anchor", d => d.parent ? "start" : "middle")
-            .style("transform", d=>
-                d.children?
-                    (d.parent?"rotate(-90deg) translate(10px, -6px)":"translate(0px, -8px)"):
-                    "rotate(-90deg) translate(0, 6px)")
+            .style("text-anchor", d => d.parent ? this.collapse_tree?"start":"end" : "middle")
+            .style("transform", d=> {
+                if (this.collapse_tree)
+                    return d.children?
+                        (d.parent?"rotate(-90deg) translate(10px, -6px)":"translate(0px, -8px)"):
+                        "rotate(-90deg) translate(0, 6px)"
+
+            })
             .text(d =>  d.label);
 
 
