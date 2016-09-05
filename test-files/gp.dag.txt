@@ -1,0 +1,1281 @@
+GenProp0126	amino acid biosynthesis	GenProp0001	chorismate biosynthesis via shikimate	4068	1	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0001	chorismate biosynthesis via shikimate	49166	1	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0001	chorismate biosynthesis via shikimate	49166	1	PRIMARY_DAG	0		0
+GenProp0075	protein modification, prosthetic groups and cofactors	GenProp0002	coenzyme F420 utilization	4016	2	DAG	0		0
+GenProp0075	protein modification, prosthetic groups and cofactors	GenProp0002	coenzyme F420 utilization	4016	2	PRIMARY_DAG	0		0
+GenProp0067	quantitative content	GenProp0003	count of DNA molecules	4008	3	DAG	0		0
+GenProp0067	quantitative content	GenProp0003	count of DNA molecules	4008	3	PRIMARY_DAG	0		0
+GenProp0067	quantitative content	GenProp0004	count of predicted proteins	4008	4	DAG	0		0
+GenProp0067	quantitative content	GenProp0004	count of predicted proteins	4008	4	PRIMARY_DAG	0		0
+GenProp0067	quantitative content	GenProp0005	count of tRNAs	4008	5	DAG	0		0
+GenProp0067	quantitative content	GenProp0005	count of tRNAs	4008	5	PRIMARY_DAG	0		0
+GenProp0068	taxonomy	GenProp0006	superkingdom	4009	6	DAG	0		0
+GenProp0068	taxonomy	GenProp0006	superkingdom	4009	6	PRIMARY_DAG	0		0
+GenProp0069	cell surface component	GenProp0007	flagella	4010	7	DAG	0		0
+GenProp0069	cell surface component	GenProp0007	flagella	4010	7	PRIMARY_DAG	0		0
+GenProp0073	cell motility	GenProp0007	flagella	4014	7	DAG	0		0
+GenProp0154	intrinsic pathogen of animals	GenProp0008	intrinsic pathogen of humans	29145	8	DAG	0		0
+GenProp0154	intrinsic pathogen of animals	GenProp0008	intrinsic pathogen of humans	29145	8	PRIMARY_DAG	0		0
+GenProp0066	selfish genetic elements	GenProp0009	integrative genetic element	4007	9	DAG	0		0
+GenProp0066	selfish genetic elements	GenProp0009	integrative genetic element	4007	9	PRIMARY_DAG	0		0
+GenProp0066	selfish genetic elements	GenProp0010	inteins	4007	10	DAG	0		0
+GenProp0066	selfish genetic elements	GenProp0010	inteins	4007	10	PRIMARY_DAG	0		0
+GenProp0070	energy metabolism	GenProp0011	methanogenesis	4011	11	DAG	0		0
+GenProp0070	energy metabolism	GenProp0011	methanogenesis	4011	11	PRIMARY_DAG	0		0
+GenProp0603	lifestyle	GenProp0011	methanogenesis	58328	11	DAG	0		0
+GenProp0866	carbon metabolism	GenProp0011	methanogenesis	66594	11	DAG	0		0
+GenProp0069	cell surface component	GenProp0012	outer membrane	4010	12	DAG	0		0
+GenProp0069	cell surface component	GenProp0012	outer membrane	4010	12	PRIMARY_DAG	0		0
+GenProp0603	lifestyle	GenProp0013	oxygen requirement	58328	13	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0014	polyketide biosynthesis, type I	4018	14	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0014	polyketide biosynthesis, type I	4018	14	PRIMARY_DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0015	polyketide biosynthesis, type II	4018	15	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0015	polyketide biosynthesis, type II	4018	15	PRIMARY_DAG	0		0
+GenProp0075	protein modification, prosthetic groups and cofactors	GenProp0016	selenocysteine system	4016	16	DAG	0		0
+GenProp0075	protein modification, prosthetic groups and cofactors	GenProp0016	selenocysteine system	4016	16	PRIMARY_DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0016	selenocysteine system	4068	16	DAG	0		0
+GenProp0197	protein biosynthesis	GenProp0016	selenocysteine system	51175	16	DAG	0		0
+GenProp0065	genome properties	GenProp0017	metabolism	4006	17	DAG	0		0
+GenProp0065	genome properties	GenProp0017	metabolism	4006	17	PRIMARY_DAG	0		0
+GenProp0076	DNA handling	GenProp0018	natural transformation	4017	18	DAG	0		0
+GenProp0076	DNA handling	GenProp0018	natural transformation	4017	18	PRIMARY_DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0019	heme biosynthesis from 5-aminolevulinate	49166	19	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0019	heme biosynthesis from 5-aminolevulinate	49166	19	PRIMARY_DAG	0		0
+GenProp0067	quantitative content	GenProp0020	HMM hit percentage	4008	2002	DAG	0		0
+GenProp0067	quantitative content	GenProp0020	HMM hit percentage	4008	2002	PRIMARY_DAG	0		0
+GenProp1067	Defense systems	GenProp0021	CRISPR region	66797	2003	DAG	0		0
+GenProp1067	Defense systems	GenProp0021	CRISPR region	66797	2003	PRIMARY_DAG	0		0
+GenProp0069	cell surface component	GenProp0022	S-layer	4010	2004	DAG	0		0
+GenProp0069	cell surface component	GenProp0022	S-layer	4010	2004	PRIMARY_DAG	0		0
+GenProp0070	energy metabolism	GenProp0023	glyoxylate shunt	4011	2005	DAG	0		0
+GenProp0070	energy metabolism	GenProp0023	glyoxylate shunt	4011	2005	PRIMARY_DAG	0		0
+GenProp0066	selfish genetic elements	GenProp0024	group I intron	4007	2006	DAG	0		0
+GenProp0066	selfish genetic elements	GenProp0024	group I intron	4007	2006	PRIMARY_DAG	0		0
+GenProp0066	selfish genetic elements	GenProp0025	group II intron	4007	2007	DAG	0		0
+GenProp0066	selfish genetic elements	GenProp0025	group II intron	4007	2007	PRIMARY_DAG	0		0
+GenProp0073	cell motility	GenProp0026	chemotaxis	4014	2008	DAG	0		0
+GenProp0073	cell motility	GenProp0026	chemotaxis	4014	2008	PRIMARY_DAG	0		0
+GenProp0864	response to external environment	GenProp0026	chemotaxis	66592	2008	DAG	0		0
+GenProp0070	energy metabolism	GenProp0027	photosynthesis	4011	2009	DAG	0		0
+GenProp0070	energy metabolism	GenProp0027	photosynthesis	4011	2009	PRIMARY_DAG	0		0
+GenProp0609	phototroph	GenProp0027	photosynthesis	58334	2009	DAG	0		0
+GenProp0202	nitrogen metabolism	GenProp0029	nitrogen fixation	53180	2011	DAG	0		0
+GenProp0202	nitrogen metabolism	GenProp0029	nitrogen fixation	53180	2011	PRIMARY_DAG	0		0
+GenProp0603	lifestyle	GenProp0029	nitrogen fixation	58328	2011	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0030	glutathione biosynthesis	49166	2012	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0030	glutathione biosynthesis	49166	2012	PRIMARY_DAG	0		0
+GenProp0196	sulfur metabolism	GenProp0030	glutathione biosynthesis	51174	2012	DAG	0		0
+GenProp0072	central intermediary metabolism	GenProp0031	methane utilization	4013	2013	DAG	0		0
+GenProp0072	central intermediary metabolism	GenProp0031	methane utilization	4013	2013	PRIMARY_DAG	0		0
+GenProp0603	lifestyle	GenProp0031	methane utilization	58328	2013	DAG	0		0
+GenProp0866	carbon metabolism	GenProp0031	methane utilization	66594	2013	DAG	0		0
+GenProp0074	virulence	GenProp0032	pathogen of plants	4015	2014	DAG	0		0
+GenProp0074	virulence	GenProp0032	pathogen of plants	4015	2014	PRIMARY_DAG	0		0
+GenProp0548	intrinsic pathogen	GenProp0032	pathogen of plants	58273	2014	DAG	0		0
+GenProp0070	energy metabolism	GenProp0033	TCA cycle	4011	2015	DAG	0		0
+GenProp0070	energy metabolism	GenProp0033	TCA cycle	4011	2015	PRIMARY_DAG	0		0
+GenProp0611	aerobic respiration	GenProp0033	TCA cycle	58336	2015	DAG	0		0
+GenProp0070	energy metabolism	GenProp0034	reverse TCA cycle	4011	2016	DAG	0		0
+GenProp0070	energy metabolism	GenProp0034	reverse TCA cycle	4011	2016	PRIMARY_DAG	0		0
+GenProp0865	carbon fixation	GenProp0034	reverse TCA cycle	66593	2016	DAG	0		0
+GenProp0027	photosynthesis	GenProp0035	Calvin cycle	2009	2017	DAG	0		0
+GenProp0072	central intermediary metabolism	GenProp0035	Calvin cycle	4013	2017	DAG	0		0
+GenProp0072	central intermediary metabolism	GenProp0035	Calvin cycle	4013	2017	PRIMARY_DAG	0		0
+GenProp0865	carbon fixation	GenProp0035	Calvin cycle	66593	2017	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0036	biotin biosynthesis	49166	2018	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0036	biotin biosynthesis	49166	2018	PRIMARY_DAG	0		0
+GenProp0196	sulfur metabolism	GenProp0036	biotin biosynthesis	51174	2018	DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0037	tryptophan biosynthesis from ribose-5-phosphate	4068	2019	DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0037	tryptophan biosynthesis from ribose-5-phosphate	4068	2019	PRIMARY_DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0038	tetrahydrofolate biosynthesis from GTP and PABA	49166	2020	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0038	tetrahydrofolate biosynthesis from GTP and PABA	49166	2020	PRIMARY_DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0039	phenylalanine biosynthesis from chorismate	4068	2021	DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0039	phenylalanine biosynthesis from chorismate	4068	2021	PRIMARY_DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0040	thiotemplate type non-ribosomal peptide biosynthesis	4018	2022	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0040	thiotemplate type non-ribosomal peptide biosynthesis	4018	2022	PRIMARY_DAG	0		0
+GenProp0501	metrics of biological environment	GenProp0041	optimal pH	58226	2023	DAG	0		0
+GenProp0501	metrics of biological environment	GenProp0042	optimal growth temperature (centigrade)	58226	2024	DAG	0		0
+GenProp0501	metrics of biological environment	GenProp0043	optimum salinity (%)	58226	2025	DAG	0		0
+GenProp0603	lifestyle	GenProp0044	temperature environment	58328	2026	DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0045	tyrosine biosynthesis from chorismate	4068	2027	DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0045	tyrosine biosynthesis from chorismate	4068	2027	PRIMARY_DAG	0		0
+GenProp0838	lipid biosynthesis	GenProp0046	IPP biosynthesis	66566	2028	DAG	0		0
+GenProp0046	IPP biosynthesis	GenProp0047	IPP biosynthesis via mevalonate	2028	2029	DAG	0		0
+GenProp0046	IPP biosynthesis	GenProp0047	IPP biosynthesis via mevalonate	2028	2029	PRIMARY_DAG	0		0
+GenProp0046	IPP biosynthesis	GenProp0048	IPP biosynthesis via deoxyxylulose	2028	2030	DAG	0		0
+GenProp0046	IPP biosynthesis	GenProp0048	IPP biosynthesis via deoxyxylulose	2028	2030	PRIMARY_DAG	0		0
+GenProp0074	virulence	GenProp0049	spore formation	4015	2031	DAG	0		0
+GenProp0074	virulence	GenProp0049	spore formation	4015	2031	PRIMARY_DAG	0		0
+GenProp0167	cellular growth, organization and division	GenProp0049	spore formation	49149	2031	DAG	0		0
+GenProp0066	selfish genetic elements	GenProp0050	prophage regions	4007	2032	DAG	0		0
+GenProp0066	selfish genetic elements	GenProp0050	prophage regions	4007	2032	PRIMARY_DAG	0		0
+GenProp0074	virulence	GenProp0051	urease	4015	2033	DAG	0		0
+GenProp0074	virulence	GenProp0051	urease	4015	2033	PRIMARY_DAG	0		0
+GenProp0814	urea utilization	GenProp0051	urease	66542	2033	DAG	0		0
+GenProp0074	virulence	GenProp0052	type III secretion	4015	2034	DAG	0		0
+GenProp0179	protein transport	GenProp0052	type III secretion	49161	2034	DAG	0		0
+GenProp0179	protein transport	GenProp0052	type III secretion	49161	2034	PRIMARY_DAG	0		0
+GenProp0012	outer membrane	GenProp0053	type II secretion	12	2035	DAG	0		0
+GenProp0179	protein transport	GenProp0053	type II secretion	49161	2035	DAG	0		0
+GenProp0179	protein transport	GenProp0053	type II secretion	49161	2035	PRIMARY_DAG	0		0
+GenProp0179	protein transport	GenProp0054	type IV secretion	49161	2036	DAG	0		0
+GenProp0179	protein transport	GenProp0054	type IV secretion	49161	2036	PRIMARY_DAG	0		0
+GenProp0142	catabolism	GenProp0055	polyhydroxyalkanoic acids	19134	2037	DAG	0		0
+GenProp0157	storage polymer systems	GenProp0055	polyhydroxyalkanoic acids	39146	2037	DAG	0		0
+GenProp0186	storage and structural polymer biosynthesis	GenProp0055	polyhydroxyalkanoic acids	49168	2037	DAG	0		0
+GenProp0186	storage and structural polymer biosynthesis	GenProp0055	polyhydroxyalkanoic acids	49168	2037	PRIMARY_DAG	0		0
+GenProp0069	cell surface component	GenProp0056	type IV pilus	4010	2038	DAG	0		0
+GenProp0069	cell surface component	GenProp0056	type IV pilus	4010	2038	PRIMARY_DAG	0		0
+GenProp0073	cell motility	GenProp0056	type IV pilus	4014	2038	DAG	0		0
+GenProp0074	virulence	GenProp0056	type IV pilus	4015	2038	DAG	0		0
+GenProp0076	DNA handling	GenProp0056	type IV pilus	4017	2038	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0057	NAD(P) biosynthesis from L-aspartate and DHAP	49166	2039	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0057	NAD(P) biosynthesis from L-aspartate and DHAP	49166	2039	PRIMARY_DAG	0		0
+GenProp0836	menaquinone biosynthesis	GenProp0058	menaquinone biosynthesis via SEPHCHC	66564	2040	DAG	0		0
+GenProp0179	protein transport	GenProp0059	type I secretion	49161	2041	DAG	0		0
+GenProp0179	protein transport	GenProp0059	type I secretion	49161	2041	PRIMARY_DAG	0		0
+GenProp0075	protein modification, prosthetic groups and cofactors	GenProp0061	lipoprotein system lgt/lsp/lnt	4016	2043	DAG	0		0
+GenProp0075	protein modification, prosthetic groups and cofactors	GenProp0061	lipoprotein system lgt/lsp/lnt	4016	2043	PRIMARY_DAG	0		0
+GenProp0069	cell surface component	GenProp0062	capsule	4010	4003	DAG	0		0
+GenProp0069	cell surface component	GenProp0062	capsule	4010	4003	PRIMARY_DAG	0		0
+GenProp0074	virulence	GenProp0062	capsule	4015	4003	DAG	0		0
+GenProp0017	metabolism	GenProp0063	biosynthesis	17	4004	DAG	0		0
+GenProp0017	metabolism	GenProp0063	biosynthesis	17	4004	PRIMARY_DAG	0		0
+GenProp0065	genome properties	GenProp0064	biological niche	4006	4005	DAG	0		0
+GenProp0065	genome properties	GenProp0064	biological niche	4006	4005	PRIMARY_DAG	0		0
+GenProp0065	genome properties	GenProp0066	selfish genetic elements	4006	4007	DAG	0		0
+GenProp0065	genome properties	GenProp0066	selfish genetic elements	4006	4007	PRIMARY_DAG	0		0
+GenProp0065	genome properties	GenProp0067	quantitative content	4006	4008	DAG	0		0
+GenProp0065	genome properties	GenProp0067	quantitative content	4006	4008	PRIMARY_DAG	0		0
+GenProp0065	genome properties	GenProp0068	taxonomy	4006	4009	DAG	0		0
+GenProp0065	genome properties	GenProp0068	taxonomy	4006	4009	PRIMARY_DAG	0		0
+GenProp0065	genome properties	GenProp0069	cell surface component	4006	4010	DAG	0		0
+GenProp0065	genome properties	GenProp0069	cell surface component	4006	4010	PRIMARY_DAG	0		0
+GenProp0017	metabolism	GenProp0070	energy metabolism	17	4011	DAG	0		0
+GenProp0017	metabolism	GenProp0070	energy metabolism	17	4011	PRIMARY_DAG	0		0
+GenProp0065	genome properties	GenProp0071	transport	4006	4012	DAG	0		0
+GenProp0065	genome properties	GenProp0071	transport	4006	4012	PRIMARY_DAG	0		0
+GenProp0017	metabolism	GenProp0072	central intermediary metabolism	17	4013	DAG	0		0
+GenProp0017	metabolism	GenProp0072	central intermediary metabolism	17	4013	PRIMARY_DAG	0		0
+GenProp0065	genome properties	GenProp0073	cell motility	4006	4014	DAG	0		0
+GenProp0065	genome properties	GenProp0073	cell motility	4006	4014	PRIMARY_DAG	0		0
+GenProp0065	genome properties	GenProp0074	virulence	4006	4015	DAG	0		0
+GenProp0065	genome properties	GenProp0074	virulence	4006	4015	PRIMARY_DAG	0		0
+GenProp0247	protein metabolism	GenProp0075	protein modification, prosthetic groups and cofactors	57235	4016	DAG	0		0
+GenProp0247	protein metabolism	GenProp0075	protein modification, prosthetic groups and cofactors	57235	4016	PRIMARY_DAG	0		0
+GenProp0065	genome properties	GenProp0076	DNA handling	4006	4017	DAG	0		0
+GenProp0065	genome properties	GenProp0076	DNA handling	4006	4017	PRIMARY_DAG	0		0
+GenProp0063	biosynthesis	GenProp0077	natural products biosynthesis	4004	4018	DAG	0		0
+GenProp0063	biosynthesis	GenProp0077	natural products biosynthesis	4004	4018	PRIMARY_DAG	0		0
+GenProp0006	superkingdom	GenProp0078	phylum	6	4019	DAG	0		0
+GenProp0006	superkingdom	GenProp0078	phylum	6	4019	PRIMARY_DAG	0		0
+GenProp0078	phylum	GenProp0079	class	4019	4020	DAG	0		0
+GenProp0078	phylum	GenProp0079	class	4019	4020	PRIMARY_DAG	0		0
+GenProp0079	class	GenProp0080	order	4020	4021	DAG	0		0
+GenProp0079	class	GenProp0080	order	4020	4021	PRIMARY_DAG	0		0
+GenProp0080	order	GenProp0081	family	4021	4022	DAG	0		0
+GenProp0080	order	GenProp0081	family	4021	4022	PRIMARY_DAG	0		0
+GenProp0081	family	GenProp0082	genus	4022	4023	DAG	0		0
+GenProp0081	family	GenProp0082	genus	4022	4023	PRIMARY_DAG	0		0
+GenProp0082	genus	GenProp0083	species	4023	4024	DAG	0		0
+GenProp0082	genus	GenProp0083	species	4023	4024	PRIMARY_DAG	0		0
+GenProp0068	taxonomy	GenProp0084	TaxID	4009	4025	DAG	0		0
+GenProp0068	taxonomy	GenProp0084	TaxID	4009	4025	PRIMARY_DAG	0		0
+GenProp0067	quantitative content	GenProp0085	DNA GC content	4008	4026	DAG	0		0
+GenProp0067	quantitative content	GenProp0085	DNA GC content	4008	4026	PRIMARY_DAG	0		0
+GenProp0067	quantitative content	GenProp0086	DNA size (megabases)	4008	4027	DAG	0		0
+GenProp0067	quantitative content	GenProp0086	DNA size (megabases)	4008	4027	PRIMARY_DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0087	arginine biosynthesis from glutatmate via N-acetylglutamate	4068	4028	DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0087	arginine biosynthesis from glutatmate via N-acetylglutamate	4068	4028	PRIMARY_DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0088	Percent A (Ala)	4049	4029	DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0088	Percent A (Ala)	4049	4029	PRIMARY_DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0089	Percent C (Cys)	4049	4030	DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0089	Percent C (Cys)	4049	4030	PRIMARY_DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0090	Percent D (Asp)	4049	4031	DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0090	Percent D (Asp)	4049	4031	PRIMARY_DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0091	Percent E (Glu)	4049	4032	DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0091	Percent E (Glu)	4049	4032	PRIMARY_DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0092	Percent F (Phe)	4049	4033	DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0092	Percent F (Phe)	4049	4033	PRIMARY_DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0093	Percent G (Gly)	4049	4034	DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0093	Percent G (Gly)	4049	4034	PRIMARY_DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0094	Percent H (His)	4049	4035	DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0094	Percent H (His)	4049	4035	PRIMARY_DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0095	Percent I (Ile)	4049	4036	DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0095	Percent I (Ile)	4049	4036	PRIMARY_DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0096	Percent K (Lys)	4049	4037	DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0096	Percent K (Lys)	4049	4037	PRIMARY_DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0097	Percent L (Leu)	4049	4038	DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0097	Percent L (Leu)	4049	4038	PRIMARY_DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0098	Percent M (Met)	4049	4039	DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0098	Percent M (Met)	4049	4039	PRIMARY_DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0099	Percent N (Asn)	4049	4040	DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0099	Percent N (Asn)	4049	4040	PRIMARY_DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0100	Percent P (Pro)	4049	4041	DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0100	Percent P (Pro)	4049	4041	PRIMARY_DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0101	Percent Q (Gln)	4049	4042	DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0101	Percent Q (Gln)	4049	4042	PRIMARY_DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0102	Percent R (Arg)	4049	4043	DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0102	Percent R (Arg)	4049	4043	PRIMARY_DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0103	Percent S (Ser)	4049	4044	DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0103	Percent S (Ser)	4049	4044	PRIMARY_DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0104	Percent T (Thr)	4049	4045	DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0104	Percent T (Thr)	4049	4045	PRIMARY_DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0105	Percent V (Val)	4049	4046	DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0105	Percent V (Val)	4049	4046	PRIMARY_DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0106	Percent W (Trp)	4049	4047	DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0106	Percent W (Trp)	4049	4047	PRIMARY_DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0107	Percent Y (Tyr)	4049	4048	DAG	0		0
+GenProp0108	amino acid abundance (order)	GenProp0107	Percent Y (Tyr)	4049	4048	PRIMARY_DAG	0		0
+GenProp0067	quantitative content	GenProp0108	amino acid abundance (order)	4008	4049	DAG	0		0
+GenProp0067	quantitative content	GenProp0108	amino acid abundance (order)	4008	4049	PRIMARY_DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0109	histidine biosynthesis from ribose-5-phosphate	4068	4050	DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0109	histidine biosynthesis from ribose-5-phosphate	4068	4050	PRIMARY_DAG	0		0
+GenProp0185	nucleotide biosynthesis	GenProp0110	purine (inosine-5'-phosphate) biosynthesis from ribose-5-phosphate	49167	4051	DAG	0		0
+GenProp0185	nucleotide biosynthesis	GenProp0110	purine (inosine-5'-phosphate) biosynthesis from ribose-5-phosphate	49167	4051	PRIMARY_DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0111	proline biosynthesis from glutamate	4068	4052	DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0111	proline biosynthesis from glutamate	4068	4052	PRIMARY_DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0112	riboflavin, FAD and FMN from GTP and ribulose-5-P	49166	4053	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0112	riboflavin, FAD and FMN from GTP and ribulose-5-P	49166	4053	PRIMARY_DAG	0		0
+GenProp0274	coenzyme B12 biosynthesis - overview	GenProp0113	cobyrinic acid diamide biosynthesis, aerobic pathway	57262	4054	DAG	0		0
+GenProp0274	coenzyme B12 biosynthesis - overview	GenProp0113	cobyrinic acid diamide biosynthesis, aerobic pathway	57262	4054	PRIMARY_DAG	0		0
+GenProp0115	DNA repair	GenProp0114	nucleotide excision repair	4056	4055	DAG	0		0
+GenProp0115	DNA repair	GenProp0114	nucleotide excision repair	4056	4055	PRIMARY_DAG	0		0
+GenProp0076	DNA handling	GenProp0115	DNA repair	4017	4056	DAG	0		0
+GenProp0116	DNA metabolism	GenProp0115	DNA repair	4057	4056	DAG	0		0
+GenProp0116	DNA metabolism	GenProp0115	DNA repair	4057	4056	PRIMARY_DAG	0		0
+GenProp0133	nucleic acid metabolism	GenProp0116	DNA metabolism	4139	4057	DAG	0		0
+GenProp0133	nucleic acid metabolism	GenProp0116	DNA metabolism	4139	4057	PRIMARY_DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0117	arginine biosynthesis from ornithine, carbamoyl-p and aspartate	4068	4059	DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0117	arginine biosynthesis from ornithine, carbamoyl-p and aspartate	4068	4059	PRIMARY_DAG	0		0
+GenProp0072	central intermediary metabolism	GenProp0118	ornithine biosynthesis from glutamate, acetylated branch	4013	4060	DAG	0		0
+GenProp0072	central intermediary metabolism	GenProp0118	ornithine biosynthesis from glutamate, acetylated branch	4013	4060	PRIMARY_DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0118	ornithine biosynthesis from glutamate, acetylated branch	4068	4060	DAG	0		0
+GenProp0180	small molecule transport	GenProp0119	PTS transport system	49162	4061	DAG	0		0
+GenProp0180	small molecule transport	GenProp0119	PTS transport system	49162	4061	PRIMARY_DAG	0		0
+GenProp0070	energy metabolism	GenProp0120	pentose phosphate cycle	4011	4062	DAG	0		0
+GenProp0070	energy metabolism	GenProp0120	pentose phosphate cycle	4011	4062	PRIMARY_DAG	0		0
+GenProp0072	central intermediary metabolism	GenProp0120	pentose phosphate cycle	4013	4062	DAG	0		0
+GenProp0067	quantitative content	GenProp0122	protein average length	4008	4064	DAG	0		0
+GenProp0067	quantitative content	GenProp0122	protein average length	4008	4064	PRIMARY_DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0124	pantothenate biosynthesis from aspartate and 2-oxoisovalerate	49166	4066	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0124	pantothenate biosynthesis from aspartate and 2-oxoisovalerate	49166	4066	PRIMARY_DAG	0		0
+GenProp0199	lysine biosynthesis	GenProp0125	lysine biosynthesis via diaminopimelate (DAP)	51177	4067	DAG	0		0
+GenProp0199	lysine biosynthesis	GenProp0125	lysine biosynthesis via diaminopimelate (DAP)	51177	4067	PRIMARY_DAG	0		0
+GenProp0063	biosynthesis	GenProp0126	amino acid biosynthesis	4004	4068	DAG	0		0
+GenProp0063	biosynthesis	GenProp0126	amino acid biosynthesis	4004	4068	PRIMARY_DAG	0		0
+GenProp0731	amino acid metabolism	GenProp0126	amino acid biosynthesis	60459	4068	DAG	0		0
+GenProp0075	protein modification, prosthetic groups and cofactors	GenProp0127	Tat (Sec-independent) protein export	4016	4081	DAG	0		0
+GenProp0179	protein transport	GenProp0127	Tat (Sec-independent) protein export	49161	4081	DAG	0		0
+GenProp0179	protein transport	GenProp0127	Tat (Sec-independent) protein export	49161	4081	PRIMARY_DAG	0		0
+GenProp0197	protein biosynthesis	GenProp0312	pyrrolysine	51175	4089	DAG	0		0
+GenProp0197	protein biosynthesis	GenProp0312	pyrrolysine	51175	4089	PRIMARY_DAG	0		0
+GenProp0070	energy metabolism	GenProp0128	F1/F0 ATPase	4011	4099	PRIMARY_DAG	0		0
+GenProp0243	ATP synthases	GenProp0128	F1/F0 ATPase	57231	4099	DAG	0		0
+GenProp0611	aerobic respiration	GenProp0128	F1/F0 ATPase	58336	4099	DAG	0		0
+GenProp0180	small molecule transport	GenProp0129	Na+-translocating NADH-quinone reductase	49162	4109	DAG	0		0
+GenProp0180	small molecule transport	GenProp0129	Na+-translocating NADH-quinone reductase	49162	4109	PRIMARY_DAG	0		0
+GenProp0612	aerobic electron transfer (transport) chain, ETC	GenProp0129	Na+-translocating NADH-quinone reductase	58337	4109	DAG	0		0
+GenProp0131	electron transport	GenProp0130	Rnf-type electron transport complex	4120	4119	DAG	0		0
+GenProp0131	electron transport	GenProp0130	Rnf-type electron transport complex	4120	4119	PRIMARY_DAG	0		0
+GenProp0070	energy metabolism	GenProp0131	electron transport	4011	4120	DAG	0		0
+GenProp0070	energy metabolism	GenProp0131	electron transport	4011	4120	PRIMARY_DAG	0		0
+GenProp0133	nucleic acid metabolism	GenProp0132	transcription termination - antitermination Nus factors	4139	4129	DAG	0		0
+GenProp0133	nucleic acid metabolism	GenProp0132	transcription termination - antitermination Nus factors	4139	4129	PRIMARY_DAG	0		0
+GenProp0197	protein biosynthesis	GenProp0132	transcription termination - antitermination Nus factors	51175	4129	DAG	0		0
+GenProp0017	metabolism	GenProp0133	nucleic acid metabolism	17	4139	DAG	0		0
+GenProp0017	metabolism	GenProp0133	nucleic acid metabolism	17	4139	PRIMARY_DAG	0		0
+GenProp0067	quantitative content	GenProp0134	functional gene clustering - property level	4008	9119	DAG	0		0
+GenProp0067	quantitative content	GenProp0134	functional gene clustering - property level	4008	9119	PRIMARY_DAG	0		0
+GenProp0131	electron transport	GenProp0135	NADH dehydrogenase I	4120	9129	DAG	0		0
+GenProp0131	electron transport	GenProp0135	NADH dehydrogenase I	4120	9129	PRIMARY_DAG	0		0
+GenProp0180	small molecule transport	GenProp0135	NADH dehydrogenase I	49162	9129	DAG	0		0
+GenProp0612	aerobic electron transfer (transport) chain, ETC	GenProp0135	NADH dehydrogenase I	58337	9129	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0136	ubiquinone biosynthesis from chorismate, aerobic	49166	14129	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0136	ubiquinone biosynthesis from chorismate, aerobic	49166	14129	PRIMARY_DAG	0		0
+GenProp0838	lipid biosynthesis	GenProp0136	ubiquinone biosynthesis from chorismate, aerobic	66566	14129	DAG	0		0
+GenProp0140	iron-sulfur cluster assembly systems	GenProp0137	iron-sulfur cluster assembly SUF system	19132	14130	DAG	0		0
+GenProp0140	iron-sulfur cluster assembly systems	GenProp0137	iron-sulfur cluster assembly SUF system	19132	14130	PRIMARY_DAG	0		0
+GenProp0140	iron-sulfur cluster assembly systems	GenProp0138	iron-sulfur cluster assembly iscSUA-hscBA-fdx system	19132	14131	DAG	0		0
+GenProp0140	iron-sulfur cluster assembly systems	GenProp0138	iron-sulfur cluster assembly iscSUA-hscBA-fdx system	19132	14131	PRIMARY_DAG	0		0
+GenProp0142	catabolism	GenProp0139	degradation of tyrosine via homogentisate	19134	14132	PRIMARY_DAG	0		0
+GenProp0734	amino acid catabolism	GenProp0139	degradation of tyrosine via homogentisate	60462	14132	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0140	iron-sulfur cluster assembly systems	49166	19132	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0140	iron-sulfur cluster assembly systems	49166	19132	PRIMARY_DAG	0		0
+GenProp0196	sulfur metabolism	GenProp0140	iron-sulfur cluster assembly systems	51174	19132	DAG	0		0
+GenProp0820	iron metabolism	GenProp0140	iron-sulfur cluster assembly systems	66548	19132	DAG	0		0
+GenProp0142	catabolism	GenProp0141	galactose-6-phosphate degradation via tagatose-6-phosphate	19134	19133	DAG	0		0
+GenProp0142	catabolism	GenProp0141	galactose-6-phosphate degradation via tagatose-6-phosphate	19134	19133	PRIMARY_DAG	0		0
+GenProp0017	metabolism	GenProp0142	catabolism	17	19134	DAG	0		0
+GenProp0017	metabolism	GenProp0142	catabolism	17	19134	PRIMARY_DAG	0		0
+GenProp0550	experimental properties	 	test	58275	24133	DAG	0		0
+GenProp0072	central intermediary metabolism	GenProp0143	Leloir pathway (galactose/glucose interconversion)	4013	24134	DAG	0		0
+GenProp0300	photosynthetic cofactor biosynthesis	GenProp0144	chlorophyllide a biosynthesis from protoporphyrin IX	57288	24135	DAG	0		0
+GenProp0300	photosynthetic cofactor biosynthesis	GenProp0144	chlorophyllide a biosynthesis from protoporphyrin IX	57288	24135	PRIMARY_DAG	0		0
+GenProp0142	catabolism	GenProp0145	histidine degradation to glutamate	19134	24136	PRIMARY_DAG	0		0
+GenProp0734	amino acid catabolism	GenProp0145	histidine degradation to glutamate	60462	24136	DAG	0		0
+GenProp0300	photosynthetic cofactor biosynthesis	GenProp0146	bacteriochlorophyll biosynthesis from chlorophyllide a	57288	24137	DAG	0		0
+GenProp0300	photosynthetic cofactor biosynthesis	GenProp0146	bacteriochlorophyll biosynthesis from chlorophyllide a	57288	24137	PRIMARY_DAG	0		0
+GenProp0267	osmolyte biosynthesis	GenProp0147	glycine betaine biosynthesis from choline	57255	24138	DAG	0		0
+GenProp0267	osmolyte biosynthesis	GenProp0147	glycine betaine biosynthesis from choline	57255	24138	PRIMARY_DAG	0		0
+GenProp0197	protein biosynthesis	GenProp0148	release factor 2 programmed frameshift	51175	24139	DAG	0		0
+GenProp0197	protein biosynthesis	GenProp0148	release factor 2 programmed frameshift	51175	24139	PRIMARY_DAG	0		0
+GenProp0196	sulfur metabolism	GenProp0149	sulfate reduction to sulfide, assimilatory	51174	24140	DAG	0		0
+GenProp0196	sulfur metabolism	GenProp0149	sulfate reduction to sulfide, assimilatory	51174	24140	PRIMARY_DAG	0		0
+GenProp0300	photosynthetic cofactor biosynthesis	GenProp0150	chlorophyll biosynthesis from chlorophyllide a	57288	24141	DAG	0		0
+GenProp0300	photosynthetic cofactor biosynthesis	GenProp0150	chlorophyll biosynthesis from chlorophyllide a	57288	24141	PRIMARY_DAG	0		0
+GenProp0303	detoxification	GenProp0151	resistance to mercury	57291	24143	DAG	0		0
+GenProp0303	detoxification	GenProp0151	resistance to mercury	57291	24143	PRIMARY_DAG	0		0
+GenProp0067	quantitative content	GenProp0152	DNA dinucleotide thermophily metric RR+YY-RY-YR	4008	29143	DAG	0		0
+GenProp0067	quantitative content	GenProp0152	DNA dinucleotide thermophily metric RR+YY-RY-YR	4008	29143	PRIMARY_DAG	0		0
+GenProp0544	community-associated niche	GenProp0153	biofilm participation	58269	29144	DAG	0		0
+GenProp0603	lifestyle	GenProp0153	biofilm participation	58328	29144	DAG	0		0
+GenProp0074	virulence	GenProp0154	intrinsic pathogen of animals	4015	29145	DAG	0		0
+GenProp0074	virulence	GenProp0154	intrinsic pathogen of animals	4015	29145	PRIMARY_DAG	0		0
+GenProp0548	intrinsic pathogen	GenProp0154	intrinsic pathogen of animals	58273	29145	DAG	0		0
+GenProp0196	sulfur metabolism	GenProp0155	dissimilatory sulfate reduction	51174	34144	DAG	0		0
+GenProp0196	sulfur metabolism	GenProp0155	dissimilatory sulfate reduction	51174	34144	PRIMARY_DAG	0		0
+GenProp0142	catabolism	GenProp0156	cyanophycin-like storage polymers	19134	39145	DAG	0		0
+GenProp0157	storage polymer systems	GenProp0156	cyanophycin-like storage polymers	39146	39145	DAG	0		0
+GenProp0186	storage and structural polymer biosynthesis	GenProp0156	cyanophycin-like storage polymers	49168	39145	DAG	0		0
+GenProp0186	storage and structural polymer biosynthesis	GenProp0156	cyanophycin-like storage polymers	49168	39145	PRIMARY_DAG	0		0
+GenProp0017	metabolism	GenProp0157	storage polymer systems	17	39146	DAG	0		0
+GenProp0017	metabolism	GenProp0157	storage polymer systems	17	39146	PRIMARY_DAG	0		0
+GenProp0069	cell surface component	GenProp0158	peptidoglycan(murein) biosynthesis	4010	39147	DAG	0		0
+GenProp0186	storage and structural polymer biosynthesis	GenProp0158	peptidoglycan(murein) biosynthesis	49168	39147	DAG	0		0
+GenProp0186	storage and structural polymer biosynthesis	GenProp0158	peptidoglycan(murein) biosynthesis	49168	39147	PRIMARY_DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0159	threonine biosynthesis from aspartate semialdehyde	4068	44146	DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0159	threonine biosynthesis from aspartate semialdehyde	4068	44146	PRIMARY_DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0160	aspartate semialdehyde biosynthesis from aspartate	4068	44147	DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0160	aspartate semialdehyde biosynthesis from aspartate	4068	44147	PRIMARY_DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0161	methionine biosynthesis from homoserine	4068	44148	DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0161	methionine biosynthesis from homoserine	4068	44148	PRIMARY_DAG	0		0
+GenProp0196	sulfur metabolism	GenProp0161	methionine biosynthesis from homoserine	51174	44148	DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0162	isoleucine biosynthesis from threonine and pyruvate	4068	44149	DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0162	isoleucine biosynthesis from threonine and pyruvate	4068	44149	PRIMARY_DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0163	valine biosynthesis from pyruvate	4068	44150	DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0163	valine biosynthesis from pyruvate	4068	44150	PRIMARY_DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0164	leucine biosynthesis from pyruvate and acetyl-CoA	4068	44151	DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0164	leucine biosynthesis from pyruvate and acetyl-CoA	4068	44151	PRIMARY_DAG	0		0
+GenProp0167	cellular growth, organization and division	GenProp0165	minCDE system	49149	49147	DAG	0		0
+GenProp0167	cellular growth, organization and division	GenProp0165	minCDE system	49149	49147	PRIMARY_DAG	0		0
+GenProp0167	cellular growth, organization and division	GenProp0166	mreBCD system	49149	49148	DAG	0		0
+GenProp0167	cellular growth, organization and division	GenProp0166	mreBCD system	49149	49148	PRIMARY_DAG	0		0
+GenProp0065	genome properties	GenProp0167	cellular growth, organization and division	4006	49149	DAG	0		0
+GenProp0065	genome properties	GenProp0167	cellular growth, organization and division	4006	49149	PRIMARY_DAG	0		0
+GenProp0142	catabolism	GenProp0168	glycogen system	19134	49150	DAG	0		0
+GenProp0157	storage polymer systems	GenProp0168	glycogen system	39146	49150	DAG	0		0
+GenProp0186	storage and structural polymer biosynthesis	GenProp0168	glycogen system	49168	49150	DAG	0		0
+GenProp0186	storage and structural polymer biosynthesis	GenProp0168	glycogen system	49168	49150	PRIMARY_DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0169	hybrid NRPS-PKS natural pruduct biosynthesis genes	4018	49151	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0169	hybrid NRPS-PKS natural pruduct biosynthesis genes	4018	49151	PRIMARY_DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0170	coenzyme PQQ biosynthesis	49166	49152	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0170	coenzyme PQQ biosynthesis	49166	49152	PRIMARY_DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0171	coenzyme A biosynthesis from pantothenate	49166	49153	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0171	coenzyme A biosynthesis from pantothenate	49166	49153	PRIMARY_DAG	0		0
+GenProp0180	small molecule transport	GenProp0172	Potassium-transporting ATPase KdpFABC	49162	49154	DAG	0		0
+GenProp0180	small molecule transport	GenProp0172	Potassium-transporting ATPase KdpFABC	49162	49154	PRIMARY_DAG	0		0
+GenProp0167	cellular growth, organization and division	GenProp0173	cell shape	49149	49155	DAG	0		0
+GenProp0167	cellular growth, organization and division	GenProp0173	cell shape	49149	49155	PRIMARY_DAG	0		0
+GenProp0197	protein biosynthesis	GenProp0174	ribosome, bacterial, large subunit	51175	49156	DAG	0		0
+GenProp0197	protein biosynthesis	GenProp0174	ribosome, bacterial, large subunit	51175	49156	PRIMARY_DAG	0		0
+GenProp0197	protein biosynthesis	GenProp0175	ribosome, bacterial, small subunit	51175	49157	DAG	0		0
+GenProp0197	protein biosynthesis	GenProp0175	ribosome, bacterial, small subunit	51175	49157	PRIMARY_DAG	0		0
+GenProp0180	small molecule transport	GenProp0176	TRAP-T (tripartite ATP-independent periplasmic transporters) family transporters	49162	49158	DAG	0		0
+GenProp0180	small molecule transport	GenProp0176	TRAP-T (tripartite ATP-independent periplasmic transporters) family transporters	49162	49158	PRIMARY_DAG	0		0
+GenProp0131	electron transport	GenProp0177	nickel-dependent hydrogenase	4120	49159	DAG	0		0
+GenProp0131	electron transport	GenProp0177	nickel-dependent hydrogenase	4120	49159	PRIMARY_DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0178	glycine cleavage system	4068	49160	DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0178	glycine cleavage system	4068	49160	PRIMARY_DAG	0		0
+GenProp0071	transport	GenProp0179	protein transport	4012	49161	DAG	0		0
+GenProp0071	transport	GenProp0179	protein transport	4012	49161	PRIMARY_DAG	0		0
+GenProp0247	protein metabolism	GenProp0179	protein transport	57235	49161	DAG	0		0
+GenProp0071	transport	GenProp0180	small molecule transport	4012	49162	DAG	0		0
+GenProp0071	transport	GenProp0180	small molecule transport	4012	49162	PRIMARY_DAG	0		0
+GenProp0176	TRAP-T (tripartite ATP-independent periplasmic transporters) family transporters	GenProp0181	count of TRAP transporter clusters	49158	49163	DAG	0		0
+GenProp0176	TRAP-T (tripartite ATP-independent periplasmic transporters) family transporters	GenProp0181	count of TRAP transporter clusters	49158	49163	PRIMARY_DAG	0		0
+GenProp0196	sulfur metabolism	GenProp0182	reduction of oxidized methionine	51174	49164	DAG	0		0
+GenProp0302	protein repair	GenProp0182	reduction of oxidized methionine	57290	49164	DAG	0		0
+GenProp0302	protein repair	GenProp0182	reduction of oxidized methionine	57290	49164	PRIMARY_DAG	0		0
+GenProp0733	amino acid salvage	GenProp0182	reduction of oxidized methionine	60461	49164	DAG	0		0
+GenProp0186	storage and structural polymer biosynthesis	GenProp0183	dTDP-L-rhamnose biosynthesis from dTDP-4-dehydro-L-rhamnose	49168	49165	DAG	0		0
+GenProp0186	storage and structural polymer biosynthesis	GenProp0183	dTDP-L-rhamnose biosynthesis from dTDP-4-dehydro-L-rhamnose	49168	49165	PRIMARY_DAG	0		0
+GenProp0795	carbohydrate biosynthesis	GenProp0183	dTDP-L-rhamnose biosynthesis from dTDP-4-dehydro-L-rhamnose	64524	49165	DAG	0		0
+GenProp0950	4,6-dideoxy-4-oxo-dTDP-D-glucose biosynthesis from glucose-1-phosphate	GenProp0183	dTDP-L-rhamnose biosynthesis from dTDP-4-dehydro-L-rhamnose	66678	49165	DAG	0		0
+GenProp0063	biosynthesis	GenProp0184	cofactor biosynthesis	4004	49166	DAG	0		0
+GenProp0063	biosynthesis	GenProp0184	cofactor biosynthesis	4004	49166	PRIMARY_DAG	0		0
+GenProp0063	biosynthesis	GenProp0185	nucleotide biosynthesis	4004	49167	DAG	0		0
+GenProp0063	biosynthesis	GenProp0185	nucleotide biosynthesis	4004	49167	PRIMARY_DAG	0		0
+GenProp0133	nucleic acid metabolism	GenProp0185	nucleotide biosynthesis	4139	49167	DAG	0		0
+GenProp0063	biosynthesis	GenProp0186	storage and structural polymer biosynthesis	4004	49168	DAG	0		0
+GenProp0063	biosynthesis	GenProp0186	storage and structural polymer biosynthesis	4004	49168	PRIMARY_DAG	0		0
+GenProp0185	nucleotide biosynthesis	GenProp0187	pyrimidine (uridine-5'-phosphate) de novo biosynthesis	49167	49169	DAG	0		0
+GenProp0185	nucleotide biosynthesis	GenProp0187	pyrimidine (uridine-5'-phosphate) de novo biosynthesis	49167	49169	PRIMARY_DAG	0		0
+GenProp0197	protein biosynthesis	GenProp0188	GatABC aspartyl/glutamyl-tRNA(Asn/Gln) amidotransferase complex	51175	51165	DAG	0		0
+GenProp0197	protein biosynthesis	GenProp0188	GatABC aspartyl/glutamyl-tRNA(Asn/Gln) amidotransferase complex	51175	51165	PRIMARY_DAG	0		0
+GenProp0258	tRNA aminoacylation	GenProp0188	GatABC aspartyl/glutamyl-tRNA(Asn/Gln) amidotransferase complex	57246	51165	DAG	0		0
+GenProp0197	protein biosynthesis	GenProp0189	tRNA-Gln direct aminoacylation	51175	51166	DAG	0		0
+GenProp0197	protein biosynthesis	GenProp0189	tRNA-Gln direct aminoacylation	51175	51166	PRIMARY_DAG	0		0
+GenProp0258	tRNA aminoacylation	GenProp0189	tRNA-Gln direct aminoacylation	57246	51166	DAG	0		0
+GenProp0180	small molecule transport	GenProp0190	phosphate ABC transporter (pstSCAB-phoU)	49162	51167	DAG	0		0
+GenProp0180	small molecule transport	GenProp0190	phosphate ABC transporter (pstSCAB-phoU)	49162	51167	PRIMARY_DAG	0		0
+GenProp0242	phosphorus metabolism	GenProp0190	phosphate ABC transporter (pstSCAB-phoU)	57229	51167	DAG	0		0
+GenProp0180	small molecule transport	GenProp0191	sulfate/thiosulfate ABC transporter	49162	51168	DAG	0		0
+GenProp0180	small molecule transport	GenProp0191	sulfate/thiosulfate ABC transporter	49162	51168	PRIMARY_DAG	0		0
+GenProp0196	sulfur metabolism	GenProp0191	sulfate/thiosulfate ABC transporter	51174	51168	DAG	0		0
+GenProp0180	small molecule transport	GenProp0192	molybdate ABC transporter	49162	51169	DAG	0		0
+GenProp0180	small molecule transport	GenProp0192	molybdate ABC transporter	49162	51169	PRIMARY_DAG	0		0
+GenProp0199	lysine biosynthesis	GenProp0193	lysine biosynthesis via alpha-aminoadipate (AAA pathway)	51177	51171	DAG	0		0
+GenProp0199	lysine biosynthesis	GenProp0193	lysine biosynthesis via alpha-aminoadipate (AAA pathway)	51177	51171	PRIMARY_DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0194	siroheme biosynthesis from uroporphrinogen-III	49166	51172	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0194	siroheme biosynthesis from uroporphrinogen-III	49166	51172	PRIMARY_DAG	0		0
+GenProp0820	iron metabolism	GenProp0194	siroheme biosynthesis from uroporphrinogen-III	66548	51172	DAG	0		0
+GenProp0243	ATP synthases	GenProp0195	V-type ATPase	57231	51173	DAG	0		0
+GenProp0243	ATP synthases	GenProp0195	V-type ATPase	57231	51173	PRIMARY_DAG	0		0
+GenProp0072	central intermediary metabolism	GenProp0196	sulfur metabolism	4013	51174	DAG	0		0
+GenProp0072	central intermediary metabolism	GenProp0196	sulfur metabolism	4013	51174	PRIMARY_DAG	0		0
+GenProp0063	biosynthesis	GenProp0197	protein biosynthesis	4004	51175	DAG	0		0
+GenProp0247	protein metabolism	GenProp0197	protein biosynthesis	57235	51175	DAG	0		0
+GenProp0247	protein metabolism	GenProp0197	protein biosynthesis	57235	51175	PRIMARY_DAG	0		0
+GenProp0076	DNA handling	GenProp0198	ruvABC Holliday junction complex	4017	51176	DAG	0		0
+GenProp0076	DNA handling	GenProp0198	ruvABC Holliday junction complex	4017	51176	PRIMARY_DAG	0		0
+GenProp0115	DNA repair	GenProp0198	ruvABC Holliday junction complex	4056	51176	DAG	0		0
+GenProp0116	DNA metabolism	GenProp0198	ruvABC Holliday junction complex	4057	51176	DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0199	lysine biosynthesis	4068	51177	DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0199	lysine biosynthesis	4068	51177	PRIMARY_DAG	0		0
+GenProp0202	nitrogen metabolism	GenProp0200	periplasmic nitrate reductase	53180	51178	DAG	0		0
+GenProp0202	nitrogen metabolism	GenProp0200	periplasmic nitrate reductase	53180	51178	PRIMARY_DAG	0		0
+GenProp0167	cellular growth, organization and division	GenProp0201	SMC-ScpA-ScpB complex	49149	53179	DAG	0		0
+GenProp0167	cellular growth, organization and division	GenProp0201	SMC-ScpA-ScpB complex	49149	53179	PRIMARY_DAG	0		0
+GenProp0072	central intermediary metabolism	GenProp0202	nitrogen metabolism	4013	53180	DAG	0		0
+GenProp0072	central intermediary metabolism	GenProp0202	nitrogen metabolism	4013	53180	PRIMARY_DAG	0		0
+GenProp0297	lipopolysaccharide biosynthesis	GenProp0203	LPS inner core biosynthesis, ketodeoxyoctonate and heptose type	57285	53181	DAG	0		0
+GenProp0297	lipopolysaccharide biosynthesis	GenProp0203	LPS inner core biosynthesis, ketodeoxyoctonate and heptose type	57285	53181	PRIMARY_DAG	0		0
+GenProp0297	lipopolysaccharide biosynthesis	GenProp0204	KDO(2)-lipid A (Re LPS) biosynthesis and delivery	57285	53182	DAG	0		0
+GenProp0297	lipopolysaccharide biosynthesis	GenProp0204	KDO(2)-lipid A (Re LPS) biosynthesis and delivery	57285	53182	PRIMARY_DAG	0		0
+GenProp0179	protein transport	GenProp0205	signal recognition system, bacterial	49161	53183	DAG	0		0
+GenProp0179	protein transport	GenProp0205	signal recognition system, bacterial	49161	53183	PRIMARY_DAG	0		0
+GenProp0167	cellular growth, organization and division	GenProp0206	bacterial cell division septum system	49149	53184	DAG	0		0
+GenProp0167	cellular growth, organization and division	GenProp0206	bacterial cell division septum system	49149	53184	PRIMARY_DAG	0		0
+GenProp0179	protein transport	GenProp0207	lipoprotein localization system lolABCDE	49161	53185	DAG	0		0
+GenProp0179	protein transport	GenProp0207	lipoprotein localization system lolABCDE	49161	53185	PRIMARY_DAG	0		0
+GenProp0066	selfish genetic elements	GenProp0208	phage: major features	4007	53186	DAG	0		0
+GenProp0066	selfish genetic elements	GenProp0208	phage: major features	4007	53186	PRIMARY_DAG	0		0
+GenProp0179	protein transport	GenProp0209	Sec system preprotein translocase	49161	53187	DAG	0		0
+GenProp0179	protein transport	GenProp0209	Sec system preprotein translocase	49161	53187	PRIMARY_DAG	0		0
+GenProp0142	catabolism	GenProp0210	phenylacetic acid catabolism	19134	53188	DAG	0		0
+GenProp0142	catabolism	GenProp0210	phenylacetic acid catabolism	19134	53188	PRIMARY_DAG	0		0
+GenProp0197	protein biosynthesis	GenProp0211	tmRNA trans-translation system	51175	53189	DAG	0		0
+GenProp0197	protein biosynthesis	GenProp0211	tmRNA trans-translation system	51175	53189	PRIMARY_DAG	0		0
+GenProp0301	protein degradation	GenProp0211	tmRNA trans-translation system	57289	53189	DAG	0		0
+GenProp0462	response to stress	GenProp0211	tmRNA trans-translation system	58187	53189	DAG	0		0
+GenProp0303	detoxification	GenProp0213	Resistance to Reactive Oxygen Species (ROS)	57291	53192	DAG	0		0
+GenProp0303	detoxification	GenProp0213	Resistance to Reactive Oxygen Species (ROS)	57291	53192	PRIMARY_DAG	0		0
+GenProp0299	fatty acid biosynthesis	GenProp0214	acetyl-CoA carboxylase complex	57287	55190	DAG	0		0
+GenProp0299	fatty acid biosynthesis	GenProp0214	acetyl-CoA carboxylase complex	57287	55190	PRIMARY_DAG	0		0
+GenProp0115	DNA repair	GenProp0215	SOS response	4056	55191	DAG	0		0
+GenProp0115	DNA repair	GenProp0215	SOS response	4056	55191	PRIMARY_DAG	0		0
+GenProp0115	DNA repair	GenProp0216	recBCD pathway	4056	55192	DAG	0		0
+GenProp0115	DNA repair	GenProp0216	recBCD pathway	4056	55192	PRIMARY_DAG	0		0
+GenProp0255	5-aminolevulinate biosynthesis	GenProp0217	5-aminolevulinate biosynthesis (glutamate pathway)	57243	55193	DAG	0		0
+GenProp0255	5-aminolevulinate biosynthesis	GenProp0217	5-aminolevulinate biosynthesis (glutamate pathway)	57243	55193	PRIMARY_DAG	0		0
+GenProp0305	cysteine biosynthesis	GenProp0218	cysteine biosynthesis from serine	57293	55194	DAG	0		0
+GenProp0305	cysteine biosynthesis	GenProp0218	cysteine biosynthesis from serine	57293	55194	PRIMARY_DAG	0		0
+GenProp0063	biosynthesis	GenProp0219	spermidine biosynthesis from arginine (via agmatine)	4004	55195	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0220	uroporhyrinogen III biosynthesis from 5-aminolevulinate	49166	55196	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0220	uroporhyrinogen III biosynthesis from 5-aminolevulinate	49166	55196	PRIMARY_DAG	0		0
+GenProp0274	coenzyme B12 biosynthesis - overview	GenProp0220	uroporhyrinogen III biosynthesis from 5-aminolevulinate	57262	55196	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0221	protoporphyrin IX biosynthesis from uroporphyrinogen III	49166	55197	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0221	protoporphyrin IX biosynthesis from uroporphyrinogen III	49166	55197	PRIMARY_DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0222	protoheme from protoporphyrin IX	49166	55198	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0222	protoheme from protoporphyrin IX	49166	55198	PRIMARY_DAG	0		0
+GenProp0820	iron metabolism	GenProp0222	protoheme from protoporphyrin IX	66548	55198	DAG	0		0
+GenProp0255	5-aminolevulinate biosynthesis	GenProp0223	5-aminolevulinate biosynthesis from succinyl-CoA and glycine	57243	55199	DAG	0		0
+GenProp0255	5-aminolevulinate biosynthesis	GenProp0223	5-aminolevulinate biosynthesis from succinyl-CoA and glycine	57243	55199	PRIMARY_DAG	0		0
+GenProp0115	DNA repair	GenProp0224	nucleotide excision repair, alternative pathway	4056	55200	DAG	0		0
+GenProp0115	DNA repair	GenProp0225	mismatch repair	4056	55201	DAG	0		0
+GenProp0115	DNA repair	GenProp0225	mismatch repair	4056	55201	PRIMARY_DAG	0		0
+GenProp0066	selfish genetic elements	GenProp0226	integron	4007	55202	DAG	0		0
+GenProp0115	DNA repair	GenProp0227	excision repair	4056	55209	DAG	0		0
+GenProp0115	DNA repair	GenProp0227	excision repair	4056	55209	PRIMARY_DAG	0		0
+GenProp0115	DNA repair	GenProp0228	direct repair	4056	55210	DAG	0		0
+GenProp0115	DNA repair	GenProp0228	direct repair	4056	55210	PRIMARY_DAG	0		0
+GenProp0227	excision repair	GenProp0229	transcription-coupled nucleotide excision repair	55209	55211	DAG	0		0
+GenProp0227	excision repair	GenProp0229	transcription-coupled nucleotide excision repair	55209	55211	PRIMARY_DAG	0		0
+GenProp0142	catabolism	GenProp0231	4-hydroxyphenylacetate degradation	19134	57214	DAG	0		0
+GenProp0142	catabolism	GenProp0231	4-hydroxyphenylacetate degradation	19134	57214	PRIMARY_DAG	0		0
+GenProp0241	phosphonate catabolism	GenProp0232	phosphonates C-P lyase system	57228	57215	DAG	0		0
+GenProp0241	phosphonate catabolism	GenProp0232	phosphonates C-P lyase system	57228	57215	PRIMARY_DAG	0		0
+GenProp0142	catabolism	GenProp0233	GABA utilization	19134	57216	DAG	0		0
+GenProp0142	catabolism	GenProp0233	GABA utilization	19134	57216	PRIMARY_DAG	0		0
+GenProp0180	small molecule transport	GenProp0236	phosphonates ABC transport	49162	57222	DAG	0		0
+GenProp0180	small molecule transport	GenProp0236	phosphonates ABC transport	49162	57222	PRIMARY_DAG	0		0
+GenProp0142	catabolism	GenProp0238	2-aminoethylphosphonate catabolism to acetaldehyde	19134	57225	DAG	0		0
+GenProp0720	2-aminoethylphosphonate utilization	GenProp0238	2-aminoethylphosphonate catabolism to acetaldehyde	60448	57225	DAG	0		0
+GenProp0720	2-aminoethylphosphonate utilization	GenProp0238	2-aminoethylphosphonate catabolism to acetaldehyde	60448	57225	PRIMARY_DAG	0		0
+GenProp0142	catabolism	GenProp0239	propionyl-CoA catabolism	19134	57226	DAG	0		0
+GenProp0142	catabolism	GenProp0239	propionyl-CoA catabolism	19134	57226	PRIMARY_DAG	0		0
+GenProp0239	propionyl-CoA catabolism	GenProp0240	propionyl-CoA catabolism via methylcitric acid	57226	57227	DAG	0		0
+GenProp0239	propionyl-CoA catabolism	GenProp0240	propionyl-CoA catabolism via methylcitric acid	57226	57227	PRIMARY_DAG	0		0
+GenProp0142	catabolism	GenProp0241	phosphonate catabolism	19134	57228	DAG	0		0
+GenProp0142	catabolism	GenProp0241	phosphonate catabolism	19134	57228	PRIMARY_DAG	0		0
+GenProp0242	phosphorus metabolism	GenProp0241	phosphonate catabolism	57229	57228	DAG	0		0
+GenProp0072	central intermediary metabolism	GenProp0242	phosphorus metabolism	4013	57229	DAG	0		0
+GenProp0072	central intermediary metabolism	GenProp0242	phosphorus metabolism	4013	57229	PRIMARY_DAG	0		0
+GenProp0070	energy metabolism	GenProp0243	ATP synthases	4011	57231	DAG	0		0
+GenProp0070	energy metabolism	GenProp0243	ATP synthases	4011	57231	PRIMARY_DAG	0		0
+GenProp0242	phosphorus metabolism	GenProp0243	ATP synthases	57229	57231	DAG	0		0
+GenProp0248	protein folding	GenProp0244	chaperone system: DnaK-DnaJ-GrpE	57236	57232	DAG	0		0
+GenProp0248	protein folding	GenProp0244	chaperone system: DnaK-DnaJ-GrpE	57236	57232	PRIMARY_DAG	0		0
+GenProp0248	protein folding	GenProp0245	chaperone system: GroEL/GroES	57236	57233	DAG	0		0
+GenProp0248	protein folding	GenProp0245	chaperone system: GroEL/GroES	57236	57233	PRIMARY_DAG	0		0
+GenProp0248	protein folding	GenProp0246	chaperone system: thermosome/prefoldin	57236	57234	DAG	0		0
+GenProp0248	protein folding	GenProp0246	chaperone system: thermosome/prefoldin	57236	57234	PRIMARY_DAG	0		0
+GenProp0017	metabolism	GenProp0247	protein metabolism	17	57235	DAG	0		0
+GenProp0017	metabolism	GenProp0247	protein metabolism	17	57235	PRIMARY_DAG	0		0
+GenProp0247	protein metabolism	GenProp0248	protein folding	57235	57236	DAG	0		0
+GenProp0247	protein metabolism	GenProp0248	protein folding	57235	57236	PRIMARY_DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0250	thiamine: hydroxyethylthiazole from 1-deoxy-D-xylulose-5-phosphate, cysteine, either Tyr or Gly	49166	57238	DAG	0		0
+GenProp0261	thiamin pyrophosphate (TPP) de novo biosynthesis	GenProp0250	thiamine: hydroxyethylthiazole from 1-deoxy-D-xylulose-5-phosphate, cysteine, either Tyr or Gly	57249	57238	DAG	0		0
+GenProp0261	thiamin pyrophosphate (TPP) de novo biosynthesis	GenProp0250	thiamine: hydroxyethylthiazole from 1-deoxy-D-xylulose-5-phosphate, cysteine, either Tyr or Gly	57249	57238	PRIMARY_DAG	0		0
+GenProp0301	protein degradation	GenProp0251	clpXP degradation machine	57289	57239	DAG	0		0
+GenProp0301	protein degradation	GenProp0251	clpXP degradation machine	57289	57239	PRIMARY_DAG	0		0
+GenProp0180	small molecule transport	GenProp0252	thiamine/TPP ABC transporter ThiBPQ	49162	57240	DAG	0		0
+GenProp0180	small molecule transport	GenProp0252	thiamine/TPP ABC transporter ThiBPQ	49162	57240	PRIMARY_DAG	0		0
+GenProp0261	thiamin pyrophosphate (TPP) de novo biosynthesis	GenProp0253	thiamine: hydroxymethylpyrimidine pyrophosphate from aminoimidazole ribotide	57249	57241	DAG	0		0
+GenProp0261	thiamin pyrophosphate (TPP) de novo biosynthesis	GenProp0253	thiamine: hydroxymethylpyrimidine pyrophosphate from aminoimidazole ribotide	57249	57241	PRIMARY_DAG	0		0
+GenProp0261	thiamin pyrophosphate (TPP) de novo biosynthesis	GenProp0254	thiamine: TPP from HMP-PP and HET-P	57249	57242	DAG	0		0
+GenProp0261	thiamin pyrophosphate (TPP) de novo biosynthesis	GenProp0254	thiamine: TPP from HMP-PP and HET-P	57249	57242	PRIMARY_DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0255	5-aminolevulinate biosynthesis	49166	57243	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0255	5-aminolevulinate biosynthesis	49166	57243	PRIMARY_DAG	0		0
+GenProp0550	experimental properties	GenProp0257	test dihydroxyacetone kinase, PEP-dependent	58275	57245	DAG	0		0
+GenProp0197	protein biosynthesis	GenProp0258	tRNA aminoacylation	51175	57246	DAG	0		0
+GenProp0197	protein biosynthesis	GenProp0258	tRNA aminoacylation	51175	57246	PRIMARY_DAG	0		0
+GenProp0819	RNA metabolism	GenProp0258	tRNA aminoacylation	66547	57246	DAG	0		0
+GenProp0197	protein biosynthesis	GenProp0259	tRNA-Asn direct aminoacylation	51175	57247	DAG	0		0
+GenProp0197	protein biosynthesis	GenProp0259	tRNA-Asn direct aminoacylation	51175	57247	PRIMARY_DAG	0		0
+GenProp0258	tRNA aminoacylation	GenProp0259	tRNA-Asn direct aminoacylation	57246	57247	DAG	0		0
+GenProp0550	experimental properties	GenProp0260	IDEAL status	58275	57248	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0261	thiamin pyrophosphate (TPP) de novo biosynthesis	49166	57249	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0261	thiamin pyrophosphate (TPP) de novo biosynthesis	49166	57249	PRIMARY_DAG	0		0
+GenProp0819	RNA metabolism	GenProp0262	RNA polymerase, bacterial	66547	57250	DAG	0		0
+GenProp0819	RNA metabolism	GenProp0262	RNA polymerase, bacterial	66547	57250	PRIMARY_DAG	0		0
+GenProp0116	DNA metabolism	GenProp0263	DNA polymerase III, bacterial	4057	57251	DAG	0		0
+GenProp0116	DNA metabolism	GenProp0263	DNA polymerase III, bacterial	4057	57251	PRIMARY_DAG	0		0
+GenProp0267	osmolyte biosynthesis	GenProp0264	glucosylglycerol biosynthesis	57255	57252	DAG	0		0
+GenProp0267	osmolyte biosynthesis	GenProp0264	glucosylglycerol biosynthesis	57255	57252	PRIMARY_DAG	0		0
+GenProp0795	carbohydrate biosynthesis	GenProp0264	glucosylglycerol biosynthesis	64524	57252	DAG	0		0
+GenProp0267	osmolyte biosynthesis	GenProp0265	trehalose biosynthesis, OtsAB pathway	57255	57253	DAG	0		0
+GenProp0267	osmolyte biosynthesis	GenProp0265	trehalose biosynthesis, OtsAB pathway	57255	57253	PRIMARY_DAG	0		0
+GenProp0267	osmolyte biosynthesis	GenProp0266	trehalose biosynthesis, TreYZ pathway	57255	57254	DAG	0		0
+GenProp0267	osmolyte biosynthesis	GenProp0266	trehalose biosynthesis, TreYZ pathway	57255	57254	PRIMARY_DAG	0		0
+GenProp0063	biosynthesis	GenProp0267	osmolyte biosynthesis	4004	57255	DAG	0		0
+GenProp0063	biosynthesis	GenProp0267	osmolyte biosynthesis	4004	57255	PRIMARY_DAG	0		0
+GenProp0267	osmolyte biosynthesis	GenProp0268	ectoine biosynthesis	57255	57256	DAG	0		0
+GenProp0267	osmolyte biosynthesis	GenProp0268	ectoine biosynthesis	57255	57256	PRIMARY_DAG	0		0
+GenProp0274	coenzyme B12 biosynthesis - overview	GenProp0269	coenzyme B12 biosynthesis from cob(II)yrinate diamide	57262	57257	DAG	0		0
+GenProp0274	coenzyme B12 biosynthesis - overview	GenProp0269	coenzyme B12 biosynthesis from cob(II)yrinate diamide	57262	57257	PRIMARY_DAG	0		0
+GenProp0274	coenzyme B12 biosynthesis - overview	GenProp0270	alpha-ribazole biosynthesis from nicotinate mononucleotide and dimethylbenzimidazole	57262	57258	DAG	0		0
+GenProp0274	coenzyme B12 biosynthesis - overview	GenProp0270	alpha-ribazole biosynthesis from nicotinate mononucleotide and dimethylbenzimidazole	57262	57258	PRIMARY_DAG	0		0
+GenProp0142	catabolism	GenProp0271	trehalose utilization	19134	57259	DAG	0		0
+GenProp0142	catabolism	GenProp0271	trehalose utilization	19134	57259	PRIMARY_DAG	0		0
+GenProp0142	catabolism	GenProp0272	pyruvate fermentation to acetoin	19134	57260	DAG	0		0
+GenProp0298	fermentation	GenProp0272	pyruvate fermentation to acetoin	57286	57260	DAG	0		0
+GenProp0298	fermentation	GenProp0272	pyruvate fermentation to acetoin	57286	57260	PRIMARY_DAG	0		0
+GenProp0142	catabolism	GenProp0273	protocatechuate degradation to beta-ketoadipate	19134	57261	DAG	0		0
+GenProp0142	catabolism	GenProp0273	protocatechuate degradation to beta-ketoadipate	19134	57261	PRIMARY_DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0274	coenzyme B12 biosynthesis - overview	49166	57262	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0274	coenzyme B12 biosynthesis - overview	49166	57262	PRIMARY_DAG	0		0
+GenProp0274	coenzyme B12 biosynthesis - overview	GenProp0275	cobyrinic acid diamide biosynthesis, anaerobic pathway	57262	57263	DAG	0		0
+GenProp0274	coenzyme B12 biosynthesis - overview	GenProp0275	cobyrinic acid diamide biosynthesis, anaerobic pathway	57262	57263	PRIMARY_DAG	0		0
+GenProp0274	coenzyme B12 biosynthesis - overview	GenProp0277	cobalt import system (ABC transporter: 3.A.1.18.1)	57262	57265	DAG	0		0
+GenProp0279	cobalt import systems	GenProp0277	cobalt import system (ABC transporter: 3.A.1.18.1)	57267	57265	DAG	0		0
+GenProp0279	cobalt import systems	GenProp0277	cobalt import system (ABC transporter: 3.A.1.18.1)	57267	57265	PRIMARY_DAG	0		0
+GenProp0279	cobalt import systems	GenProp0278	cobalt import system (adapted nickel transporters)	57267	57266	DAG	0		0
+GenProp0279	cobalt import systems	GenProp0278	cobalt import system (adapted nickel transporters)	57267	57266	PRIMARY_DAG	0		0
+GenProp0180	small molecule transport	GenProp0279	cobalt import systems	49162	57267	DAG	0		0
+GenProp0180	small molecule transport	GenProp0279	cobalt import systems	49162	57267	PRIMARY_DAG	0		0
+GenProp0279	cobalt import systems	GenProp0280	cobalt import system (CbtAB - proposed)	57267	57268	DAG	0		0
+GenProp0279	cobalt import systems	GenProp0280	cobalt import system (CbtAB - proposed)	57267	57268	PRIMARY_DAG	0		0
+GenProp0267	osmolyte biosynthesis	GenProp0281	mannosylglycerate biosynthesis	57255	57269	DAG	0		0
+GenProp0267	osmolyte biosynthesis	GenProp0281	mannosylglycerate biosynthesis	57255	57269	PRIMARY_DAG	0		0
+GenProp0279	cobalt import systems	GenProp0282	cobalt import system (CbtC - proposed)	57267	57270	DAG	0		0
+GenProp0279	cobalt import systems	GenProp0282	cobalt import system (CbtC - proposed)	57267	57270	PRIMARY_DAG	0		0
+GenProp0142	catabolism	GenProp0283	beta-ketoadipate degradation to succinyl-CoA and acetyl-CoA	19134	57271	DAG	0		0
+GenProp0142	catabolism	GenProp0283	beta-ketoadipate degradation to succinyl-CoA and acetyl-CoA	19134	57271	PRIMARY_DAG	0		0
+GenProp0075	protein modification, prosthetic groups and cofactors	GenProp0284	cobalamin-utilizing enzymes	4016	57272	DAG	0		0
+GenProp0075	protein modification, prosthetic groups and cofactors	GenProp0284	cobalamin-utilizing enzymes	4016	57272	PRIMARY_DAG	0		0
+GenProp0007	flagella	GenProp0285	flagella, bacterial type	7	57273	DAG	0		0
+GenProp0007	flagella	GenProp0285	flagella, bacterial type	7	57273	PRIMARY_DAG	0		0
+GenProp0520	relationship to host cell	GenProp0286	intracellular survival	58245	57274	DAG	0		0
+GenProp0520	relationship to host cell	GenProp0286	intracellular survival	58245	57274	PRIMARY_DAG	0		0
+GenProp0133	nucleic acid metabolism	GenProp0287	ribonucleotide reduction	4139	57275	DAG	0		0
+GenProp0133	nucleic acid metabolism	GenProp0287	ribonucleotide reduction	4139	57275	PRIMARY_DAG	0		0
+GenProp0011	methanogenesis	GenProp0288	tetrahydromethanopterin S-methyltransferase complex	11	57276	DAG	0		0
+GenProp0011	methanogenesis	GenProp0288	tetrahydromethanopterin S-methyltransferase complex	11	57276	PRIMARY_DAG	0		0
+GenProp0284	cobalamin-utilizing enzymes	GenProp0288	tetrahydromethanopterin S-methyltransferase complex	57272	57276	DAG	0		0
+GenProp0287	ribonucleotide reduction	GenProp0289	class I (aerobic) ribonucleotide reductase	57275	57277	DAG	0		0
+GenProp0287	ribonucleotide reduction	GenProp0289	class I (aerobic) ribonucleotide reductase	57275	57277	PRIMARY_DAG	0		0
+GenProp0284	cobalamin-utilizing enzymes	GenProp0290	class II (B12-dependent) ribonucleotide reductase	57272	57278	DAG	0		0
+GenProp0287	ribonucleotide reduction	GenProp0290	class II (B12-dependent) ribonucleotide reductase	57275	57278	DAG	0		0
+GenProp0287	ribonucleotide reduction	GenProp0290	class II (B12-dependent) ribonucleotide reductase	57275	57278	PRIMARY_DAG	0		0
+GenProp0287	ribonucleotide reduction	GenProp0291	class III (anaerobic) ribonucleotide reductase	57275	57279	DAG	0		0
+GenProp0287	ribonucleotide reduction	GenProp0291	class III (anaerobic) ribonucleotide reductase	57275	57279	PRIMARY_DAG	0		0
+GenProp0294	ethanolamine degradation proteinaceous organelle	GenProp0292	ethanolamine degradation organelle	57282	57280	DAG	0		0
+GenProp0294	ethanolamine degradation proteinaceous organelle	GenProp0292	ethanolamine degradation organelle	57282	57280	PRIMARY_DAG	0		0
+GenProp0550	experimental properties	GenProp0293	temp_type_IV_pilus	58275	57281	DAG	0		0
+GenProp0142	catabolism	GenProp0294	ethanolamine degradation proteinaceous organelle	19134	57282	DAG	0		0
+GenProp0142	catabolism	GenProp0294	ethanolamine degradation proteinaceous organelle	19134	57282	PRIMARY_DAG	0		0
+GenProp0284	cobalamin-utilizing enzymes	GenProp0294	ethanolamine degradation proteinaceous organelle	57272	57282	DAG	0		0
+GenProp0075	protein modification, prosthetic groups and cofactors	GenProp0295	prokaryotic N-terminal cleavage/methylation, type IV pilin-like	4016	57283	DAG	0		0
+GenProp0179	protein transport	GenProp0295	prokaryotic N-terminal cleavage/methylation, type IV pilin-like	49161	57283	DAG	0		0
+GenProp0167	cellular growth, organization and division	GenProp0296	intracytoplasmic membranes	49149	57284	DAG	0		0
+GenProp0167	cellular growth, organization and division	GenProp0296	intracytoplasmic membranes	49149	57284	PRIMARY_DAG	0		0
+GenProp0069	cell surface component	GenProp0297	lipopolysaccharide biosynthesis	4010	57285	DAG	0		0
+GenProp0186	storage and structural polymer biosynthesis	GenProp0297	lipopolysaccharide biosynthesis	49168	57285	DAG	0		0
+GenProp0186	storage and structural polymer biosynthesis	GenProp0297	lipopolysaccharide biosynthesis	49168	57285	PRIMARY_DAG	0		0
+GenProp0795	carbohydrate biosynthesis	GenProp0297	lipopolysaccharide biosynthesis	64524	57285	DAG	0		0
+GenProp0838	lipid biosynthesis	GenProp0297	lipopolysaccharide biosynthesis	66566	57285	DAG	0		0
+GenProp0070	energy metabolism	GenProp0298	fermentation	4011	57286	DAG	0		0
+GenProp0070	energy metabolism	GenProp0298	fermentation	4011	57286	PRIMARY_DAG	0		0
+GenProp0838	lipid biosynthesis	GenProp0299	fatty acid biosynthesis	66566	57287	DAG	0		0
+GenProp0027	photosynthesis	GenProp0300	photosynthetic cofactor biosynthesis	2009	57288	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0300	photosynthetic cofactor biosynthesis	49166	57288	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0300	photosynthetic cofactor biosynthesis	49166	57288	PRIMARY_DAG	0		0
+GenProp0247	protein metabolism	GenProp0301	protein degradation	57235	57289	DAG	0		0
+GenProp0247	protein metabolism	GenProp0301	protein degradation	57235	57289	PRIMARY_DAG	0		0
+GenProp0247	protein metabolism	GenProp0302	protein repair	57235	57290	DAG	0		0
+GenProp0247	protein metabolism	GenProp0302	protein repair	57235	57290	PRIMARY_DAG	0		0
+GenProp0017	metabolism	GenProp0303	detoxification	17	57291	DAG	0		0
+GenProp0017	metabolism	GenProp0303	detoxification	17	57291	PRIMARY_DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0304	cysteine biosynthesis, tRNA-dependent	4068	57292	DAG	0		0
+GenProp0197	protein biosynthesis	GenProp0304	cysteine biosynthesis, tRNA-dependent	51175	57292	DAG	0		0
+GenProp0305	cysteine biosynthesis	GenProp0304	cysteine biosynthesis, tRNA-dependent	57293	57292	DAG	0		0
+GenProp0305	cysteine biosynthesis	GenProp0304	cysteine biosynthesis, tRNA-dependent	57293	57292	PRIMARY_DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0305	cysteine biosynthesis	4068	57293	DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0305	cysteine biosynthesis	4068	57293	PRIMARY_DAG	0		0
+GenProp0506	animal oral cavity	GenProp0307	human oral cavity	58231	57295	DAG	0		0
+GenProp0734	amino acid catabolism	GenProp0309	arginine catabolism to glutamate via arginine succinyltransferase (AST)	60462	57297	DAG	0		0
+GenProp0021	CRISPR region	GenProp0310	CRISPR system, I-F/Ypest subtype	2003	57298	DAG	0		0
+GenProp0076	DNA handling	GenProp0311	competence-related genes	4017	57299	DAG	0		0
+GenProp0021	CRISPR region	GenProp0313	CRISPR system, I-C/Dvulg subtype	2003	57300	DAG	0		0
+GenProp0021	CRISPR region	GenProp0314	CRISPR system, II/Nmeni subtype	2003	57301	DAG	0		0
+GenProp0021	CRISPR region	GenProp0315	CRISPR system, I-E/Ecoli subtype	2003	57302	DAG	0		0
+GenProp0021	CRISPR region	GenProp0316	CRISPR system, III-B/RAMP module subtype	2003	57303	DAG	0		0
+GenProp0021	CRISPR region	GenProp0317	CRISPR system, I-B subtype, Tneap branch	2003	57304	DAG	0		0
+GenProp0021	CRISPR region	GenProp0318	CRISPR system, III-A/Mtube subtype	2003	57305	DAG	0		0
+GenProp0021	CRISPR region	GenProp0319	CRISPR system, I-A/Apern subtype	2003	57306	DAG	0		0
+GenProp0021	CRISPR region	GenProp0320	CRISPR system, I-B subtype, Hmari branch	2003	57307	DAG	0		0
+GenProp0066	selfish genetic elements	GenProp0321	toxin-antitoxin system, type II	4007	57308	DAG	0		0
+GenProp0321	toxin-antitoxin system, type II	GenProp0322	addiction module, hig class	57308	57309	DAG	0		0
+GenProp0321	toxin-antitoxin system, type II	GenProp0323	addiction module, ParE class	57308	57310	DAG	0		0
+GenProp0321	toxin-antitoxin system, type II	GenProp0324	addiction module, RelE-RelB class	57308	57311	DAG	0		0
+GenProp0069	cell surface component	GenProp0326	protein sorting system, PEP-CTERM/exosortase (generic)	4010	57313	DAG	0		0
+GenProp0179	protein transport	GenProp0326	protein sorting system, PEP-CTERM/exosortase (generic)	49161	57313	DAG	0		0
+GenProp0321	toxin-antitoxin system, type II	GenProp0453	uncharacterized gene pair TIGR02612/TIGR02613	57308	58178	DAG	0		0
+GenProp0550	experimental properties	GenProp0454	META: Property profile - taxonomic lineage specificity	58275	58179	DAG	0		0
+GenProp0116	DNA metabolism	GenProp0455	restriction enzyme system, type I	4057	58180	DAG	0		0
+GenProp1067	Defense systems	GenProp0455	restriction enzyme system, type I	66797	58180	DAG	0		0
+GenProp0551	regulatory systems	GenProp0456	attenuation system: tryptophanase	58276	58181	DAG	0		0
+GenProp0734	amino acid catabolism	GenProp0456	attenuation system: tryptophanase	60462	58181	DAG	0		0
+GenProp0142	catabolism	GenProp0457	rhamnose catabolism	19134	58182	DAG	0		0
+GenProp0142	catabolism	GenProp0458	fucose catabolism	19134	58183	DAG	0		0
+GenProp0070	energy metabolism	GenProp0459	D-xylose utilization (conversion to D-xylulose-5-phosphate)	4011	58184	DAG	0		0
+GenProp0167	cellular growth, organization and division	GenProp0460	gas vesicle	49149	58185	DAG	0		0
+GenProp0142	catabolism	GenProp0461	utilization of deoxynucleosides	19134	58186	DAG	0		0
+GenProp0816	nucleoside catabolism/utilization pathways	GenProp0461	utilization of deoxynucleosides	66544	58186	DAG	0		0
+GenProp0864	response to external environment	GenProp0462	response to stress	66592	58187	DAG	0		0
+GenProp0070	energy metabolism	GenProp0463	xylan/xylobiose utilization (conversion to D-xylulose-5-phosphate)	4011	58188	DAG	0		0
+GenProp0180	small molecule transport	GenProp0463	xylan/xylobiose utilization (conversion to D-xylulose-5-phosphate)	49162	58188	DAG	0		0
+GenProp0550	experimental properties	GenProp0464	polysaccharide degradation operons	58275	58189	DAG	0		0
+GenProp0551	regulatory systems	GenProp0465	circadian clock system KaiABC	58276	58190	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0466	molybdopterin biosynthesis	49166	58191	DAG	0		0
+GenProp0069	cell surface component	GenProp0467	TEMP-exopolysaccharide	4010	58192	DAG	0		0
+GenProp0186	storage and structural polymer biosynthesis	GenProp0467	TEMP-exopolysaccharide	49168	58192	DAG	0		0
+GenProp0070	energy metabolism	GenProp0468	Entner-Doudoroff pathway	4011	58193	DAG	0		0
+GenProp0021	CRISPR region	GenProp0469	CRISPR system, Dpsyc subtype	2003	58194	DAG	0		0
+GenProp0475	Unknown biological process	GenProp0470	sporadically distributed four-gene operon	58200	58195	DAG	0		0
+GenProp0475	Unknown biological process	GenProp0471	uncharacterized gene pair TIGR02683/TIGR02684	58200	58196	DAG	0		0
+GenProp0475	Unknown biological process	GenProp0472	uncharacterized gene pair TIGR02687/TIGR02688	58200	58197	DAG	0		0
+GenProp0070	energy metabolism	GenProp0473	arsenite oxidase	4011	58198	DAG	0		0
+GenProp0303	detoxification	GenProp0474	arsenical resistance system	57291	58199	DAG	0		0
+GenProp0065	genome properties	GenProp0475	Unknown biological process	4006	58200	DAG	0		0
+GenProp0066	selfish genetic elements	GenProp0476	protein-coding palindromic elements	4007	58201	DAG	0		0
+GenProp0550	experimental properties	GenProp0477	copper resistance system: CopZA	58275	58202	DAG	0		0
+GenProp0072	central intermediary metabolism	GenProp0478	acetyl-CoA -- acetate interconversion via acetyl phosphate	4013	58203	DAG	0		0
+GenProp0072	central intermediary metabolism	GenProp0479	acetate -- acetyl-CoA interconversions	4013	58204	DAG	0		0
+GenProp0479	acetate -- acetyl-CoA interconversions	GenProp0480	acetyl-CoA biosynthesis from acetate, direct	58204	58205	DAG	0		0
+GenProp0814	urea utilization	GenProp0481	urea carboxylase/allophanate hydrolase pathway	66542	58206	DAG	0		0
+GenProp0462	response to stress	GenProp0482	6S RNA (eubacterial RNA polymerase regulator)	58187	58207	DAG	0		0
+GenProp0819	RNA metabolism	GenProp0482	6S RNA (eubacterial RNA polymerase regulator)	66547	58207	DAG	0		0
+GenProp0615	cytochrome c based oxygen reduction and quinone re-oxidation	GenProp0483	cytochrome c oxidase, cbb3-type	58340	58208	DAG	0		0
+GenProp0489	F-type conjugation system	GenProp0484	F-type conjugation system (type IV secretion) specific components	58214	58209	DAG	0		0
+GenProp0489	F-type conjugation system	GenProp0485	F and P-type conjugation systems (type IV secretion), common components	58214	58210	DAG	0		0
+GenProp0076	DNA handling	GenProp0486	P-type conjugation system (type IV secretion) specific components	4017	58211	DAG	0		0
+GenProp0116	DNA metabolism	GenProp0487	repABC-type alpha-proteobacterial replicon(s)	4057	58212	DAG	0		0
+GenProp0303	detoxification	GenProp0488	superoxide dismutase, nickel-type	57291	58213	DAG	0		0
+GenProp0071	transport	GenProp0489	F-type conjugation system	4012	58214	DAG	0		0
+GenProp0076	DNA handling	GenProp0489	F-type conjugation system	4017	58214	DAG	0		0
+GenProp0076	DNA handling	GenProp0490	Ti-type conjugation system	4017	58215	DAG	0		0
+GenProp0115	DNA repair	GenProp0491	recFOR recombination pathway	4056	58216	DAG	0		0
+GenProp0115	DNA repair	GenProp0492	nonhomologous end-joining, bacterial type	4056	58217	DAG	0		0
+GenProp0115	DNA repair	GenProp0493	addAB pathway	4056	58218	DAG	0		0
+GenProp0180	small molecule transport	GenProp0494	nickel import ABC transporter	49162	58219	DAG	0		0
+GenProp0067	quantitative content	GenProp0495	sequenced plasmids	4008	58220	DAG	0		0
+GenProp0064	biological niche	GenProp0497	host-associated niche	4005	58222	DAG	0		0
+GenProp0518	host range	GenProp0498	animal (Metazoa) associated niche	58243	58223	DAG	0		0
+GenProp0518	host range	GenProp0499	plant (Viridiplantae) associated niche	58243	58224	DAG	0		0
+GenProp0064	biological niche	GenProp0500	host-independent niche	4005	58225	DAG	0		0
+GenProp0064	biological niche	GenProp0501	metrics of biological environment	4005	58226	DAG	0		0
+GenProp0497	host-associated niche	GenProp0502	sites of growth within host	58222	58227	DAG	0		0
+GenProp0502	sites of growth within host	GenProp0503	animal respiratory tract	58227	58228	DAG	0		0
+GenProp0502	sites of growth within host	GenProp0504	animal gastrointestinal (GI) tract	58227	58229	DAG	0		0
+GenProp0502	sites of growth within host	GenProp0505	animal genitourinary (GU) tract	58227	58230	DAG	0		0
+GenProp0502	sites of growth within host	GenProp0506	animal oral cavity	58227	58231	DAG	0		0
+GenProp0502	sites of growth within host	GenProp0507	plant root nodule	58227	58232	DAG	0		0
+GenProp0502	sites of growth within host	GenProp0508	animal blood system	58227	58233	DAG	0		0
+GenProp0502	sites of growth within host	GenProp0509	animal lymphatic system	58227	58234	DAG	0		0
+GenProp0502	sites of growth within host	GenProp0510	insect bacteriome (symbiotic organ)	58227	58235	DAG	0		0
+GenProp0502	sites of growth within host	GenProp0511	animal central nervous system	58227	58236	DAG	0		0
+GenProp0504	animal gastrointestinal (GI) tract	GenProp0512	nematode (worm) gut	58229	58237	DAG	0		0
+GenProp0502	sites of growth within host	GenProp0513	insect larvae	58227	58238	DAG	0		0
+GenProp0502	sites of growth within host	GenProp0514	plant leaf	58227	58239	DAG	0		0
+GenProp0502	sites of growth within host	GenProp0515	plant fruit	58227	58240	DAG	0		0
+GenProp0504	animal gastrointestinal (GI) tract	GenProp0516	ruminant (Ruminantia) rumen	58229	58241	DAG	0		0
+GenProp0502	sites of growth within host	GenProp0517	animal aural (ear) tract	58227	58242	DAG	0		0
+GenProp0497	host-associated niche	GenProp0518	host range	58222	58243	DAG	0		0
+GenProp0497	host-associated niche	GenProp0519	host-symbiote relationship types	58222	58244	DAG	0		0
+GenProp0497	host-associated niche	GenProp0520	relationship to host cell	58222	58245	DAG	0		0
+GenProp0498	animal (Metazoa) associated niche	GenProp0521	vertebrate (Vertebrata) associated niche	58223	58246	DAG	0		0
+GenProp0540	reptile (Reptilia) associated niche	GenProp0522	bird (Aves) associated niche	58265	58247	DAG	0		0
+GenProp0521	vertebrate (Vertebrata) associated niche	GenProp0523	carnivore (Carnivora) associated niche	58246	58248	DAG	0		0
+GenProp0523	carnivore (Carnivora) associated niche	GenProp0524	cat (Felidae) associated niche	58248	58249	DAG	0		0
+GenProp0523	carnivore (Carnivora) associated niche	GenProp0525	dog (Canidae) associated niche	58248	58250	DAG	0		0
+GenProp0523	carnivore (Carnivora) associated niche	GenProp0526	Mustellidae (weasel and ferret-like) associated niche	58248	58251	DAG	0		0
+GenProp0521	vertebrate (Vertebrata) associated niche	GenProp0527	ruminant (Ruminantia) associated niche	58246	58252	DAG	0		0
+GenProp0527	ruminant (Ruminantia) associated niche	GenProp0528	cattle (Bos) associated niche	58252	58253	DAG	0		0
+GenProp0527	ruminant (Ruminantia) associated niche	GenProp0529	sheep or goat (Caprinae) associated niche	58252	58254	DAG	0		0
+GenProp0521	vertebrate (Vertebrata) associated niche	GenProp0530	pig (Sus) associated niche	58246	58255	DAG	0		0
+GenProp0521	vertebrate (Vertebrata) associated niche	GenProp0531	horse (Equus) associated niche	58246	58256	DAG	0		0
+GenProp0521	vertebrate (Vertebrata) associated niche	GenProp0532	rodent (Rodentia) associated niche	58246	58257	DAG	0		0
+GenProp0532	rodent (Rodentia) associated niche	GenProp0533	mouse (Mus) associated niche	58257	58258	DAG	0		0
+GenProp0532	rodent (Rodentia) associated niche	GenProp0534	rat (Rattus) associated niche	58257	58259	DAG	0		0
+GenProp0521	vertebrate (Vertebrata) associated niche	GenProp0535	primate associated niche	58246	58260	DAG	0		0
+GenProp0535	primate associated niche	GenProp0536	human associated niche	58260	58261	DAG	0		0
+GenProp0521	vertebrate (Vertebrata) associated niche	GenProp0537	fish associated niche	58246	58262	DAG	0		0
+GenProp0498	animal (Metazoa) associated niche	GenProp0538	arthropod (Arthropoda) associated niche	58223	58263	DAG	0		0
+GenProp0538	arthropod (Arthropoda) associated niche	GenProp0539	insect (Insecta) associated niche	58263	58264	DAG	0		0
+GenProp0521	vertebrate (Vertebrata) associated niche	GenProp0540	reptile (Reptilia) associated niche	58246	58265	DAG	0		0
+GenProp0540	reptile (Reptilia) associated niche	GenProp0541	alligator or crocodile (Crocodilia) associated niche	58265	58266	DAG	0		0
+GenProp0012	outer membrane	GenProp0542	Tol-Pal system	12	58267	DAG	0		0
+GenProp0180	small molecule transport	GenProp0542	Tol-Pal system	49162	58267	DAG	0		0
+GenProp0180	small molecule transport	GenProp0543	TonB-dependent transport	49162	58268	DAG	0		0
+GenProp0064	biological niche	GenProp0544	community-associated niche	4005	58269	DAG	0		0
+GenProp0538	arthropod (Arthropoda) associated niche	GenProp0545	crustacean (Crustacea) associated niche	58263	58270	DAG	0		0
+GenProp0538	arthropod (Arthropoda) associated niche	GenProp0546	arachnid (Arachnida) associated niche	58263	58271	DAG	0		0
+GenProp0498	animal (Metazoa) associated niche	GenProp0547	roundworm (Nematoda) associated niche	58223	58272	DAG	0		0
+GenProp0549	pathogen	GenProp0548	intrinsic pathogen	58274	58273	DAG	0		0
+GenProp0519	host-symbiote relationship types	GenProp0549	pathogen	58244	58274	DAG	0		0
+GenProp0603	lifestyle	GenProp0549	pathogen	58328	58274	DAG	0		0
+GenProp0065	genome properties	GenProp0550	experimental properties	4006	58275	DAG	0		0
+GenProp0065	genome properties	GenProp0551	regulatory systems	4006	58276	DAG	0		0
+GenProp0549	pathogen	GenProp0552	opportunistic pathogen	58274	58277	DAG	0		0
+GenProp0519	host-symbiote relationship types	GenProp0553	commensal	58244	58278	DAG	0		0
+GenProp0519	host-symbiote relationship types	GenProp0554	mutualist	58244	58279	DAG	0		0
+GenProp0603	lifestyle	GenProp0554	mutualist	58328	58279	DAG	0		0
+GenProp0554	mutualist	GenProp0555	obligate mutualist	58279	58280	DAG	0		0
+GenProp0554	mutualist	GenProp0556	facultative mutualist	58279	58281	DAG	0		0
+GenProp0504	animal gastrointestinal (GI) tract	GenProp0557	human gastrointestinal (GI) tract	58229	58282	DAG	0		0
+GenProp0286	intracellular survival	GenProp0558	obligate intracellular growth	57274	58283	DAG	0		0
+GenProp0603	lifestyle	GenProp0558	obligate intracellular growth	58328	58283	DAG	0		0
+GenProp0286	intracellular survival	GenProp0559	facultative intracellular growth	57274	58284	DAG	0		0
+GenProp0603	lifestyle	GenProp0559	facultative intracellular growth	58328	58284	DAG	0		0
+GenProp0286	intracellular survival	GenProp0560	transient intracellular survival	57274	58285	DAG	0		0
+GenProp0520	relationship to host cell	GenProp0561	epicellular growth	58245	58286	DAG	0		0
+GenProp0303	detoxification	GenProp0562	formaldehyde detoxification, glutathione-dependent	57291	58287	DAG	0		0
+GenProp0518	host range	GenProp0563	bacteria associated niche	58243	58288	DAG	0		0
+GenProp0548	intrinsic pathogen	GenProp0564	intrinsic pathogen of bacteria	58273	58289	DAG	0		0
+GenProp0500	host-independent niche	GenProp0565	soil associated niche	58225	58290	DAG	0		0
+GenProp0500	host-independent niche	GenProp0566	aquatic niche	58225	58291	DAG	0		0
+GenProp0500	host-independent niche	GenProp0567	decaying organic material niche	58225	58292	DAG	0		0
+GenProp0497	host-associated niche	GenProp0568	mode of transmission to host	58222	58293	DAG	0		0
+GenProp0584	transmission via ingestion	GenProp0569	food borne transmission	58309	58294	DAG	0		0
+GenProp0582	transmission via direct contact of host with host-independent reservoir	GenProp0570	water borne transmission (direct contact)	58307	58295	DAG	0		0
+GenProp0568	mode of transmission to host	GenProp0571	air borne transmission	58293	58296	DAG	0		0
+GenProp0568	mode of transmission to host	GenProp0572	transmission via direct host-to-host contact	58293	58297	DAG	0		0
+GenProp0497	host-associated niche	GenProp0573	initial sites of transmission to host	58222	58298	DAG	0		0
+GenProp0573	initial sites of transmission to host	GenProp0574	transmission via lung tissue	58298	58299	DAG	0		0
+GenProp0573	initial sites of transmission to host	GenProp0575	transmission via wounded dermal tissue	58298	58300	DAG	0		0
+GenProp0573	initial sites of transmission to host	GenProp0576	transmission via gastrointestinal (GI) tract	58298	58301	DAG	0		0
+GenProp0573	initial sites of transmission to host	GenProp0577	transmission via the genitourinary (GU) tract	58298	58302	DAG	0		0
+GenProp0573	initial sites of transmission to host	GenProp0578	transmission via the oral cavity	58298	58303	DAG	0		0
+GenProp0573	initial sites of transmission to host	GenProp0579	transmission via the nasal passages	58298	58304	DAG	0		0
+GenProp0568	mode of transmission to host	GenProp0580	vector borne transmission	58293	58305	DAG	0		0
+GenProp0572	transmission via direct host-to-host contact	GenProp0581	congenital transmission	58297	58306	DAG	0		0
+GenProp0568	mode of transmission to host	GenProp0582	transmission via direct contact of host with host-independent reservoir	58293	58307	DAG	0		0
+GenProp0584	transmission via ingestion	GenProp0583	water borne transmission (ingestion)	58309	58308	DAG	0		0
+GenProp0568	mode of transmission to host	GenProp0584	transmission via ingestion	58293	58309	DAG	0		0
+GenProp0572	transmission via direct host-to-host contact	GenProp0585	transmission via non-congenital direct host-to-host contact	58297	58310	DAG	0		0
+GenProp0568	mode of transmission to host	GenProp0586	transmission via indirect host-to-host contact	58293	58311	DAG	0		0
+GenProp0582	transmission via direct contact of host with host-independent reservoir	GenProp0587	transmission via contact with soil	58307	58312	DAG	0		0
+GenProp0585	transmission via non-congenital direct host-to-host contact	GenProp0588	transmission via casual, direct host-to-host contact	58310	58313	DAG	0		0
+GenProp0585	transmission via non-congenital direct host-to-host contact	GenProp0589	transmission via intimate host-to-host contact	58310	58314	DAG	0		0
+GenProp0044	temperature environment	GenProp0590	mesophile	2026	58315	DAG	0		0
+GenProp0044	temperature environment	GenProp0591	psychrophile	2026	58316	DAG	0		0
+GenProp0602	extremophile	GenProp0591	psychrophile	58327	58316	DAG	0		0
+GenProp0044	temperature environment	GenProp0592	psychrotrophe (facultative psychrophile)	2026	58317	DAG	0		0
+GenProp0044	temperature environment	GenProp0593	thermophile	2026	58318	DAG	0		0
+GenProp0602	extremophile	GenProp0593	thermophile	58327	58318	DAG	0		0
+GenProp0593	thermophile	GenProp0594	hyperthermophile	58318	58319	DAG	0		0
+GenProp0596	growth in the presence of oxygen	GenProp0595	aerobe, obligate macroaerophilic	58321	58320	DAG	0		0
+GenProp0013	oxygen requirement	GenProp0596	growth in the presence of oxygen	13	58321	DAG	0		0
+GenProp0013	oxygen requirement	GenProp0597	growth in the absence of oxygen	13	58322	DAG	0		0
+GenProp0597	growth in the absence of oxygen	GenProp0598	anaerobe, obligate	58322	58323	DAG	0		0
+GenProp0596	growth in the presence of oxygen	GenProp0599	facultative anaerobe	58321	58324	DAG	0		0
+GenProp0597	growth in the absence of oxygen	GenProp0599	facultative anaerobe	58322	58324	DAG	0		0
+GenProp0596	growth in the presence of oxygen	GenProp0600	microaerophile	58321	58325	DAG	0		0
+GenProp0602	extremophile	GenProp0601	halophile	58327	58326	DAG	0		0
+GenProp0603	lifestyle	GenProp0602	extremophile	58328	58327	DAG	0		0
+GenProp0064	biological niche	GenProp0603	lifestyle	4005	58328	DAG	0		0
+GenProp0602	extremophile	GenProp0604	acidophile	58327	58329	DAG	0		0
+GenProp0602	extremophile	GenProp0605	alkaliphile	58327	58330	DAG	0		0
+GenProp0602	extremophile	GenProp0606	radiotolerant	58327	58331	DAG	0		0
+GenProp0602	extremophile	GenProp0607	metalotolerant	58327	58332	DAG	0		0
+GenProp0603	lifestyle	GenProp0608	chemoautotroph	58328	58333	DAG	0		0
+GenProp0603	lifestyle	GenProp0609	phototroph	58328	58334	DAG	0		0
+GenProp0049	spore formation	GenProp0610	endospore formation marker gene set	2031	58335	DAG	0		0
+GenProp0070	energy metabolism	GenProp0611	aerobic respiration	4011	58336	DAG	0		0
+GenProp0611	aerobic respiration	GenProp0612	aerobic electron transfer (transport) chain, ETC	58336	58337	DAG	0		0
+GenProp0615	cytochrome c based oxygen reduction and quinone re-oxidation	GenProp0613	cytochrome c reductase	58340	58338	DAG	0		0
+GenProp0615	cytochrome c based oxygen reduction and quinone re-oxidation	GenProp0614	cytochrome c oxidase, mitochondrial, caa3-type	58340	58339	DAG	0		0
+GenProp0612	aerobic electron transfer (transport) chain, ETC	GenProp0615	cytochrome c based oxygen reduction and quinone re-oxidation	58337	58340	DAG	0		0
+GenProp0612	aerobic electron transfer (transport) chain, ETC	GenProp0616	single complex oxygen reduction and quinone re-oxidation	58337	58341	DAG	0		0
+GenProp0616	single complex oxygen reduction and quinone re-oxidation	GenProp0617	cytochrome (quinone) oxidase, bd type	58341	58342	DAG	0		0
+GenProp0616	single complex oxygen reduction and quinone re-oxidation	GenProp0618	cytochrome (quinone) oxidase, bo type	58341	58343	DAG	0		0
+GenProp0616	single complex oxygen reduction and quinone re-oxidation	GenProp0620	cytochrome (quinone) oxidase, aa3 type, QoxABCD	58341	58345	DAG	0		0
+GenProp0612	aerobic electron transfer (transport) chain, ETC	GenProp0623	NADH dehydrogenase, Sno(Mnh)ABCDEFG)	58337	58348	DAG	0		0
+GenProp0196	sulfur metabolism	GenProp0624	sulfite reductase complex, Salmonella/Clostridium type	51174	58349	DAG	0		0
+GenProp0069	cell surface component	GenProp0626	protein sorting system, sortase type, LPXTG/SrtA class	4010	58351	DAG	0		0
+GenProp0179	protein transport	GenProp0626	protein sorting system, sortase type, LPXTG/SrtA class	49161	58351	DAG	0		0
+GenProp0475	Unknown biological process	GenProp0627	gene pair involved in iron and oxygen metabolism	58200	58352	DAG	0		0
+GenProp0820	iron metabolism	GenProp0627	gene pair involved in iron and oxygen metabolism	66548	58352	DAG	0		0
+GenProp0069	cell surface component	GenProp0628	protein sorting system, YSIRK/GS class	4010	58353	DAG	0		0
+GenProp0071	transport	GenProp0628	protein sorting system, YSIRK/GS class	4012	58353	DAG	0		0
+GenProp0243	ATP synthases	GenProp0629	A1/A0 ATPase	57231	58354	DAG	0		0
+GenProp0033	TCA cycle	GenProp0630	2-oxoglutarate dehydrogenase system	2015	58355	DAG	0		0
+GenProp0029	nitrogen fixation	GenProp0631	nitrogenase, Fe-only	2011	58357	DAG	0		0
+GenProp0029	nitrogen fixation	GenProp0632	nitrogenase, V-containing	2011	58358	DAG	0		0
+GenProp0029	nitrogen fixation	GenProp0633	nitrogenase, Mo-containing	2011	58359	DAG	0		0
+GenProp0197	protein biosynthesis	GenProp0634	Sigma-54 (RpoN) systems	51175	58360	DAG	0		0
+GenProp0197	protein biosynthesis	GenProp0635	sigma-70 systems	51175	58361	DAG	0		0
+GenProp0070	energy metabolism	GenProp0636	respiratory nitrate reductase	4011	58362	DAG	0		0
+GenProp0070	energy metabolism	GenProp0637	anaerobic dimethyl sulfoxide reductase	4011	58363	DAG	0		0
+GenProp0070	energy metabolism	GenProp0638	trimethylamine N-oxide reductase system	4011	58364	DAG	0		0
+GenProp0734	amino acid catabolism	GenProp0639	arginine degradation via citrulline, ATP-generating	60462	58365	DAG	0		0
+GenProp0873	ion-motive antiporter cycles	GenProp0639	arginine degradation via citrulline, ATP-generating	66601	58365	DAG	0		0
+GenProp0817	nucleotide catabolism/utilization pathways	GenProp0640	xanthine dehydrogenase	66545	58366	DAG	0		0
+GenProp0063	biosynthesis	GenProp0641	spermidine biosynthesis from putrescine and S-adenosylmethionine	4004	58367	DAG	0		0
+GenProp0063	biosynthesis	GenProp0642	putrescine biosynthesis from arginine utilizing agmatinase	4004	58368	DAG	0		0
+GenProp0063	biosynthesis	GenProp0643	putrescine biosynthesis from arginine via ornithine	4004	58369	DAG	0		0
+GenProp0063	biosynthesis	GenProp0644	putrescine biosynthesis from glutamate via ornithine	4004	58370	DAG	0		0
+GenProp0063	biosynthesis	GenProp0645	putrescine biosynthesis	4004	58371	DAG	0		0
+GenProp0180	small molecule transport	GenProp0646	polyamine ABC transporter	49162	58372	DAG	0		0
+GenProp0142	catabolism	GenProp0647	putrescine degradation to 4-aminobutyrate	19134	58373	DAG	0		0
+GenProp0074	virulence	GenProp0648	phage shock protein regulon	4015	58374	DAG	0		0
+GenProp0462	response to stress	GenProp0648	phage shock protein regulon	58187	58374	DAG	0		0
+GenProp0071	transport	GenProp0649	heterocyst-related ABC exporter DevBCA	4012	58375	DAG	0		0
+GenProp0116	DNA metabolism	GenProp0650	type II restriction system,  Alw26I/Eco31I/Esp3I family	4057	58376	DAG	0		0
+GenProp1067	Defense systems	GenProp0650	type II restriction system,  Alw26I/Eco31I/Esp3I family	66797	58376	DAG	0		0
+GenProp0180	small molecule transport	GenProp0651	ectoine ABC transporter EhuABCD	49162	58377	DAG	0		0
+GenProp0186	storage and structural polymer biosynthesis	GenProp0652	exopolysaccharide biosynthesis, exosortase A-associated	49168	58378	DAG	0		0
+GenProp1048	quorum-sensing, biofilm formation, and developmental systems	GenProp0652	exopolysaccharide biosynthesis, exosortase A-associated	66778	58378	DAG	0		0
+GenProp0142	catabolism	GenProp0653	ectoine catabolism	19134	58379	DAG	0		0
+GenProp0196	sulfur metabolism	GenProp0654	intracellular sulfur oxidation	51174	58380	DAG	0		0
+GenProp0186	storage and structural polymer biosynthesis	GenProp0655	exopolysaccharide biosynthesis, exosortase B-associated	49168	58381	DAG	0		0
+GenProp1048	quorum-sensing, biofilm formation, and developmental systems	GenProp0655	exopolysaccharide biosynthesis, exosortase B-associated	66778	58381	DAG	0		0
+GenProp0475	Unknown biological process	GenProp0656	conserved syntenic region	58200	58382	DAG	0		0
+GenProp0186	storage and structural polymer biosynthesis	GenProp0658	cellulose biosynthesis	49168	60384	DAG	0		0
+GenProp1048	quorum-sensing, biofilm formation, and developmental systems	GenProp0658	cellulose biosynthesis	66778	60384	DAG	0		0
+GenProp0734	amino acid catabolism	GenProp0659	tryptophan degradation to anthranilate	60462	60385	DAG	0		0
+GenProp0027	photosynthesis	GenProp0660	photosystem I	2009	60386	DAG	0		0
+GenProp0027	photosynthesis	GenProp0661	photosystem II	2009	60387	DAG	0		0
+GenProp0027	photosynthesis	GenProp0662	photosynthetic reaction center, alphaproteobacterial type	2009	60388	DAG	0		0
+GenProp0069	cell surface component	GenProp0664	protein sorting system, sortase type, SrtB class	4010	60390	DAG	0		0
+GenProp0179	protein transport	GenProp0664	protein sorting system, sortase type, SrtB class	49161	60390	DAG	0		0
+GenProp0475	Unknown biological process	GenProp0665	peptide chain release operon, RctB-like/PrfH	58200	60391	DAG	0		0
+GenProp0031	methane utilization	GenProp0666	membrane-associated monooxygenase (methane/ammonia)	2013	60392	DAG	0		0
+GenProp0202	nitrogen metabolism	GenProp0666	membrane-associated monooxygenase (methane/ammonia)	53180	60392	DAG	0		0
+GenProp0179	protein transport	GenProp0669	protein sorting system, putative, exosortase G class	49161	60395	DAG	0		0
+GenProp0021	CRISPR region	GenProp0670	CRISPR system, Aferr subtype	2003	60396	DAG	0		0
+GenProp0866	carbon metabolism	GenProp0671	H4MPT-linked C1 transfer pathway	66594	60397	DAG	0		0
+GenProp0034	reverse TCA cycle	GenProp0672	citrate lyase system	2016	60398	DAG	0		0
+GenProp0185	nucleotide biosynthesis	GenProp0673	ribulose monophosphate pathway	49167	60399	DAG	0		0
+GenProp0303	detoxification	GenProp0673	ribulose monophosphate pathway	57291	60399	DAG	0		0
+GenProp0142	catabolism	GenProp0674	malonate decarboxylase	19134	60400	DAG	0		0
+GenProp0596	growth in the presence of oxygen	GenProp0675	anaerobe, aerotolerant	58321	60401	DAG	0		0
+GenProp0597	growth in the absence of oxygen	GenProp0675	anaerobe, aerotolerant	58322	60401	DAG	0		0
+GenProp0213	Resistance to Reactive Oxygen Species (ROS)	GenProp0676	alkylhydroperoxide reductase AhpCF (peroxiredoxin)	53192	60402	DAG	0		0
+GenProp0303	detoxification	GenProp0676	alkylhydroperoxide reductase AhpCF (peroxiredoxin)	57291	60402	DAG	0		0
+GenProp0819	RNA metabolism	GenProp0677	queuosine (Q-tRNA) biosynthesis from preQ0	66547	60403	DAG	0		0
+GenProp0167	cellular growth, organization and division	GenProp0678	c-type cytochrome biogenesis, system I	49149	60404	DAG	0		0
+GenProp0133	nucleic acid metabolism	GenProp0679	preQ0 biosynthesis from GTP	4139	60405	DAG	0		0
+GenProp0167	cellular growth, organization and division	GenProp0680	c-type cytochrome biogenesis, system II	49149	60406	DAG	0		0
+GenProp0299	fatty acid biosynthesis	GenProp0681	fatty acid biosynthesis from acetyl-CoA	57287	60407	DAG	0		0
+GenProp0070	energy metabolism	GenProp0682	formate-dependent nitrite reductase, seven-gene type	4011	60408	DAG	0		0
+GenProp0202	nitrogen metabolism	GenProp0682	formate-dependent nitrite reductase, seven-gene type	53180	60408	DAG	0		0
+GenProp0070	energy metabolism	GenProp0683	cytochrome c nitrite reductase NrfHA	4011	60409	DAG	0		0
+GenProp0202	nitrogen metabolism	GenProp0683	cytochrome c nitrite reductase NrfHA	53180	60409	DAG	0		0
+GenProp0301	protein degradation	GenProp0684	FtsH/HflKC protease complex	57289	60410	DAG	0		0
+GenProp0021	CRISPR region	GenProp0685	CRISPR system, I-D/Cyano subtype	2003	60411	DAG	0		0
+GenProp0142	catabolism	GenProp0686	allantoin catabolism to glyoxalate and urea	19134	60412	DAG	0		0
+GenProp0142	catabolism	GenProp0687	allantoin catabolism to oxamate and carbamoyl-phosphate	19134	60413	DAG	0		0
+GenProp0142	catabolism	GenProp0688	urate catabolism to allantoin	19134	60415	DAG	0		0
+GenProp0072	central intermediary metabolism	GenProp0689	glyoxalate conversion to phosphoglycerate	4013	60416	DAG	0		0
+GenProp0243	ATP synthases	GenProp0690	F1F0 ATPase, Methanosarcina type	57231	60417	DAG	0		0
+GenProp0070	energy metabolism	GenProp0691	glycolysis	4011	60418	DAG	0		0
+GenProp0142	catabolism	GenProp0691	glycolysis	19134	60418	DAG	0		0
+GenProp0197	protein biosynthesis	GenProp0692	selenouridine-containing tRNA	51175	60419	DAG	0		0
+GenProp0819	RNA metabolism	GenProp0692	selenouridine-containing tRNA	66547	60419	DAG	0		0
+GenProp0142	catabolism	GenProp0693	fructose utilization as fructose-1,6-bisphosphate	19134	60420	DAG	0		0
+GenProp0180	small molecule transport	GenProp0693	fructose utilization as fructose-1,6-bisphosphate	49162	60420	DAG	0		0
+GenProp0142	catabolism	GenProp0694	glucose utilization as fructose-1,6-bisphosphate	19134	60421	DAG	0		0
+GenProp0180	small molecule transport	GenProp0694	glucose utilization as fructose-1,6-bisphosphate	49162	60421	DAG	0		0
+GenProp0070	energy metabolism	GenProp0695	cytochrome b558/566	4011	60422	DAG	0		0
+GenProp0185	nucleotide biosynthesis	GenProp0696	xanthine utilization as a source of guanine-monophosphate (GMP)	49167	60423	DAG	0		0
+GenProp0817	nucleotide catabolism/utilization pathways	GenProp0696	xanthine utilization as a source of guanine-monophosphate (GMP)	66545	60423	DAG	0		0
+GenProp0185	nucleotide biosynthesis	GenProp0697	guanine monophosphate (GMP) biosynthesis from inosine monophosphate (IMP)	49167	60424	DAG	0		0
+GenProp0700	purine catabolism via urate, xanthine and allantoin	GenProp0698	xanthine catabolism to urate	60427	60425	DAG	0		0
+GenProp0076	DNA handling	GenProp0699	DNA gyrase	4017	60426	DAG	0		0
+GenProp0142	catabolism	GenProp0700	purine catabolism via urate, xanthine and allantoin	19134	60427	DAG	0		0
+GenProp0817	nucleotide catabolism/utilization pathways	GenProp0700	purine catabolism via urate, xanthine and allantoin	66545	60427	DAG	0		0
+GenProp0116	DNA metabolism	GenProp0701	DNA sulfur modification system dnd	4057	60428	DAG	0		0
+GenProp1067	Defense systems	GenProp0701	DNA sulfur modification system dnd	66797	60428	DAG	0		0
+GenProp0142	catabolism	GenProp0702	benzoyl-CoA reductase	19134	60429	DAG	0		0
+GenProp0142	catabolism	GenProp0703	4-hydroxybenzoyl-CoA reductase	19134	60430	DAG	0		0
+GenProp0197	protein biosynthesis	GenProp0704	tRNA U34 carboxymethylaminomethyl modification	51175	60431	DAG	0		0
+GenProp0819	RNA metabolism	GenProp0704	tRNA U34 carboxymethylaminomethyl modification	66547	60431	DAG	0		0
+GenProp0817	nucleotide catabolism/utilization pathways	GenProp0705	xanthine dehydrogenase, bacillus type (pucABCDE)	66545	60432	DAG	0		0
+GenProp0142	catabolism	GenProp0706	cyclohexa-1,5-diene-1-carbonyl-CoA to 3-hydroxypimelyl-CoA, dch/had/oah pathway	19134	60433	DAG	0		0
+GenProp0074	virulence	GenProp0707	botulinum toxin system	4015	60434	DAG	0		0
+GenProp0142	catabolism	GenProp0708	catechol meta-cleavage pathway	19134	60435	DAG	0		0
+GenProp0142	catabolism	GenProp0709	benzoate catabolism BoxABC pathway	19134	60436	DAG	0		0
+GenProp0241	phosphonate catabolism	GenProp0710	generic phosphonates utilization	57228	60437	DAG	0		0
+GenProp0142	catabolism	GenProp0711	catechol ortho-cleavage upper pathway	19134	60438	DAG	0		0
+GenProp0180	small molecule transport	GenProp0712	2-aminoethylphosphonate (AEP) ABC transporter, type I, PhnSTUV	49162	60439	DAG	0		0
+GenProp0241	phosphonate catabolism	GenProp0712	2-aminoethylphosphonate (AEP) ABC transporter, type I, PhnSTUV	57228	60439	DAG	0		0
+GenProp0720	2-aminoethylphosphonate utilization	GenProp0713	2-aminoethylphosphonate catabolism via phosphonoacetate	60448	60440	DAG	0		0
+GenProp0142	catabolism	GenProp0714	galactarate utilization via tartronate semi-aldehyde	19134	60442	DAG	0		0
+GenProp0142	catabolism	GenProp0715	galactarate utilization via 2-oxoglutarate semialdehyde	19134	60443	DAG	0		0
+GenProp0142	catabolism	GenProp0716	glucarate utilization via tartronate semi-aldehyde	19134	60444	DAG	0		0
+GenProp0142	catabolism	GenProp0717	glucarate utilization via 2-oxoglutarate semialdehyde	19134	60445	DAG	0		0
+GenProp0142	catabolism	GenProp0718	oxalate degradation	19134	60446	DAG	0		0
+GenProp0011	methanogenesis	GenProp0719	methyl-coenzyme M reductase	11	60447	DAG	0		0
+GenProp0031	methane utilization	GenProp0719	methyl-coenzyme M reductase	2013	60447	DAG	0		0
+GenProp0241	phosphonate catabolism	GenProp0720	2-aminoethylphosphonate utilization	57228	60448	DAG	0		0
+GenProp0180	small molecule transport	GenProp0721	2-aminoethylphosphonate (AEP) ABC transporter, type II	49162	60449	DAG	0		0
+GenProp0011	methanogenesis	GenProp0722	methanogenesis marker set	11	60450	DAG	0		0
+GenProp0070	energy metabolism	GenProp0723	hydrogenase, nickel and F420-dependent	4011	60451	DAG	0		0
+GenProp0063	biosynthesis	GenProp0724	phosphonoacetaldehyde biosynthesis from phosphoenolpyruvate	4004	60452	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0724	phosphonoacetaldehyde biosynthesis from phosphoenolpyruvate	4018	60452	DAG	0		0
+GenProp0242	phosphorus metabolism	GenProp0724	phosphonoacetaldehyde biosynthesis from phosphoenolpyruvate	57229	60452	DAG	0		0
+GenProp0069	cell surface component	GenProp0725	outer membrane protein assembly complex	4010	60453	DAG	0		0
+GenProp0248	protein folding	GenProp0725	outer membrane protein assembly complex	57236	60453	DAG	0		0
+GenProp0075	protein modification, prosthetic groups and cofactors	GenProp0726	selenium-dependent molybdenum hydroxylase system	4016	60454	DAG	0		0
+GenProp0816	nucleoside catabolism/utilization pathways	GenProp0728	AMP metabolism using type III Rubisco	66544	60456	DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0729	methionine salvage from methylthioadenosine	4068	60457	DAG	0		0
+GenProp0196	sulfur metabolism	GenProp0729	methionine salvage from methylthioadenosine	51174	60457	DAG	0		0
+GenProp0733	amino acid salvage	GenProp0729	methionine salvage from methylthioadenosine	60461	60457	DAG	0		0
+GenProp0729	methionine salvage from methylthioadenosine	GenProp0730	methylthioadenosine to methylthioribose-1-phosphate via MTR	60457	60458	DAG	0		0
+GenProp0017	metabolism	GenProp0731	amino acid metabolism	17	60459	DAG	0		0
+GenProp0729	methionine salvage from methylthioadenosine	GenProp0732	methionine salvage enolase-phosphate pair MtnW/MtnX	60457	60460	DAG	0		0
+GenProp0731	amino acid metabolism	GenProp0733	amino acid salvage	60459	60461	DAG	0		0
+GenProp0142	catabolism	GenProp0734	amino acid catabolism	19134	60462	DAG	0		0
+GenProp0731	amino acid metabolism	GenProp0734	amino acid catabolism	60459	60462	DAG	0		0
+GenProp0179	protein transport	GenProp0735	type VI secretion	49161	60463	DAG	0		0
+GenProp0241	phosphonate catabolism	GenProp0736	proposed phosphonate catabolism pathway HpnWXZ	57228	60464	DAG	0		0
+GenProp0070	energy metabolism	GenProp0737	anaerobic glycerol-3-phosphate dehydrogenase complex	4011	60465	DAG	0		0
+GenProp0063	biosynthesis	GenProp0738	agmatine to putrescine via N-carbamoylputrescine	4004	60466	DAG	0		0
+GenProp0140	iron-sulfur cluster assembly systems	GenProp0739	iron-sulfur cluster assembly CsdA-CsdE system	19132	60467	DAG	0		0
+GenProp0197	protein biosynthesis	GenProp0740	translation initiation, bacterial	51175	60468	DAG	0		0
+GenProp0197	protein biosynthesis	GenProp0741	translation elongation, bacterial	51175	60469	DAG	0		0
+GenProp0140	iron-sulfur cluster assembly systems	GenProp0742	iron-sulfur cluster assembly NIF system	19132	60470	DAG	0		0
+GenProp0180	small molecule transport	GenProp0743	urea ABC transporter UrtABCDE	49162	60471	DAG	0		0
+GenProp0814	urea utilization	GenProp0743	urea ABC transporter UrtABCDE	66542	60471	DAG	0		0
+GenProp0303	detoxification	GenProp0744	glyoxalase pathway, glutathione dependent	57291	60472	DAG	0		0
+GenProp0075	protein modification, prosthetic groups and cofactors	GenProp0745	lipoyl-protein attachment	4016	60473	DAG	0		0
+GenProp0197	protein biosynthesis	GenProp0746	translation termination, bacterial	51175	60474	DAG	0		0
+GenProp0185	nucleotide biosynthesis	GenProp0747	adenosine monophosphate (AMP) biosynthesis from inosine monophosphate (IMP)	49167	60475	DAG	0		0
+GenProp0180	small molecule transport	GenProp0748	choline ABC transporter, ChoXWV family	49162	60476	DAG	0		0
+GenProp0142	catabolism	GenProp0749	choline sulfate utilization	19134	60477	DAG	0		0
+GenProp0180	small molecule transport	GenProp0749	choline sulfate utilization	49162	60477	DAG	0		0
+GenProp0795	carbohydrate biosynthesis	GenProp0750	UDP-N-acetylglucosamine biosynthesis from fructose-6-phosphate	64524	60478	DAG	0		0
+GenProp0475	Unknown biological process	GenProp0751	Acidobacterial ADOP/PadR gene pairs	58200	60479	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0752	ergothioneine biosynthesis	49166	60480	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0753	mycothiol biosynthesis	49166	60481	DAG	0		0
+GenProp0070	energy metabolism	GenProp0755	pyruvate conversion to propionate, anaerobic, FAD/NAD-regenerating	4011	60483	DAG	0		0
+GenProp0070	energy metabolism	GenProp0756	fumarate reductase complex	4011	60484	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0757	quorum-sensing, autoinducer-2 system	4018	60485	DAG	0		0
+GenProp1048	quorum-sensing, biofilm formation, and developmental systems	GenProp0757	quorum-sensing, autoinducer-2 system	66778	60485	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0758	lycopene biosynthesis from IPP	4018	60486	DAG	0		0
+GenProp0838	lipid biosynthesis	GenProp0758	lycopene biosynthesis from IPP	66566	60486	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0759	para-aminobenzoic acid (PABA) biosynthesis from chorismate	49166	60487	DAG	0		0
+GenProp0142	catabolism	GenProp0760	putrescine degradation to GABA via gamma-glutamylation	19134	60488	DAG	0		0
+GenProp0838	lipid biosynthesis	GenProp0761	hopanoid lipid biosynthesis	66566	62489	DAG	0		0
+GenProp0026	chemotaxis	GenProp0762	chemotaxis response-regulator system	2008	62490	DAG	0		0
+GenProp0551	regulatory systems	GenProp0762	chemotaxis response-regulator system	58276	62490	DAG	0		0
+GenProp0142	catabolism	GenProp0763	nicotinate fermentation to pyruvate and propionate	19134	62491	DAG	0		0
+GenProp0298	fermentation	GenProp0763	nicotinate fermentation to pyruvate and propionate	57286	62491	DAG	0		0
+GenProp0070	energy metabolism	GenProp0764	DMSO reductase family type II enzyme	4011	62492	DAG	0		0
+GenProp0298	fermentation	GenProp0765	glycerol fermentation to  1,3-propanediol, using glycerol dehydratase	57286	64493	DAG	0		0
+GenProp0795	carbohydrate biosynthesis	GenProp0766	anhydro-N-acetylmuramic acid to N-acetylglucosamine-phosphate	64524	64494	DAG	0		0
+GenProp0115	DNA repair	GenProp0767	very short patch repair	4056	64495	DAG	0		0
+GenProp0021	CRISPR region	GenProp0768	CRISPR system, Pging subtype	2003	64496	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0770	siderophore biosynthesis	4018	64498	DAG	0		0
+GenProp0820	iron metabolism	GenProp0770	siderophore biosynthesis	66548	64498	DAG	0		0
+GenProp0770	siderophore biosynthesis	GenProp0771	enterobactin (enterochelin) biosynthesis	64498	64499	DAG	0		0
+GenProp0770	siderophore biosynthesis	GenProp0772	yersiniabactin biosynthesis	64498	64500	DAG	0		0
+GenProp0770	siderophore biosynthesis	GenProp0773	aerobactin biosynthesis	64498	64501	DAG	0		0
+GenProp0820	iron metabolism	GenProp0774	ferric citrate transport system	66548	64502	DAG	0		0
+GenProp0770	siderophore biosynthesis	GenProp0775	mycobactin biosynthesis	64498	64503	DAG	0		0
+GenProp0770	siderophore biosynthesis	GenProp0776	pyochelin biosynthesis	64498	64504	DAG	0		0
+GenProp0770	siderophore biosynthesis	GenProp0777	staphylobactin biosynthesis	64498	64505	DAG	0		0
+GenProp0179	protein transport	GenProp0778	protein sorting system, GlyGly-CTERM/rhombosortase	49161	64506	DAG	0		0
+GenProp0816	nucleoside catabolism/utilization pathways	GenProp0780	xanthosine utilization system XapABR	66544	64508	DAG	0		0
+GenProp0073	cell motility	GenProp0781	gliding motility, Bacteroidetes type	4014	64509	DAG	0		0
+GenProp0770	siderophore biosynthesis	GenProp0782	bacillibactin (corynebactin) biosynthesis	64498	64510	DAG	0		0
+GenProp0770	siderophore biosynthesis	GenProp0783	petrobactin biosynthesis	64498	64511	DAG	0		0
+GenProp0865	carbon fixation	GenProp0784	carbon fixation via 3-hydroxypropionate and 4-hydroxybutyrate	66593	64512	DAG	0		0
+GenProp0125	lysine biosynthesis via diaminopimelate (DAP)	GenProp0786	lysine biosynthesis via diaminopimelate (DAP), succinylated branch	4067	64514	DAG	0		0
+GenProp0125	lysine biosynthesis via diaminopimelate (DAP)	GenProp0787	lysine biosynthesis via diaminopimelate (DAP), acetylated branch	4067	64515	DAG	0		0
+GenProp0199	lysine biosynthesis	GenProp0788	lysine biosynthesis via diaminopimelate (DAP) utilizing ammonia and NADPH	51177	64517	DAG	0		0
+GenProp0731	amino acid metabolism	GenProp0789	homocysteine regeneration from S-adenosylhomocysteine	60459	64518	DAG	0		0
+GenProp0475	Unknown biological process	GenProp0790	sporadic pair TIGR03545/TIGR03546	58200	64519	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0791	coenzyme F420 biosynthesis	49166	64520	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0792	7,8-didemethyl-8-hydroxy-5-deazariboflavin (FO) biosynthesis	49166	64521	DAG	0		0
+GenProp0186	storage and structural polymer biosynthesis	GenProp0793	CMP-N-acetylneuraminate biosynthesis from UDP-N-acetylglucosamine	49168	64522	DAG	0		0
+GenProp0795	carbohydrate biosynthesis	GenProp0793	CMP-N-acetylneuraminate biosynthesis from UDP-N-acetylglucosamine	64524	64522	DAG	0		0
+GenProp0795	carbohydrate biosynthesis	GenProp0794	proposed N-acetyl sugar amidation module WbuXYZ	64524	64523	DAG	0		0
+GenProp0063	biosynthesis	GenProp0795	carbohydrate biosynthesis	4004	64524	DAG	0		0
+GenProp0795	carbohydrate biosynthesis	GenProp0796	CMP-pseudaminic acid biosynthesis from UDP-N-acetylglucosamine	64524	64525	DAG	0		0
+GenProp0126	amino acid biosynthesis	GenProp0797	selenocysteinyl-tRNA, PSTK/SepSecS pathway	4068	64526	DAG	0		0
+GenProp0475	Unknown biological process	GenProp0798	Enterococcus/Aeromonas extended locus	58200	64527	DAG	0		0
+GenProp0067	quantitative content	GenProp0799	bacterial core gene set, exactly 1 per genome	4008	64528	DAG	0		0
+GenProp0067	quantitative content	GenProp0800	bacterial core gene set, 1 or more per genome	4008	64529	DAG	0		0
+GenProp0550	experimental properties	GenProp0802	ribosome biogenesis proteins, bacteria	58275	64531	DAG	0		0
+GenProp0475	Unknown biological process	GenProp0803	DegV-YloV-CgtA system	58200	64532	DAG	0		0
+GenProp0067	quantitative content	GenProp0805	number of ambiguous nucleotide characters	4008	64534	DAG	0		0
+GenProp0116	DNA metabolism	GenProp0806	replication initiation, bacterial	4057	64535	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0807	bacteriocin system, heterocycle biosynthesis group	4018	64536	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0808	bacteriocin system, TIGR01847 leader group	4018	64537	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0809	bacteriocin system, lactococcin 972 group	4018	64538	DAG	0		0
+GenProp0142	catabolism	GenProp0810	encapsulin proteinaceous organelle	19134	64539	DAG	0		0
+GenProp0069	cell surface component	GenProp0811	S-layer homology domain-mediated cell wall binding	4010	66539	DAG	0		0
+GenProp0795	carbohydrate biosynthesis	GenProp0811	S-layer homology domain-mediated cell wall binding	64524	66539	DAG	0		0
+GenProp0197	protein biosynthesis	GenProp0812	rho-dependent termination	51175	66540	DAG	0		0
+GenProp0142	catabolism	GenProp0813	pyrimidine utilization  operon, RutABCDEFGR	19134	66541	DAG	0		0
+GenProp0817	nucleotide catabolism/utilization pathways	GenProp0813	pyrimidine utilization  operon, RutABCDEFGR	66545	66541	DAG	0		0
+GenProp0202	nitrogen metabolism	GenProp0814	urea utilization	53180	66542	DAG	0		0
+GenProp0067	quantitative content	GenProp0815	archaeal-only core gene set	4008	66543	DAG	0		0
+GenProp0133	nucleic acid metabolism	GenProp0816	nucleoside catabolism/utilization pathways	4139	66544	DAG	0		0
+GenProp0133	nucleic acid metabolism	GenProp0817	nucleotide catabolism/utilization pathways	4139	66545	DAG	0		0
+GenProp0566	aquatic niche	GenProp0818	marine environment	58291	66546	DAG	0		0
+GenProp0133	nucleic acid metabolism	GenProp0819	RNA metabolism	4139	66547	DAG	0		0
+GenProp0017	metabolism	GenProp0820	iron metabolism	17	66548	DAG	0		0
+GenProp0071	transport	GenProp0821	putative Na:solute symporter two-gene cassette	4012	66549	DAG	0		0
+GenProp0186	storage and structural polymer biosynthesis	GenProp0822	poly(gamma-glutamic acid) biosynthesis	49168	66550	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0823	violacein biosynthesis	4018	66551	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0825	bacteriocin system, circular bacteriocin group	4018	66553	DAG	0		0
+GenProp0550	experimental properties	GenProp0826	genus-filtered organisms	58275	66554	DAG	0		0
+GenProp0180	small molecule transport	GenProp0828	heme uptake system, NEAT-domain mediated	49162	66556	DAG	0		0
+GenProp0820	iron metabolism	GenProp0828	heme uptake system, NEAT-domain mediated	66548	66556	DAG	0		0
+GenProp0836	menaquinone biosynthesis	GenProp0829	menaquinone biosynthesis via futalosine	66564	66557	DAG	0		0
+GenProp0475	Unknown biological process	GenProp0830	integral membrane mystery pair	58200	66558	DAG	0		0
+GenProp0067	quantitative content	GenProp0831	archaeal core gene set, exactly 1 per genome	4008	66559	DAG	0		0
+GenProp0067	quantitative content	GenProp0832	archaeal core gene set, 1 or more per genome	4008	66560	DAG	0		0
+GenProp0301	protein degradation	GenProp0833	proteasome-targeting modification by pupylation	57289	66561	DAG	0		0
+GenProp0301	protein degradation	GenProp0834	proteasome, bacterial	57289	66562	DAG	0		0
+GenProp0301	protein degradation	GenProp0835	ATP-dependent protease HslVU	57289	66563	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0836	menaquinone biosynthesis	49166	66564	DAG	0		0
+GenProp0838	lipid biosynthesis	GenProp0836	menaquinone biosynthesis	66566	66564	DAG	0		0
+GenProp0838	lipid biosynthesis	GenProp0837	1-acylglycerol-3-phosphate biosynthesis, PlsX/Y pathway	66566	66565	DAG	0		0
+GenProp0063	biosynthesis	GenProp0838	lipid biosynthesis	4004	66566	DAG	0		0
+GenProp0841	2-oxoacid:ferredoxin oxidoreductase	GenProp0839	2-oxoacid:ferredoxin oxidoreductase, multisubunit form	66569	66567	DAG	0		0
+GenProp0157	storage polymer systems	GenProp0840	polyphosphate kinase/exopolyphosphatase system	39146	66568	DAG	0		0
+GenProp0070	energy metabolism	GenProp0841	2-oxoacid:ferredoxin oxidoreductase	4011	66569	DAG	0		0
+GenProp0841	2-oxoacid:ferredoxin oxidoreductase	GenProp0842	2-oxoacid:acceptor oxidoreductase, 2 subunit form	66569	66570	DAG	0		0
+GenProp0179	protein transport	GenProp0844	accessory Sec system for serine-rich glycoprotein transport	49161	66572	DAG	0		0
+GenProp0179	protein transport	GenProp0845	protein sorting system, KxYKxGKxW class	49161	66573	DAG	0		0
+GenProp0550	experimental properties	GenProp0846	RF00080_test_TerC	58275	66574	DAG	0		0
+GenProp0069	cell surface component	GenProp0847	exosporium	4010	66575	DAG	0		0
+GenProp0179	protein transport	GenProp0847	exosporium	49161	66575	DAG	0		0
+GenProp0073	cell motility	GenProp0848	actin-based motility of invasive bacteria	4014	66576	DAG	0		0
+GenProp0074	virulence	GenProp0849	quorum-sensing, Bacillus PlcR-PapR system	4015	66577	DAG	0		0
+GenProp0551	regulatory systems	GenProp0849	quorum-sensing, Bacillus PlcR-PapR system	58276	66577	DAG	0		0
+GenProp1048	quorum-sensing, biofilm formation, and developmental systems	GenProp0849	quorum-sensing, Bacillus PlcR-PapR system	66778	66577	DAG	0		0
+GenProp0076	DNA handling	GenProp0851	integration host factor	4017	66579	DAG	0		0
+GenProp0180	small molecule transport	GenProp0852	tungsten transport	49162	66580	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0853	lantibiotic system, gallidermin/epidermin family	4018	66581	DAG	0		0
+GenProp0180	small molecule transport	GenProp0853	lantibiotic system, gallidermin/epidermin family	49162	66581	DAG	0		0
+GenProp0475	Unknown biological process	GenProp0854	ParB-rel/ThiF-rel cassette PRTRC	58200	66582	DAG	0		0
+GenProp0076	DNA handling	GenProp0855	integrating conjugative element, PFGI-1 class	4017	66583	DAG	0		0
+GenProp0070	energy metabolism	GenProp0856	bacterio-opsin system	4011	66584	DAG	0		0
+GenProp0069	cell surface component	GenProp0857	anchored repeat-class ABC transporter, P. acnes type	4010	66585	DAG	0		0
+GenProp0071	transport	GenProp0857	anchored repeat-class ABC transporter, P. acnes type	4012	66585	DAG	0		0
+GenProp0076	DNA handling	GenProp0858	conjugative transposon, Bacteroides type	4017	66586	DAG	0		0
+GenProp0069	cell surface component	GenProp0859	protein sorting system, proteobacterial dedicated sortase type	4010	66587	DAG	0		0
+GenProp0179	protein transport	GenProp0859	protein sorting system, proteobacterial dedicated sortase type	49161	66587	DAG	0		0
+GenProp0075	protein modification, prosthetic groups and cofactors	GenProp0860	tryptophan tryptophylquinone modification of methylamine dehydrogenase	4016	66588	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0860	tryptophan tryptophylquinone modification of methylamine dehydrogenase	49166	66588	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0861	bacteriocin system, NHLP (nif11/nitrile hydratase leader peptide) transport group	4018	66589	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0862	pyridoxal phosphate biosynthesis, PdxA/PdxJ pathway	49166	66590	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0863	pyridoxal phosphate biosynthesis, Pdx1/Pdx2 pathway	49166	66591	DAG	0		0
+GenProp0065	genome properties	GenProp0864	response to external environment	4006	66592	DAG	0		0
+GenProp0072	central intermediary metabolism	GenProp0865	carbon fixation	4013	66593	DAG	0		0
+GenProp0866	carbon metabolism	GenProp0865	carbon fixation	66594	66593	DAG	0		0
+GenProp0873	ion-motive antiporter cycles	GenProp0867	decarboxylation/antiport proton-motive cycle: aspartate-alanine	66601	66595	DAG	0		0
+GenProp0874	response to acid (low pH) environment	GenProp0867	decarboxylation/antiport proton-motive cycle: aspartate-alanine	66602	66595	DAG	0		0
+GenProp0475	Unknown biological process	GenProp0868	uncharacterized protein pair with twin-arg and repeat	58200	66596	DAG	0		0
+GenProp0873	ion-motive antiporter cycles	GenProp0869	decarboxylation/antiport proton-motive cycle: arginine-agmatine	66601	66597	DAG	0		0
+GenProp0874	response to acid (low pH) environment	GenProp0869	decarboxylation/antiport proton-motive cycle: arginine-agmatine	66602	66597	DAG	0		0
+GenProp0873	ion-motive antiporter cycles	GenProp0870	decarboxylation/antiport proton-motive cycle: lysine-cadaverine	66601	66598	DAG	0		0
+GenProp0874	response to acid (low pH) environment	GenProp0870	decarboxylation/antiport proton-motive cycle: lysine-cadaverine	66602	66598	DAG	0		0
+GenProp0873	ion-motive antiporter cycles	GenProp0871	decarboxylation/antiport proton-motive cycle: ornithine-putrescine	66601	66599	DAG	0		0
+GenProp0874	response to acid (low pH) environment	GenProp0871	decarboxylation/antiport proton-motive cycle: ornithine-putrescine	66602	66599	DAG	0		0
+GenProp0873	ion-motive antiporter cycles	GenProp0872	decarboxylation/antiport proton-motive cycle: histidine-histamine	66601	66600	DAG	0		0
+GenProp0874	response to acid (low pH) environment	GenProp0872	decarboxylation/antiport proton-motive cycle: histidine-histamine	66602	66600	DAG	0		0
+GenProp0180	small molecule transport	GenProp0873	ion-motive antiporter cycles	49162	66601	DAG	0		0
+GenProp0864	response to external environment	GenProp0874	response to acid (low pH) environment	66592	66602	DAG	0		0
+GenProp0873	ion-motive antiporter cycles	GenProp0875	decarboxylation/antiport proton-motive cycle: tyrosine-tyramine	66601	66603	DAG	0		0
+GenProp0874	response to acid (low pH) environment	GenProp0875	decarboxylation/antiport proton-motive cycle: tyrosine-tyramine	66602	66603	DAG	0		0
+GenProp0873	ion-motive antiporter cycles	GenProp0876	decarboxylation/antiport proton-motive cycle: glutamate-GABA	66601	66604	DAG	0		0
+GenProp0267	osmolyte biosynthesis	GenProp0878	N(epsilon)-acetyl-beta-lysine biosynthesis	57255	66606	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0891	coenzyme M biosynthesis	49166	66619	DAG	0		0
+GenProp0475	Unknown biological process	GenProp0894	Actinobacterial uncharacterized trio	58200	66622	DAG	0		0
+GenProp0071	transport	GenProp0895	alcohol ABC transporter, PedABC-type	4012	66623	DAG	0		0
+GenProp0819	RNA metabolism	GenProp0898	RNA ligase/unknown protein pair	66547	66626	DAG	0		0
+GenProp0202	nitrogen metabolism	GenProp0899	nitrile hydratase	53180	66627	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0901	post-ribosomal natural product synthesis system, Burkholderia TOMM-type	4018	66629	DAG	0		0
+GenProp0142	catabolism	GenProp0902	quinohemoprotein amine dehydrogenase	19134	66630	DAG	0		0
+GenProp0179	protein transport	GenProp0904	type VII secretion, Actinobacteria form	49161	66632	DAG	0		0
+GenProp0179	protein transport	GenProp0905	type VII secretion, Firmicutes form	49161	66633	DAG	0		0
+GenProp0186	storage and structural polymer biosynthesis	GenProp0906	poly-beta-1,6 N-acetyl-D-glucosamine system, IcaADBC type	49168	66634	DAG	0		0
+GenProp0186	storage and structural polymer biosynthesis	GenProp0907	poly-beta-1,6 N-acetyl-D-glucosamine system, PgaABCD type	49168	66635	DAG	0		0
+GenProp0063	biosynthesis	GenProp0909	capreomycidine biosynthesis	4004	66637	DAG	0		0
+GenProp0966	E. coli O-antigen biosynthesis	GenProp0913	E. coli O-antigen monomer biosynthesis clusters	66694	66641	DAG	0		0
+GenProp0070	energy metabolism	GenProp0914	hydrogenase, [FeFe]-dependent	4011	66642	DAG	0		0
+GenProp0070	energy metabolism	GenProp0915	hydrogenase, mono-iron type	4011	66643	DAG	0		0
+GenProp0475	Unknown biological process	GenProp0916	radical SAM/uncharacterized protein TIGR03936 system	58200	66644	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0917	mycofactocin system	49166	66645	DAG	0		0
+GenProp0075	protein modification, prosthetic groups and cofactors	GenProp0918	anaerobic sulfatase/maturase system	4016	66646	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0919	SCIFF/radical SAM Clostridial gene pair	4018	66647	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0920	radical SAM Y_X(10)_GDL system	4018	66648	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0921	radical SAM pair and His-Xaa-Ser repeats peptide	4018	66649	DAG	0		0
+GenProp0021	CRISPR region	GenProp0922	CRISPR system, Myxan subtype	2003	66650	DAG	0		0
+GenProp0075	protein modification, prosthetic groups and cofactors	GenProp0923	mycothiol system	4016	66651	DAG	0		0
+GenProp0297	lipopolysaccharide biosynthesis	GenProp0925	Leptospira core LPS elements	57285	66653	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp0927	bacillithiol biosynthesis	49166	66655	DAG	0		0
+GenProp0179	protein transport	GenProp0928	OMP chaperone system: SurA-Skp-DegP	49161	66656	DAG	0		0
+GenProp0248	protein folding	GenProp0928	OMP chaperone system: SurA-Skp-DegP	57236	66656	DAG	0		0
+GenProp0725	outer membrane protein assembly complex	GenProp0928	OMP chaperone system: SurA-Skp-DegP	60453	66656	DAG	0		0
+GenProp0297	lipopolysaccharide biosynthesis	GenProp0929	LPS outer core, E. coli type	57285	66657	DAG	0		0
+GenProp0913	E. coli O-antigen monomer biosynthesis clusters	GenProp0932	O104(Ec) antigen biosynthesis	66641	66660	DAG	0		0
+GenProp0075	protein modification, prosthetic groups and cofactors	GenProp0933	bacillithiol utilization	4016	66661	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0936	bacteriocin system, sporulation delay protein group	4018	66664	DAG	0		0
+GenProp0075	protein modification, prosthetic groups and cofactors	GenProp0938	glycine radical enzyme system, YjjI/YjjW pair	4016	66666	DAG	0		0
+GenProp0475	Unknown biological process	GenProp0940	metallo-mystery pair	58200	66668	DAG	0		0
+GenProp0071	transport	GenProp0941	TonB-dependent nutrient uptake pairs, RagAB/SusCD type	4012	66669	DAG	0		0
+GenProp0063	biosynthesis	GenProp0942	alkane biosynthesis, cyanobacterial	4004	66670	DAG	0		0
+GenProp0075	protein modification, prosthetic groups and cofactors	GenProp0943	pyruvate formate-lyase system	4016	66671	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0945	radical SAM maturase bacteriocin system, CLI_3235 type	4018	66673	DAG	0		0
+GenProp0913	E. coli O-antigen monomer biosynthesis clusters	GenProp0947	O55(Ec) antigen biosynthesis	66641	66675	DAG	0		0
+GenProp0819	RNA metabolism	GenProp0948	RNA repair, Hen1/Pnkp system	66547	66676	DAG	0		0
+GenProp0913	E. coli O-antigen monomer biosynthesis clusters	GenProp0949	O111(Ec) antigen biosynthesis	66641	66677	DAG	0		0
+GenProp0950	4,6-dideoxy-4-oxo-dTDP-D-glucose biosynthesis from glucose-1-phosphate	GenProp0951	dTDP-3-aminofucose biosynthesis from 4,6-dideoxy-4-oxo-dTDP-D-glucose	66678	66679	DAG	0		0
+GenProp0913	E. coli O-antigen monomer biosynthesis clusters	GenProp0953	O103(Ec) antigen biosynthesis	66641	66681	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0954	radical SAM-cylized peptide, Pep1357C family	4018	66682	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0955	modified peptide/radical SAM maturase system, YydFG family	4018	66683	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0956	radical SAM maturase/selenobacteriocin system	4018	66684	DAG	0		0
+GenProp0179	protein transport	GenProp0957	protein sorting system, SipW class	49161	66685	DAG	0		0
+GenProp0475	Unknown biological process	GenProp0959	radical SAM/uncharacterized protein TIGR04002 system	58200	66687	DAG	0		0
+GenProp0820	iron metabolism	GenProp0961	heme metabolism pair HutWX	66548	66689	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0962	methanobactin biosynthesis, Mb-OB3b family	4018	66690	DAG	0		0
+GenProp0913	E. coli O-antigen monomer biosynthesis clusters	GenProp0963	O2(Ec) antigen biosynthesis	66641	66691	DAG	0		0
+GenProp0475	Unknown biological process	GenProp0965	YedE/YedF selenium handling system	58200	66693	DAG	0		0
+GenProp0297	lipopolysaccharide biosynthesis	GenProp0966	E. coli O-antigen biosynthesis	57285	66694	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0967	radical SAM maturase system, CXXX repeats type	4018	66695	DAG	0		0
+GenProp0950	4,6-dideoxy-4-oxo-dTDP-D-glucose biosynthesis from glucose-1-phosphate	GenProp0972	dTDP-4-acetamido-4,6-dideoxy-D-galactose (dTDP-Fuc4NAc) biosynthesis	66678	66700	DAG	0		0
+GenProp0116	DNA metabolism	GenProp0977	DNA ligase/helicase system	4057	66705	DAG	0		0
+GenProp0179	protein transport	GenProp0978	protein sorting system, PGF-CTERM/archaeosortase A	49161	66706	DAG	0		0
+GenProp0179	protein transport	GenProp0979	protein sorting system, PEF-CTERM/archaeosortase C	49161	66707	DAG	0		0
+GenProp0179	protein transport	GenProp0980	protein sorting system, putative, exosortase F class	49161	66708	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0982	radical SAM maturase system, FibroRumin system	4018	66710	DAG	0		0
+GenProp0179	protein transport	GenProp0983	protein sorting system, VPXXXP-CTERM/archaeosortase B	49161	66711	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0984	radical SAM maturase system, GG-Bacteroidales group	4018	66712	DAG	0		0
+GenProp0179	protein transport	GenProp0985	protein sorting system, VPDSG-CTERM/exosortase C	49161	66713	DAG	0		0
+GenProp0179	protein transport	GenProp0986	protein sorting system, VPLPA-CTERM/exosortase D	49161	66714	DAG	0		0
+GenProp0179	protein transport	GenProp0987	protein sorting system, cyano-PEP-CTERM class	49161	66715	DAG	0		0
+GenProp0179	protein transport	GenProp0989	protein sorting system, VPEID-CTERM/exosortase E	49161	66717	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0990	cobaltopeptin biosynthesis	4018	66718	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp0991	ATP-grasp maturase system, microviridin/marinostatin class	4018	66719	DAG	0		0
+GenProp0179	protein transport	GenProp0993	protein sorting system, PIP-CTERM/archaeosortase D	49161	66721	DAG	0		0
+GenProp0297	lipopolysaccharide biosynthesis	GenProp0994	Leptospira interrogans-specific LPS components	57285	66722	DAG	0		0
+GenProp0297	lipopolysaccharide biosynthesis	GenProp0995	Leptospira interrogans LPS associated transketolase	57285	66723	DAG	0		0
+GenProp0179	protein transport	GenProp0996	protein sorting system, IPTLxxWG-CTERM/exosortase H	49161	66724	DAG	0		0
+GenProp0179	protein transport	GenProp0999	Por secretion system	49161	66727	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp1000	ATP-grasp maturase system, uncharacterized	4018	66729	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp1002	grasp-with-spasm peptide maturase system	4018	66731	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp1003	cysteine S-glycopeptide biosynthesis, sublancin family	4018	66732	DAG	0		0
+GenProp0300	photosynthetic cofactor biosynthesis	GenProp1004	light-independent protochlorophyllide reductase	57288	66733	DAG	0		0
+GenProp0179	protein transport	GenProp1005	protein sorting system, putative, exosortase J class	49161	66734	DAG	0		0
+GenProp1048	quorum-sensing, biofilm formation, and developmental systems	GenProp1011	quorum-sensing system, cyclic peptide-mediated	66778	66740	DAG	0		0
+GenProp0913	E. coli O-antigen monomer biosynthesis clusters	GenProp1014	O5(Ec) antigen biosynthesis	66641	66743	DAG	0		0
+GenProp0950	4,6-dideoxy-4-oxo-dTDP-D-glucose biosynthesis from glucose-1-phosphate	GenProp1015	dTDP-3-amino-3,6-dideoxy-D-glucose (Qui3N) biosynthesis from 4,6-dideoxy-4-oxo-dTDP-D-glucose	66678	66744	DAG	0		0
+GenProp0913	E. coli O-antigen monomer biosynthesis clusters	GenProp1018	O8(Ec) antigen biosynthesis	66641	66747	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp1029	radical SAM/SPASM system SynChlorMet	4018	66758	DAG	0		0
+GenProp0873	ion-motive antiporter cycles	GenProp1034	decarboxylation/antiport proton-motive cycle: oxalate-formate	66601	66764	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp1037	radical SAM/SPASM system GRRM	4018	66767	DAG	0		0
+GenProp0913	E. coli O-antigen monomer biosynthesis clusters	GenProp1042	O128(Ec) antigen biosynthesis	66641	66772	DAG	0		0
+GenProp0065	genome properties	GenProp1048	quorum-sensing, biofilm formation, and developmental systems	4006	66778	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp1052	geopeptide radical SAM/SPASM maturase system	4018	66782	DAG	0		0
+GenProp0063	biosynthesis	GenProp1053	rSAM/selenodomain system	4004	66783	DAG	0		0
+GenProp0179	protein transport	GenProp1054	protein sorting system, MSEP-CTERM/exosortase K	49161	66784	DAG	0		0
+GenProp0179	protein transport	GenProp1055	protein sorting system, PEFG-CTERM/thaumarchaeosortase	49161	66785	DAG	0		0
+GenProp0063	biosynthesis	GenProp1056	rhizo-twelve system	4004	66786	DAG	0		0
+GenProp0063	biosynthesis	GenProp1057	radical SAM/SPASM system GeoRSP	4004	66787	DAG	0		0
+GenProp0819	RNA metabolism	GenProp1060	tRNA N6-threonylcarbamoyladenosine modification	66547	66790	DAG	0		0
+GenProp0021	CRISPR region	GenProp1061	CRISPR system, PreFran subtype	2003	66791	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp1062	radical SAM/SPASM system Clo7bot	4018	66792	DAG	0		0
+GenProp0475	Unknown biological process	GenProp1063	Memo/AMMECR1/rSAM family trio system	58200	66793	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp1064	ovothiol biosynthesis	49166	66794	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp1065	radical SAM/SPASM TIGR04347/TIGR04031 system	4018	66795	DAG	0		0
+GenProp0475	Unknown biological process	GenProp1066	uncharacterized cassette GAK (Grasp, Amphipathic, Kinase)	58200	66796	DAG	0		0
+GenProp0065	genome properties	GenProp1067	Defense systems	4006	66797	DAG	0		0
+GenProp0267	osmolyte biosynthesis	GenProp1070	beta-glutamate biosynthesis	57255	66800	DAG	0		0
+GenProp0142	catabolism	GenProp1071	myo-inositol catabolism	19134	66801	DAG	0		0
+GenProp0142	catabolism	GenProp1072	cyanase system	19134	66802	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp1073	methanophenazine biosynthesis	49166	66803	DAG	0		0
+GenProp0179	protein transport	GenProp1074	type V secretion	49161	66804	DAG	0		0
+GenProp0142	catabolism	GenProp1076	choline TMA-lyase system	19134	66806	DAG	0		0
+GenProp0819	RNA metabolism	GenProp1077	tRNA(Pro) cmo5UGG modification	66547	66807	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp1078	sporulation killing factor system	4018	66808	DAG	0		0
+GenProp0116	DNA metabolism	GenProp1081	replication restart, PriA/PriB primosome pathway	4057	66811	DAG	0		0
+GenProp0819	RNA metabolism	GenProp1082	16S rRNA C1402 m(4)Cm modification	66547	66812	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp1083	cyanobactin-like ribosomal natural product biosynthesis	4018	66813	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp1084	enduracididine biosynthesis	4018	66814	DAG	0		0
+GenProp0475	Unknown biological process	GenProp1086	Firmicutes/Treponema mobile radical SAM system	58200	66816	DAG	0		0
+GenProp0179	protein transport	GenProp1087	protein sorting system, vault protein/exosortase N	49161	66817	DAG	0		0
+GenProp0070	energy metabolism	GenProp1089	B12-dependent trimeric diol/glycerol dehydratase	4011	66819	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp1090	radical SAM/SPASM maturase system XYE	4018	66820	DAG	0		0
+GenProp0066	selfish genetic elements	GenProp1091	toxin-antitoxin system, type I	4007	66821	DAG	0		0
+GenProp0066	selfish genetic elements	GenProp1092	toxin-antitoxin system, type III	4007	66822	DAG	0		0
+GenProp0071	transport	GenProp1094	energy-coupling factor transporters	4012	66824	DAG	0		0
+GenProp0116	DNA metabolism	GenProp1095	exodeoxyribonuclease VII	4057	66825	DAG	0		0
+GenProp0184	cofactor biosynthesis	GenProp1096	coenzyme B biosynthesis	49166	66826	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp1097	bacimethrin biosynthesis	4018	66827	DAG	0		0
+GenProp0077	natural products biosynthesis	GenProp1098	3-methylarginine biosynthesis	4018	66828	DAG	0		0
+GenProp0115	DNA repair	GenProp1099	8-oxoguanine DNA repair	4056	66830	DAG	0		0
+GenProp0070	energy metabolism	GenProp1101	quinoprotein cytochrome relay system	4011	66832	DAG	0		0
+GenProp0179	protein transport	GenProp1102	protein sorting system, CGP-CTERM/unknown of Thermococcaceae	49161	66833	DAG	0		0
+GenProp1080	protein O-heptosyltransferase with autotransporter target	GenProp1102	protein sorting system, CGP-CTERM/unknown of Thermococcaceae	66810	66833	DAG	0		0
+GenProp0179	protein transport	GenProp1103	protein sorting system, Synergist-CTERM/unknown of Synergistetes	49161	66834	DAG	0		0
+GenProp0299	fatty acid biosynthesis	GenProp1104	acyl carrier protein phosphopantetheinylation	57287	66835	DAG	0		0
