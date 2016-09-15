@@ -6,6 +6,6 @@ export {stack, pie, arc} from "d3-shape";
 export {transition} from "d3-transition";
 export {stratify, cluster} from "d3-hierarchy";
 export {entries, keys, values} from "d3-collection";
-export {scaleLinear, scaleBand, scaleOrdinal, schemeCategory20c} from "d3-scale";
+export {scaleLinear, scaleBand, scaleOrdinal, schemeCategory20b} from "d3-scale";
 export {tsvParseRows} from "d3-dsv";
 export {zoom} from "d3-zoom";

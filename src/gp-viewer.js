@@ -1,12 +1,14 @@
 "use strict";
 
 import * as d3 from "./d3";
+import GenomePropertiesHierarchy from "./gp-hierarchy";
 // TODO: Genome properties categories
 // TODO: Focus/Filter on a tax branch.
 // TODO: tree frame resizable
 // TODO: Piechart in bottom frame
 // TODO: height and width using window size
 // TODO: Color tree
+// TODO: changing touch gestures
 // DONE: Piechart per organism
 // DONE: Make cell size editable - Via Zooming
 // DONE: Order by tree
@@ -26,14 +28,17 @@ export default class GenomePropertiesViewer {
         bottom_panel_height=80,
         total_panel_height=cell_side,
         server= "../test-files/SUMMARY_FILE_",
-        server_tax= "../test-files/Taxon_"
+        server_tax = "../test-files/Taxon_",
+        hierarchy_path = "../test-files/gp.dag.txt"
     }){
         this.data = {};
         this.organisms = [];
         this.organism_names = {};
         this.organism_totals = {};
         this.taxonomy_raw = [];
-        this.options = {margin, width, height, element_selector, cell_side, server, server_tax,bottom_panel_height,total_panel_height};
+        this.options = {
+            margin, width, height, element_selector, cell_side, server, server_tax,
+            bottom_panel_height, total_panel_height, hierarchy_path};
         this.column_total_width = cell_side;
         this.x = d3.scaleBand().range([0, width-this.column_total_width]);
         this.y = d3.scaleLinear().range([0, height]);
@@ -57,7 +62,8 @@ export default class GenomePropertiesViewer {
                     this.options.cell_side = d3.event.transform.k;
                     this.update_viewer();
                 }));
-
+        this.gp_hierarchy = new GenomePropertiesHierarchy();
+        this.gp_hierarchy.load_hierarchy_from_path(this.options.hierarchy_path);
         this.draw_rows_panel();
         this.draw_columns_panel();
         this.draw_bottom_panel();
@@ -78,7 +84,8 @@ export default class GenomePropertiesViewer {
                         this.data[d[0]] = {
                             property: d[0],
                             name: d[1],
-                            values: {"TOTAL": {"YES":0, "NO":0, "PARTIAL":0}}
+                            values: {"TOTAL": {"YES":0, "NO":0, "PARTIAL":0}},
+                            parent_top_properties: this.gp_hierarchy.get_top_level_gp_by_id(d[0])
                         };
                     if (tax_id in this.data[d[0]]["values"])
                         return;
@@ -112,6 +119,7 @@ export default class GenomePropertiesViewer {
 
                     this.update_viewer();
                 });
+                console.log(this.data);
             });
     }
 
@@ -635,16 +643,14 @@ export default class GenomePropertiesViewer {
 
         row_p.selectAll(".row_title")
             .attr("x", this.x.range()[0]-6)
-            .attr("y", this.options.cell_side / 2);
+            .attr("y", this.column_total_width/2);
 
         row.append("text")
             .attr("class", "row_title")
             .attr("x", this.x.range()[0]-6)
-            .attr("y", this.options.cell_side / 2)
-            .attr("dy", ".32em")
+            .attr("y", this.column_total_width/2)
             .attr("text-anchor", "end")
             .text( d => d.property );
-
 
 
         let column_p = this.cols.selectAll(".column")
@@ -663,17 +669,36 @@ export default class GenomePropertiesViewer {
 
         function update_row(_this){
             return function(r) {
-                let cells = d3.select(this).selectAll(".cell")
-                    .data(_this.organisms, d=>d);
                 const cell_height = _this.options.cell_side,
                     ol = _this.organisms.length;
+
+                const gps = d3.select(this).selectAll(".top_level_gp")
+                    .data(r.parent_top_properties, d=>d),
+                    text_heigth= d3.select("text").node().getBBox().height;
+                let radius = (cell_height-text_heigth)/2 -4;
+                if (radius<2) radius=2;
+                if (radius>6) radius=6;
+
+                gps.attr("cx", (d,i) => _this.x.range()[0]-6 -radius - (2*radius+2) * i)
+                    .attr("cy", cell_height/2 + text_heigth/2 + radius - 2)
+                    .attr("r", radius);
+
+                gps.enter().append("circle")
+                    .attr("class", "top_level_gp")
+                    .attr("cx", (d,i) => _this.x.range()[0]-6 -radius - (2*radius+2) * i)
+                    .attr("cy", cell_height/2 + text_heigth/2 + radius - 2)
+                    .attr("r", radius)
+                    .style("fill", d=> _this.gp_hierarchy.color(d));
+
+                let cells = d3.select(this).selectAll(".cell")
+                    .data(_this.organisms, d=>d);
 
                 cells
                     .attr("x", (d,i) => _this.x(i))
                     .attr("height", cell_height)
                     .attr("width", _this.x.bandwidth());
 
-                cells = cells.enter().append("rect")
+                cells.enter().append("rect")
                     .attr("class", "cell")
                     .attr("x", (d,i) => _this.x(i))
                     .attr("height", cell_height)
