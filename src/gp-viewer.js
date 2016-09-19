@@ -3,12 +3,13 @@
 import * as d3 from "./d3";
 import GenomePropertiesHierarchy from "./gp-hierarchy";
 // TODO: Genome properties categories
+// TODO: changing touch gestures
 // TODO: Focus/Filter on a tax branch.
 // TODO: tree frame resizable
 // TODO: Piechart in bottom frame
 // TODO: height and width using window size
 // TODO: Color tree
-// TODO: changing touch gestures
+// TODO:
 // DONE: Piechart per organism
 // DONE: Make cell size editable - Via Zooming
 // DONE: Order by tree
@@ -25,7 +26,7 @@ export default class GenomePropertiesViewer {
         height= 700,
         element_selector= "body",
         cell_side= 20,
-        bottom_panel_height=80,
+        bottom_panel_height=100,
         total_panel_height=cell_side,
         server= "../test-files/SUMMARY_FILE_",
         server_tax = "../test-files/Taxon_",
@@ -56,14 +57,34 @@ export default class GenomePropertiesViewer {
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-            .call(d3.zoom()
-                .scaleExtent([20, 80])
-                .on("zoom", () => {
-                    this.options.cell_side = d3.event.transform.k;
-                    this.update_viewer();
-                }));
+            .on('wheel',()=>{
+                d3.event.preventDefault();
+                // ZOOMING
+                if (d3.event.ctrlKey){
+                    this.svg.k= (this.svg.k!=null)?this.svg.k-d3.event.deltaY/2:0;
+                    if (this.svg.k<20) this.svg.k = 20;
+                    if (this.svg.k>80) this.svg.k = 80;
+                    this.options.cell_side = this.svg.k;
+                    this.update_viewer(true);
+                }
+                // PANNING-SCROLLING
+                this.svg.y= (this.svg.y!=null)?this.svg.y+d3.event.deltaY:0;
+                this.svg.y = Math.max(
+                    Math.min(this.svg.y, 0),
+                    this.options.height
+                    + this.options.margin.bottom
+                    + this.options.bottom_panel_height*0.6
+                    - this.props.length*this.y(1)
+                    - this.options.margin.top
+                );
+                d3.select(".gpv-rows-group")
+                    .attr("transform", "translate(0," + this.svg.y + ")");
+                this.update_viewer();
+            });
+        ;
+
         this.gp_hierarchy = new GenomePropertiesHierarchy();
-        this.gp_hierarchy.load_hierarchy_from_path(this.options.hierarchy_path);
+        this.gp_hierarchy.load_hierarchy_from_path(this.options.hierarchy_path, ()=>this.update_top_level_legend()  );
         this.draw_rows_panel();
         this.draw_columns_panel();
         this.draw_bottom_panel();
@@ -119,7 +140,6 @@ export default class GenomePropertiesViewer {
 
                     this.update_viewer();
                 });
-                console.log(this.data);
             });
     }
 
@@ -197,6 +217,7 @@ export default class GenomePropertiesViewer {
         return tree;
     }
     update_tree(time=0){
+        if (this.taxonomy_raw==null || this.taxonomy_raw.length<1) return;
         const root = this.stratify(this.taxonomy_raw);
         if (this.collapse_tree)
             this.prune_inner_nodes(root);
@@ -322,32 +343,33 @@ export default class GenomePropertiesViewer {
         this.rows = this.svg.append("g")
             .attr("class", "gpv-rows-group")
             .attr("transform", "translate(0,0)")
-            .call(d3.drag() // Window panning.
-                .subject(function(){
-                    const g = d3.select(this),
-                        t = g.attr("transform").match(/translate\((.*),(.*)\)/);
-                    return {
-                        x:Number(t[1]) + Number(g.attr("x")),
-                        y:Number(t[2]) + Number(g.attr("y")),
-                    };
-                })
-                .on("drag", function(_this) {
-                    return function() {
-                        d3.event.sourceEvent.stopPropagation();
-                        const dy = Math.max(
-                            Math.min(d3.event.y, 0),
-                            _this.options.height
-                            + _this.options.margin.bottom
-                            + _this.options.bottom_panel_height
-                            - _this.props.length*_this.y(1)
-                            - _this.options.margin.top
-                        );
-                        d3.select(".gpv-rows-group")
-                            .attr("transform", d => "translate(0, " + dy + ")");
-                        _this.update_viewer();
-                    }
-                }(this))
-            );
+            // .call(d3.drag() // Window panning.
+            //     .subject(function(){
+            //         const g = d3.select(this),
+            //             t = g.attr("transform").match(/translate\((.*),(.*)\)/);
+            //         return {
+            //             x:Number(t[1]) + Number(g.attr("x")),
+            //             y:Number(t[2]) + Number(g.attr("y")),
+            //         };
+            //     })
+            //     .on("drag", function(_this) {
+            //         return function() {
+            //             d3.event.sourceEvent.stopPropagation();
+            //             const dy = Math.max(
+            //                 Math.min(d3.event.y, 0),
+            //                 _this.options.height
+            //                 + _this.options.margin.bottom
+            //                 + _this.options.bottom_panel_height
+            //                 - _this.props.length*_this.y(1)
+            //                 - _this.options.margin.top
+            //             );
+            //             d3.select(".gpv-rows-group")
+            //                 .attr("transform", d => "translate(0, " + dy + ")");
+            //             _this.update_viewer();
+            //         }
+            //     }(this))
+            // )
+        ;
     }
 
     draw_columns_panel() {
@@ -384,6 +406,15 @@ export default class GenomePropertiesViewer {
             .attr("height", ph);
     }
 
+    refresh_organism_totals(){
+        for (let o in this.organism_totals)
+            this.organism_totals[o]={"YES":0, "NO":0, "PARTIAL":0};
+        this.props.forEach(e=>{
+            for (let v in this.organism_totals)
+                this.organism_totals[v][e.values[v]]++;
+        });
+    }
+
     update_total_per_organism_panel(time=0) {
         const ph=this.options.total_panel_height=this.options.cell_side,
             ol=this.organisms.length,
@@ -403,6 +434,7 @@ export default class GenomePropertiesViewer {
         const pie = d3.pie()
             .value(d => d.value);
 
+        this.refresh_organism_totals();
 
         const cells_t = this.total_g.selectAll(".total_cell_org")
             .data(d3.entries(this.organism_totals)
@@ -454,7 +486,8 @@ export default class GenomePropertiesViewer {
     }
     draw_bottom_panel(){
         const height_panel = this.options.bottom_panel_height,
-            h_i = height_panel*0.8/this.gp_values.length,
+            h_legend_item = height_panel*0.8/this.gp_values.length,
+            h_i= height_panel*0.8/5,
             w = 100,
             empty_total={YES: 0, NO: 0, PARTIAL: 0};
 
@@ -492,22 +525,22 @@ export default class GenomePropertiesViewer {
 
         g_item.append("text")
             .attr("x", w/2)
-            .attr("y", (d,i) => 12 + i*h_i)
+            .attr("y", (d,i) => 12 + i*h_legend_item)
             .attr("dy", ".32em")
             .attr("text-anchor", "end")
             .text(d=>d.key);
 
         g_item.append("rect")
             .attr("x", w*0.05+w/2)
-            .attr("y", (d,i) => (0.1+i)*h_i)
+            .attr("y", (d,i) => (0.1+i)*h_legend_item)
             .attr("width", w*0.4)
-            .attr("height", h_i*0.8)
+            .attr("height", h_legend_item*0.8)
             .style("fill", d => this.c[d.key]);
 
         g_item.append("text")
             .attr("class","legend_value")
             .attr("x", w*0.75)
-            .attr("y", (d,i) => 12 + i*h_i)
+            .attr("y", (d,i) => 12 + i*h_legend_item)
             .attr("dy", ".32em")
             .attr("text-anchor", "middle")
             .style("text-shadow", "0 0 0")
@@ -526,25 +559,74 @@ export default class GenomePropertiesViewer {
             .attr("width", this.options.width+ this.options.margin.left - w -this.options.margin.right - 20)
             .attr("height", height_panel*0.8);
 
+        // Drawing the Info Area
         const info_item = info_g.selectAll(".info-group")
-            .data(["Property", "Name", "Organism"])
+            .data(["Property", "Name", "Organism", "Top level properties"])
             .enter().append("g")
             .attr("class", "info-group");
 
         info_item.append("text")
-            .attr("x", w*0.9)
+            .attr("x", w*0.95)
             .attr("y", (d,i) => 12 + i*h_i)
             .attr("dy", ".32em")
             .attr("text-anchor", "end")
             .text(d=>d+":");
 
         info_item.append("text")
-            .attr("id", (d,i) => "info_"+d.toLocaleLowerCase())
+            .attr("id", (d,i) => "info_"+d.toLocaleLowerCase().replace(/\s/g,"_"))
             .attr("x", w)
             .attr("y", (d,i) => 12 + i*h_i)
             .attr("dy", ".32em")
             .text("");
 
+        const w_tl_g = this.options.width - 2*w -this.options.margin.right -35,
+            h_tl_g = h_i*0.8,
+            text_offset=2;
+
+        this.top_level_g = info_g.append("g")
+            .attr("transform", "translate("+w+", " + (4*h_i) + ")");
+
+        this.top_level_g.append("text")
+            .attr("id", "top-level-legend-all")
+            .attr("x", 0)
+            .attr("y", h_tl_g-text_offset)
+            .style("cursor", "pointer")
+            .style("fill", "#223399")
+            // .style("font-weight", "bold")
+            .text("All")
+            .on("click", d=> {
+                this.gp_hierarchy.hierarchy_switch.forEach(e=>e.enable=true);
+                this.update_top_level_legend();
+            });
+
+        const x = this.top_level_g.select("text").node().getBBox().width;
+
+        this.top_level_g.append("text")
+            .attr("x", x*1.3)
+            .attr("y", h_tl_g-text_offset)
+            .text("|");
+
+
+        this.top_level_g.append("text")
+            .attr("id", "top-level-legend-none")
+            .attr("x", x*1.7)
+            .attr("y", h_tl_g-text_offset)
+            .style("cursor", "pointer")
+            .style("fill", "#223399")
+            // .style("font-weight", "bold")
+            .text("None")
+            .on("click", d=> {
+                this.gp_hierarchy.hierarchy_switch.forEach(e=>e.enable=false);
+                this.update_top_level_legend();
+            });
+
+
+        this.top_level_g.append("text")
+            .attr("x", x*4)
+            .attr("y", h_tl_g-text_offset)
+            .text("|");
+
+        // Drawing the stack graph
         info_g.append("rect")
             .attr("id", "info_value")
             .style("fill","white")
@@ -599,28 +681,83 @@ export default class GenomePropertiesViewer {
 
     }
 
-    update_viewer() {
-        this.props = d3.values(this.data);
+    update_top_level_legend(){
+        const w = 100,
+            x = this.top_level_g.select("text").node().getBBox().width,
+            w_tl_g = this.options.width - 2*w -this.options.margin.right -35 -4.5*x,
+            h_tl_g = (this.options.bottom_panel_height*0.8/5)*0.8;
+
+        const tll = this.top_level_g.selectAll(".top-level-legend")
+            .data(this.gp_hierarchy.hierarchy_switch, d=>d.id);
+
+        tll
+            .style("opacity", d=> d.enable?1:0.5);
+
+        tll.enter().append("circle")
+            .attr("class", "top-level-legend")
+            .attr("cx", (d,i) => x*4.5+ (0.5+i) * w_tl_g/this.gp_hierarchy.hierarchy_switch.length)
+            .attr("cy", 1+h_tl_g/2)
+            .attr("r", h_tl_g/2 -1)
+            .style("opacity", d=> d.enable?1:0.5)
+            .style("cursor", "pointer")
+            .style("fill", d=> this.gp_hierarchy.color(d.id))
+            .on("mouseover", d => {
+                d3.select("#info_top_level_properties").text(this.gp_hierarchy.nodes[d.id].name)
+            })
+            .on("mouseout", d => {
+                d3.select("#info_top_level_properties").text("")
+            })
+            .on("click", d=> {
+                this.gp_hierarchy.hierarchy_switch.forEach(e=>{
+                    if (e.id==d.id)e.enable = !e.enable;
+                });
+                this.update_top_level_legend();
+            });
+        this.svg.y =0;
+        d3.select(".gpv-rows-group")
+            .attr("transform", "translate(0,0)");
+
+        this.update_viewer();
+        this.update_total_per_organism_panel();
+    }
+
+    update_viewer(zoom=false) {
+        this.props = d3.values(this.data).filter(e=>{
+            if (e.parent_top_properties==null)
+                return true;
+            for (let p of e.parent_top_properties)
+                for (let tp of this.gp_hierarchy.hierarchy_switch)
+                    if (p == tp.id && tp.enable)
+                        return true;
+            return false;
+        });
         this.column_total_width = this.options.cell_side;
-        this.x.range([this.options.width-this.column_total_width-this.options.cell_side*this.organisms.length, this.options.width-this.column_total_width]);
+        this.x.range([
+            this.options.width-this.column_total_width-this.options.cell_side*this.organisms.length,
+            this.options.width-this.column_total_width
+        ]);
 
         const visible_rows = Math.min(
             this.props.length,
             Math.round(this.options.height/this.options.cell_side)
         );
         this.y.domain([0, visible_rows]);
-        let dy = -Math.floor(
-            d3.select(".gpv-rows-group").attr("transform").match(/translate\((.*),(.*)\)/)[2]/this.y(1)
-        )-2;
-        dy = dy<0?0:dy;
-        this.current_props = this.props.slice(dy,visible_rows+dy+1);
-
+        let dy = this.current_dy;
+        if (!zoom){
+            dy = -Math.floor(
+                    d3.select(".gpv-rows-group").attr("transform").match(/translate\((.*),(.*)\)/)[2] / this.y(1)
+                ) - 2;
+            dy = dy < 0 ? 0 : dy;
+            this.current_dy = dy;
+        }
+        this.current_props = this.props.slice(dy, visible_rows + dy + 1);
         const n = this.organisms.length;
         if (this.current_order==null || this.current_order.length != this.organisms.length) {
             this.x.domain(d3.range( this.organisms.length));
             this.current_order = d3.range( this.organisms.length);
         }
         this.update_tree();
+        const t = d3.transition().duration(500);
 
         let row_p = this.rows.selectAll(".row")
             .data(this.current_props, d=>d.property);
@@ -629,14 +766,20 @@ export default class GenomePropertiesViewer {
             .attr("transform", (d,i) => "translate(0," + this.y(i+dy) + ")")
             .each(update_row(this));
 
-        row_p.exit().remove();
+        row_p.exit()//.transition(t)
+            .attr("transform", (d,i) => "translate(0,0)")
+            .remove();
+
         let row = row_p.enter().append("g")
                 .attr("id", d => "row_"+d.property)
                 .attr("class", "row")
-                .attr("transform", (d,i) => "translate(0," + this.y(i+dy) + ")")
                 .each(update_row(this));
         row.append("line")
             .attr("x2", this.options.width);
+        row
+            // .attr("transform", (d,i) => "translate(0,10000)")
+            // .transition(t)
+            .attr("transform", (d,i) => "translate(0," + this.y(i+dy) + ")");
 
 
         d3.selectAll(".total_title").attr("opacity",1);
@@ -666,6 +809,7 @@ export default class GenomePropertiesViewer {
         column.append("line").attr("x1", -this.options.height);
 
         this.update_total_per_organism_panel();
+        // this.update_top_level_legend();
 
         function update_row(_this){
             return function(r) {
@@ -719,14 +863,13 @@ export default class GenomePropertiesViewer {
                 cells_t
                     .attr("transform", "translate("+(_this.options.width-_this.column_total_width/2)+", "+cell_height*0.5+")");
 
-                cells_t.enter().append("g")
+                const g = cells_t.enter().append("g")
                     .attr("class", "total_cell")
                     .attr("transform", "translate("+(_this.options.width-_this.column_total_width/2)+", "+cell_height*0.5+")")
                     .on("mouseover", mouseover(_this))
-                    .on("mouseout", mouseout(_this));
-
-                const g = cells_t.selectAll(".arc")
-                    .data(pie(d3.entries(r.values["TOTAL"])));
+                    .on("mouseout", mouseout(_this))
+                    .selectAll(".arc")
+                    .data(pie(d3.entries(r.values["TOTAL"])), d=>d);
 
                 cells_t.selectAll(".arc")
                     .attr("d", arc);
@@ -734,8 +877,9 @@ export default class GenomePropertiesViewer {
                 g.enter().append("path")
                     .attr("class", "arc")
                     .attr("d", arc)
-                    .style("fill", d => _this.c[d.data.key]);
-
+                    .style("fill", d => {
+                        return _this.c[d.data.key]
+                    });
             };
         }
         function mouseover(_this) {

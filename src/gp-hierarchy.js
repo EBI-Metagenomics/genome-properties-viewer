@@ -8,9 +8,10 @@ export default class GenomePropertiesHierarchy {
         this.nodes = {};
         this.root = null;
         this.color = null;
+        this.hierarchy_switch = [];
     }
 
-    load_hierarchy_from_path(path){
+    load_hierarchy_from_path(path, callback=null){
         d3.text(path).get( (error, text) => {
             if (error) throw error;
             d3.tsvParseRows(text, (d) => {
@@ -29,6 +30,11 @@ export default class GenomePropertiesHierarchy {
             this.color = d3.scaleOrdinal()
                 .domain(this.root.children.map(d=>d.id))
                 .range(d3.schemeCategory20b);
+            this.hierarchy_switch = this.root.children.map(d=>{
+                return {"id": d.id, "enable": true };
+            });
+            if (callback)
+                callback();
         });
     }
 
@@ -45,7 +51,7 @@ export default class GenomePropertiesHierarchy {
     get_top_level_gp_by_id(id){
         if (id in this.nodes)
             return [...this.get_top_level_gp(this.nodes[id])].map(d=>d.id);
-        return null;
+        return [];
     }
 
     get_top_level_gp(node){

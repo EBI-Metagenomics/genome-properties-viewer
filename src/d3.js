@@ -9,3 +9,4 @@ export {entries, keys, values} from "d3-collection";
 export {scaleLinear, scaleBand, scaleOrdinal, schemeCategory20b} from "d3-scale";
 export {tsvParseRows} from "d3-dsv";
 export {zoom} from "d3-zoom";
+export {interpolate} from "d3-interpolate";
