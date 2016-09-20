@@ -93,10 +93,10 @@
     });
     d3.select("#upload-button").on("click", ()=>{
         const ids = d3.select("#tax-ids-text").node().value
-                .split(/[ ,-]/)
+                .split(/[\s,-]/)
                 .filter(e => e.trim().length>0);
         for (let id of ids)
-            viewer.load_genome_properties_file(id);
+            viewer.load_genome_properties_file(id.trim());
 //        viewer.update_viewer();
 //        console.log(viewer.data);
 
