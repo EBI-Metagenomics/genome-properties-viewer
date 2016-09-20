@@ -88,6 +88,8 @@ export default class GenomePropertiesViewer {
                 );
                 d3.select(".gpv-rows-group")
                     .attr("transform", "translate(" + this.svg.x + "," + this.svg.y + ")");
+                d3.select(".gpv-cols-group")
+                    .attr("transform", "translate(" + this.svg.x + ",0)");
                 this.update_viewer();
             });
         ;
@@ -400,7 +402,7 @@ export default class GenomePropertiesViewer {
         this.cols = this.svg.append("g")
             .attr("class", "gpv-cols-group");
 
-        this.svg.append("text")
+        this.cols.append("text")
             .attr("class", "total_title")
             .attr("x", this.options.width-this.column_total_width*0.4)
             .attr("y", 3)
@@ -787,8 +789,13 @@ export default class GenomePropertiesViewer {
             // .transition(t)
             .attr("transform", (d,i) => "translate(0," + this.y(i+dy) + ")");
 
+        d3.selectAll("g.row line").attr("x1", this.x(0));
 
-        d3.selectAll(".total_title").attr("opacity",1);
+
+        d3.selectAll(".total_title")
+            .attr("transform", "rotate(-90 "+(this.options.width-this.options.cell_side/2)+",0)")
+            .attr("x", this.options.width-this.options.cell_side/2)
+            .attr("opacity",1);
 
         row_p.selectAll(".row_title")
             .attr("x", this.x.range()[0]-6)
