@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <style>
-    .background {
-        fill: #fefefe;
-        opacity: 0.9;
-    }
 
     line {
         stroke: #fff;
@@ -87,18 +83,19 @@
 <div id="gp-viewer"></div>
 <script src="bin/d3.custom.min.js"></script>
 <script>
-    const {d3, GenomePropertiesViewer} = gpv;
-    const viewer = new GenomePropertiesViewer({
-        element_selector: "#gp-viewer"
-    });
-    d3.select("#upload-button").on("click", ()=>{
-        const ids = d3.select("#tax-ids-text").node().value
+    var d3 = gpv.d3,
+            GenomePropertiesViewer = gpv.GenomePropertiesViewer,
+            viewer = new GenomePropertiesViewer({
+                element_selector: "#gp-viewer"
+            });
+    d3.select("#upload-button").on("click", function() {
+        var ids = d3.select("#tax-ids-text").node().value
                 .split(/[\s,-]/)
-                .filter(e => e.trim().length>0);
-        for (let id of ids)
+                .filter(function(e) { return e.trim().length>0;});
+        for (var i =0;i<ids.length;i++){
+            var id = ids[i];
             viewer.load_genome_properties_file(id.trim());
-//        viewer.update_viewer();
-//        console.log(viewer.data);
+        }
 
     });
     d3.select("#order").on("change", function() {

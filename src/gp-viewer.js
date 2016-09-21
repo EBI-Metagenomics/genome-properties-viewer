@@ -26,7 +26,7 @@ export default class GenomePropertiesViewer {
         height= 700,
         element_selector= "body",
         cell_side= 20,
-        bottom_panel_height=100,
+        bottom_panel_height=80,
         total_panel_height=cell_side,
         server= "../test-files/SUMMARY_FILE_",
         server_tax = "../test-files/Taxon_{}",
@@ -95,6 +95,8 @@ export default class GenomePropertiesViewer {
         ;
         this.svg.x=0;
         this.svg.y=0;
+        this.create_gradient();
+
         this.gp_hierarchy = new GenomePropertiesHierarchy();
         this.gp_hierarchy.load_hierarchy_from_path(this.options.hierarchy_path, ()=>this.update_top_level_legend()  );
         this.draw_rows_panel();
@@ -102,6 +104,44 @@ export default class GenomePropertiesViewer {
         this.draw_bottom_panel();
         this.draw_total_per_organism_panel();
         this.draw_tree_panel();
+    }
+
+    create_gradient(){
+        const defs = this.svg.append("defs");
+
+        const gradient_d = defs
+            .append("linearGradient")
+            .attr("id", "gradientdown")
+            .attr("x1", "0%").attr("y1", "0%")
+            .attr("x2", "0%").attr("y2", "100%");
+
+        gradient_d.append("stop")
+            .attr("offset", "85%")
+            .attr("stop-color", "#fff")
+            .attr("stop-opacity", 1);
+
+        gradient_d.append("stop")
+            .attr("offset", "100%")
+            .attr("stop-color", "#fff")
+            .attr("stop-opacity", 0.5);
+
+        const gradient_u = defs
+            .append("linearGradient")
+            .attr("id", "gradientup")
+            .attr("x1", "0%").attr("y1", "0%")
+            .attr("x2", "0%").attr("y2", "100%");
+
+        gradient_u.append("stop")
+            .attr("offset", "0%")
+            .attr("stop-color", "#fff")
+            .attr("stop-opacity", 0.7);
+
+        gradient_u.append("stop")
+            .attr("offset", "35%")
+            .attr("stop-color", "#fff")
+            .attr("stop-opacity", 1);
+
+
     }
 
     load_genome_properties_file(tax_id) {
@@ -394,6 +434,7 @@ export default class GenomePropertiesViewer {
     draw_columns_panel() {
         this.svg.append("rect")
             .attr("class", "background")
+            .style("fill", "url(#gradientdown)")
             .attr("x",-this.options.margin.left)
             .attr("y",-this.options.margin.top)
             .attr("width", this.options.width + this.options.margin.left + this.options.margin.right)
@@ -415,6 +456,8 @@ export default class GenomePropertiesViewer {
         const ph=this.options.total_panel_height;
         this.svg.append("rect")
             .attr("class", "total-background background")
+            .style("fill","#fff")
+            .style("opacity","0.7")
             .attr("x", -this.options.margin.left)
             .attr("y", this.options.height-this.options.margin.bottom-this.options.bottom_panel_height-ph)
             .attr("width", this.options.width + this.options.margin.left + this.options.margin.right)
@@ -496,8 +539,8 @@ export default class GenomePropertiesViewer {
     }
     draw_bottom_panel(){
         const height_panel = this.options.bottom_panel_height,
-            h_legend_item = height_panel*0.8/this.gp_values.length,
-            h_i= height_panel*0.8/5,
+            h_legend_item = height_panel/this.gp_values.length,
+            h_i= height_panel/5,
             w = 100,
             empty_total={YES: 0, NO: 0, PARTIAL: 0};
 
@@ -509,6 +552,7 @@ export default class GenomePropertiesViewer {
 
         bottom_g.append("rect")
             .attr("class", "background")
+            .style("fill", "url(#gradientup)")
             .attr("width", this.options.width + this.options.margin.left + this.options.margin.right)
             .attr("height", height_panel);
 
@@ -516,15 +560,17 @@ export default class GenomePropertiesViewer {
         this.legend_g = bottom_g.append("g")
             .attr("class", "legend-group")
             .attr("transform", "translate("+
-                (this.options.width+this.options.margin.left-w-this.options.margin.right) + ", " +
-                (height_panel*0.1) + ")");
+                    (this.options.width
+                    +this.options.margin.left-
+                    w-this.options.margin.right)
+                + ", 0 )");
 
         this.legend_g.append("rect")
             .attr("width", w)
             .style("fill","white")
             .style("stroke","#ccc")
             .style("stroke-width","1px")
-            .attr("height", height_panel*0.8);
+            .attr("height", height_panel);
 
         const legend_item = this.legend_g.selectAll(".legend-item")
             .data(d3.entries(empty_total).sort((a,b)=>a.key>b.key?-1:1), d=>d.key);
@@ -559,15 +605,14 @@ export default class GenomePropertiesViewer {
 
         const info_g = bottom_g.append("g")
             .attr("class", "info-group")
-            .attr("transform", "translate(10, " +
-                (height_panel*0.1) + ")");
+            .attr("transform", "translate(10,0)");
 
         info_g.append("rect")
             .style("fill","white")
             .style("stroke","#ccc")
             .style("stroke-width","1px")
             .attr("width", this.options.width+ this.options.margin.left - w -this.options.margin.right - 20)
-            .attr("height", height_panel*0.8);
+            .attr("height", height_panel);
 
         // Drawing the Info Area
         const info_item = info_g.selectAll(".info-group")
@@ -645,7 +690,7 @@ export default class GenomePropertiesViewer {
             .attr("x", this.options.width+this.options.margin.left - w -this.options.margin.right - this.options.margin.left - 30)
             .attr("y", height_panel*0.05)
             .attr("width", this.options.margin.left)
-            .attr("height", height_panel*0.7);
+            .attr("height", height_panel*0.9);
 
         const stack = d3.stack()
                 .keys(["YES","PARTIAL","NO"]);
@@ -677,7 +722,7 @@ export default class GenomePropertiesViewer {
         }
 
         this.gr_total.attr("display","block");
-        const fr = this.options.bottom_panel_height*0.7/(total["YES"]+total["NO"]+total["PARTIAL"]);
+        const fr = this.options.bottom_panel_height*0.9/(total["YES"]+total["NO"]+total["PARTIAL"]);
 
         const info_total_c = this.gr_total
             .selectAll(".info_total_contribution")
@@ -685,7 +730,7 @@ export default class GenomePropertiesViewer {
 
         info_total_c
             .attr("y", (d, i) => d[0][0] * fr)
-            .attr("height", (d, i) => {
+            .attr("height", (d) => {
                 return fr * (d[0][1] - d[0][0])
             });
 
