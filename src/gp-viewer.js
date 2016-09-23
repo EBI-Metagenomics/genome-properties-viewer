@@ -840,7 +840,7 @@ export default class GenomePropertiesViewer {
         d3.selectAll(".total_title")
             .attr("transform", "rotate(-90 "+(this.options.width-this.options.cell_side/2)+",0)")
             .attr("x", this.options.width-this.options.cell_side/2)
-            .attr("opacity",1);
+            .attr("opacity",()=>this.organisms.length>0?1:0);
 
         row_p.selectAll(".row_title")
             .attr("x", this.x.range()[0]-6)
