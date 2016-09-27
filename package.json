@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "rollup -c  > bin/d3.custom.min.js",
+    "watch-no-map": "rollup -c -w -i=index.js -o=bin/d3.custom.min.js",
     "watch": "rollup -c -w -i=index.js -o=bin/d3.custom.min.js -m=bin/d3.custom.js.map",
     "test": "mocha",
     "create-taxonomy-file": "node src/taxonomy/taxonomy_retriever.js > taxonomy.json"
@@ -27,6 +28,7 @@
   "dependencies": {
     "d3-array": "^1.0.1",
     "d3-collection": "^1.0.1",
+    "d3-dispatch": "^1.0.1",
     "d3-drag": "^1.0.1",
     "d3-dsv": "^1.0.1",
     "d3-hierarchy": "^1.0.2",

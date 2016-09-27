@@ -2,6 +2,7 @@
 
 import * as d3 from "./d3";
 import GenomePropertiesHierarchy from "./gp-hierarchy";
+import GenomePropertiesTaxonomy from "./gp-taxonomy";
 // TODO: Genome properties categories
 // TODO: changing touch gestures
 // TODO: Focus/Filter on a tax branch.
@@ -18,6 +19,7 @@ import GenomePropertiesHierarchy from "./gp-hierarchy";
 // DONE: Organism name in bottom frame
 // DONE: Drag from inner nodes
 // DONE: Total column fix width
+
 export default class GenomePropertiesViewer {
 
     constructor({
@@ -29,7 +31,7 @@ export default class GenomePropertiesViewer {
         bottom_panel_height=80,
         total_panel_height=cell_side,
         server= "../test-files/SUMMARY_FILE_",
-        server_tax = "../test-files/Taxon_{}",
+        server_tax = "taxonomy.json",
         hierarchy_path = "../test-files/gp.dag.txt"
     }){
         this.data = {};
@@ -97,13 +99,30 @@ export default class GenomePropertiesViewer {
         this.svg.y=0;
         this.create_gradient();
 
+        this.gp_taxonomy = new GenomePropertiesTaxonomy({
+            path: server_tax,
+            x: 0,
+            y: -this.options.margin.top+20,
+            width: this.options.width,
+            height: this.options.margin.top
+        });
+        this.gp_taxonomy.load_taxonomy();
+        this.gp_taxonomy
+            .on("changeOrder",(order)=>{
+                this.current_order = order;
+                this.order_organisms_current_order();
+            })
+            .on("spaciesRequested",(taxId)=>{
+                this.load_genome_properties_file(taxId);
+            });
+
         this.gp_hierarchy = new GenomePropertiesHierarchy();
         this.gp_hierarchy.load_hierarchy_from_path(this.options.hierarchy_path, ()=>this.update_top_level_legend()  );
         this.draw_rows_panel();
         this.draw_columns_panel();
+        this.gp_taxonomy.draw_tree_panel(this.svg);
         this.draw_bottom_panel();
         this.draw_total_per_organism_panel();
-        this.draw_tree_panel();
     }
 
     create_gradient(){
@@ -144,6 +163,7 @@ export default class GenomePropertiesViewer {
 
     }
 
+
     load_genome_properties_file(tax_id) {
         if (this.organisms.indexOf(tax_id) != -1)
             return;
@@ -166,237 +186,60 @@ export default class GenomePropertiesViewer {
                     this.data[d[0]]["values"]["TOTAL"][d[2]]++;
                     this.organism_totals[tax_id][d[2]]++;
                 });
-                d3.xml(this.options.server_tax.replace("{}",tax_id), (error, xml) => {
-                    if (error) throw error;
-                    let data = [].map.call(xml.querySelectorAll("lineage taxon"), (taxon) => {
-                        this.organism_names[taxon.getAttribute("taxId")] = taxon.getAttribute("scientificName");
-                        return {
-                            scientificName: taxon.getAttribute("scientificName"),
-                            taxId: taxon.getAttribute("taxId"),
-                            rank: taxon.getAttribute("rank"),
-                        };
-                    });
-                    let taxon = xml.querySelector("taxon"),
-                        data2 = {
-                            scientificName: taxon.getAttribute("scientificName"),
-                            taxId: taxon.getAttribute("taxId"),
-                            rank: taxon.getAttribute("rank"),
-                        };
-                    this.organism_names[taxon.getAttribute("taxId")] = taxon.getAttribute("scientificName");
-
-                    data = data.reverse().concat([data2]).reduce(
-                        (agg, e)=> agg.concat({node:e, parent:agg.length==0?"":agg[agg.length-1].node}), []
-                    );
-                    // data.forEach(d=> console.log(tax_id, d.node.taxId, d.parent.taxId));
-                    this.merge_with_current_taxonomy(data);
-
-                    this.update_viewer();
-                });
+                // d3.xml(this.options.server_tax.replace("{}",tax_id), (error, xml) => {
+                //     if (error) throw error;
+                //     let data = [].map.call(xml.querySelectorAll("lineage taxon"), (taxon) => {
+                //         this.organism_names[taxon.getAttribute("taxId")] = taxon.getAttribute("scientificName");
+                //         return {
+                //             scientificName: taxon.getAttribute("scientificName"),
+                //             taxId: taxon.getAttribute("taxId"),
+                //             rank: taxon.getAttribute("rank"),
+                //         };
+                //     });
+                //     let taxon = xml.querySelector("taxon"),
+                //         data2 = {
+                //             scientificName: taxon.getAttribute("scientificName"),
+                //             taxId: taxon.getAttribute("taxId"),
+                //             rank: taxon.getAttribute("rank"),
+                //         };
+                //     this.organism_names[taxon.getAttribute("taxId")] = taxon.getAttribute("scientificName");
+                //
+                //     data = data.reverse().concat([data2]).reduce(
+                //         (agg, e)=> agg.concat({node:e, parent:agg.length==0?"":agg[agg.length-1].node}), []
+                //     );
+                //     // data.forEach(d=> console.log(tax_id, d.node.taxId, d.parent.taxId));
+                //     this.merge_with_current_taxonomy(data);
+                //
+                //     this.update_viewer();
+                // });
+                this.gp_taxonomy.set_organisms_loaded(tax_id, this.organisms);
+                this.update_viewer();
             });
     }
 
-    merge_with_current_taxonomy (new_tax){
-        if (this.taxonomy_raw.length==0) {
-            this.taxonomy_raw = new_tax;
-            return;
-        }
-        const ids = this.taxonomy_raw.map(d=>d.node.taxId);
-        for (let i=new_tax.length-1; i>=0; i--){
-            if (ids.indexOf(new_tax[i].parent.taxId)!=-1){
-                this.taxonomy_raw = this.taxonomy_raw.concat(new_tax.slice(i));
-                return;
-            }
-        }
-
-    }
-
-    draw_tree_panel(){
-        this.tree_g = this.svg.append("g")
-            .attr("class", "taxon_tree")
-            .attr("transform", "translate(0,"+(-this.options.margin.top+20)+")");
-        this.stratify = d3.stratify()
-            .id(function(d) { return d.node.taxId; })
-            .parentId(function(d) { return d.parent.taxId; })
-    }
+    // merge_with_current_taxonomy (new_tax){
+    //     if (this.taxonomy_raw.length==0) {
+    //         this.taxonomy_raw = new_tax;
+    //         return;
+    //     }
+    //     const ids = this.taxonomy_raw.map(d=>d.node.taxId);
+    //     for (let i=new_tax.length-1; i>=0; i--){
+    //         if (ids.indexOf(new_tax[i].parent.taxId)!=-1){
+    //             this.taxonomy_raw = this.taxonomy_raw.concat(new_tax.slice(i));
+    //             return;
+    //         }
+    //     }
+    //
+    // }
 
 
-    prune_inner_nodes(tree){
-        if (!tree.label)
-            tree.label = tree.id;
-        if (tree.children){
-            if (tree.children.length == 1){
-                tree.id += "."+tree.children[0].id;
-                tree.label = tree.children[0].id;
-                tree.height = tree.children[0].height;
-                tree.children = tree.children[0].children;
-                if (tree.children)
-                    for (let child of tree.children)
-                        child.parent = tree;
-                this.prune_inner_nodes(tree);
-            }else
-                for (let child of tree.children)
-                    this.prune_inner_nodes(child);
-
-        }
-    }
-
-    tree(root, deepness=0){
-        const ol = this.organisms.length,
-            w = this.options.cell_side*ol,
-            h = this.options.margin.top-20,
-            w_fr = w/ol;
-        let avg=0;
-        root.y = h;
-        if (root.children) {
-            for (let child of root.children){
-                this.tree(child, deepness+1);
-                avg += child.x;
-                root.y = child.y<root.y?child.y:root.y;
-                root.deepness = (!root.deepness || child.deepness>root.deepness)?child.deepness:root.deepness;
-            }
-            root.x=avg/root.children.length;
-            root.y -= h/root.deepness;
-        } else {
-            root.x = w_fr/2 + w_fr*this.current_order.indexOf(this.organisms.indexOf(root.label));
-            root.y = h;
-            root.deepness = deepness;
-        }
-
-    }
-    get_root(tree){
-        if (tree.parent)
-            return this.get_root(tree.parent)
-        return tree;
-    }
-    update_tree(time=0){
-        if (this.taxonomy_raw==null || this.taxonomy_raw.length<1) return;
-        const root = this.stratify(this.taxonomy_raw);
-        if (this.collapse_tree)
-            this.prune_inner_nodes(root);
-        else
-            root.descendants().forEach(e=>e.label=e.id);
-        this.tree(this.get_root(root));
-        const t = d3.transition().duration(time),
-            ol = this.organisms.length;
-
-        // Precompute the orders.
-        this.orders = {
-            tax_id: d3.range(ol).sort((a, b) => this.organisms[a] - this.organisms[b]),
-            org_name: d3.range(ol).sort((a, b) => this.organism_names[this.organisms[a]] > this.organism_names[this.organisms[b]]?1:-1),
-            tree: root.leaves().sort((a,b)=>a.depth-b.depth).map(d=>this.organisms.indexOf(d.label))
-        };
-        d3.select(".taxon_tree").attr("transform",
-            "translate("+
-                (this.options.width
-                - this.options.cell_side*ol
-                -this.column_total_width
-                +this.svg.x)
-            +","
-                +(-this.options.margin.top+20)
-            +")");
-        var link = this.tree_g.selectAll(".link")
-            .data(root.links(root.descendants()), d=>
-                d.source.id>d.target.id?d.source.id+d.target.id:d.target.id+d.source.id);
-
-        link.transition(t).attr("d", (d, i) =>
-            "M" + d.target.x + "," + d.target.y +
-            "V" + d.source.y +
-            "H" + d.source.x
-        );
-
-        link.exit().remove();
-        link.enter().append("path")
-            .attr("class", "link")
-            .attr("d", (d, i) =>
-                "M" + d.target.x + "," + d.target.y +
-                "V" + d.source.y +
-                "H" + d.source.x
-            );
-
-        const node = this.tree_g.selectAll(".node")
-            .data(root.descendants(), d=>d.id);
 
 
-        node.transition(t)
-            .attr("transform", d => "translate(" + d.x + "," + d.y + ")");
-
-        node.exit().remove();
-        const node_e = node
-            .enter().append("g")
-            .attr("class", d => "node "+ d.label + (d.children ? " node--internal" : " node--leaf") )
-            .attr("transform", d => "translate(" + d.x + "," + d.y + ")" )
-            .on("mouseover", d => d3.select("#info_organism").text(`${d.label}: ${this.organism_names[d.label]}`))
-            .on("mouseout", d => d3.select("#info_organism").text(""))
-            .call(d3.drag()
-                .subject(function(){
-                    const g = d3.select(this),
-                        t = g.attr("transform").match(/translate\((.*),(.*)\)/);
-                    return {
-                        x:Number(t[1]) + Number(g.attr("x")),
-                        y:Number(t[2]) + Number(g.attr("y")),
-                    };
-                })
-                .on("drag", function() {
-                    d3.event.sourceEvent.stopPropagation();
-                    d3.select(this).attr("transform",
-                        d => "translate(" + d3.event.x + "," + d.y + ")"
-                    );
-                })
-                .on("end", function(_this) {
-                    return function (d) {
-                        const w = _this.x.bandwidth(),
-                            dx = (d3.event.x - d.x);// - w/2,
-                        let d_col = Math.round(dx / w);
-                        move_tree(_this,d,d_col);
-                        var t = d3.transition().duration(500);
-                        d3.select(this).transition(t).attr("transform",
-                            d => "translate(" + d.x + "," + d.y + ")");
-
-                    }
-                }(this))
-            );
-
-        function move_tree(_this,d, d_col) {
-            if (!d.children) {
-                move_leaf(_this,d,d_col);
-            } else {
-                d.children.sort((a,b)=>d_col>0?b.x-a.x:a.x-b.x);
-                for (let child of d.children)
-                    move_tree(_this,child,d_col);
-            }
-
-        }
-        function move_leaf(_this,d, d_col){
-            const current_i = _this.organisms.indexOf(d.label),
-                current_o = _this.current_order.indexOf(current_i);
-            d_col = current_o+d_col<0?-current_o:d_col;
-            if (d_col != 0) {
-                const e = _this.current_order.splice(current_o, 1);
-                _this.current_order.splice(current_o+d_col, 0, e[0]);
-                _this.order_organisms_current_order();
-            }
-
-        }
-
-
-        node_e.append("circle")
-            .attr("r", 2.5);
-
-        node_e.append("text")
-            .attr("dy", 3)
-            .attr("x", d =>  d.children ? (d.parent ? -8 : 0) : 8)
-            .style("text-anchor", d => d.parent ? this.collapse_tree?"start":"end" : "middle")
-            .style("transform", d=> {
-                if (this.collapse_tree)
-                    return d.children?
-                        (d.parent?"rotate(-90deg) translate(10px, -6px)":"translate(0px, -8px)"):
-                        "rotate(-90deg) translate(0, 6px)"
-
-            })
-            .text(d =>  d.label);
-
-
-    }
+    // get_root(tree){
+    //     if (tree.parent)
+    //         return this.get_root(tree.parent)
+    //     return tree;
+    // }
 
     draw_rows_panel() {
         this.rows = this.svg.append("g")
@@ -804,12 +647,15 @@ export default class GenomePropertiesViewer {
             this.current_dy = dy;
         }
         this.current_props = this.props.slice(dy, visible_rows + dy + 1);
-        const n = this.organisms.length;
-        if (this.current_order==null || this.current_order.length != this.organisms.length) {
-            this.x.domain(d3.range( this.organisms.length));
-            this.current_order = d3.range( this.organisms.length);
-        }
-        this.update_tree();
+        // const n = this.organisms.length;
+        // if (this.current_order==null || this.current_order.length != this.organisms.length) {
+        //     this.x.domain(d3.range( this.organisms.length));
+        //     this.current_order = d3.range( this.organisms.length);
+        // }
+        this.gp_taxonomy.update_tree(0, this.options.cell_side);
+        this.current_order = this.gp_taxonomy.current_order;
+        this.organisms = this.gp_taxonomy.get_tax_list();
+        this.x.domain(this.current_order);
         const t = d3.transition().duration(500);
 
         let row_p = this.rows.selectAll(".row")
@@ -983,7 +829,6 @@ export default class GenomePropertiesViewer {
     }
     order_organisms_current_order(){
         this.x.domain(this.current_order);
-        this.update_tree(1000);
         this.update_total_per_organism_panel(1000);
 
         const t = d3.transition().duration(1000);

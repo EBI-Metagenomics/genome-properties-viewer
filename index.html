@@ -88,6 +88,7 @@
             viewer = new GenomePropertiesViewer({
                 element_selector: "#gp-viewer"
             });
+
     d3.select("#upload-button").on("click", function() {
         var ids = d3.select("#tax-ids-text").node().value
                 .split(/[\s,-]/)
