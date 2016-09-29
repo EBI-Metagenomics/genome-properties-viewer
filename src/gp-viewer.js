@@ -561,7 +561,7 @@ export default class GenomePropertiesViewer {
             .attr("x", this.x.range()[0]-6)
             .attr("y", this.column_total_width/2)
             .attr("text-anchor", "end")
-            .text( d => d.property );
+            .text( d => d.name );
 
 
         let column_p = this.cols.selectAll(".column")
