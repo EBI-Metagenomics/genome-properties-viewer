@@ -16,9 +16,9 @@ export default class GenomePropertiesHierarchy {
             if (error) throw error;
             d3.tsvParseRows(text, (d) => {
                 if (!(d[0] in this.nodes))
-                    this.nodes[d[0]] = this.create_node(d[0], d[1]);
+                    this.nodes[d[0]] = GenomePropertiesHierarchy.create_node(d[0], d[1]);
                 if (!(d[2] in this.nodes))
-                    this.nodes[d[2]] = this.create_node(d[2], d[3]);
+                    this.nodes[d[2]] = GenomePropertiesHierarchy.create_node(d[2], d[3]);
 
                 if (this.nodes[d[0]].children.indexOf(this.nodes[d[2]])==-1)
                     this.nodes[d[0]].children.push(this.nodes[d[2]]);
@@ -38,7 +38,7 @@ export default class GenomePropertiesHierarchy {
         });
     }
 
-    create_node(id, name){
+    static create_node(id, name){
         return {
             id: id,
             name: name,

@@ -69,9 +69,17 @@
     .legend_value {
         text-shadow: 0 0;
     }
+    .height-sizer {
+        stroke-width: 3px;
+        opacity: 0;
+    }
+    .height-sizer:hover {
+        stroke: lightblue;
+        cursor: ns-resize;
+        opacity: 0.7;
+    }
 </style>
 <body>
-<textarea id="tax-ids-text">10090, 83333, 1033802, 1140,1005058</textarea>
 <select id="order">
     <option value="tax_id">Taxonomy ID</option>
     <option value="org_name">Organism Name</option>
@@ -79,7 +87,6 @@
 </select>
 <input type="checkbox" id="collapse_tree" checked="checked"/>
 <label for="collapse_tree">Collapse tree</label>
-<button id="upload-button">Upload</button>
 <div id="gp-viewer"></div>
 <script src="bin/d3.custom.min.js"></script>
 <script>
@@ -88,7 +95,7 @@
             viewer = new GenomePropertiesViewer({
                 element_selector: "#gp-viewer"
             });
-
+    viewer.update_viewer();
     d3.select("#upload-button").on("click", function() {
         var ids = d3.select("#tax-ids-text").node().value
                 .split(/[\s,-]/)
@@ -103,7 +110,7 @@
         viewer.order_organisms(this.value);
     });
     d3.select("#collapse_tree").on("change", function() {
-        viewer.collapse_tree = d3.select(this).property('checked');
+        viewer.gp_taxonomy.collapse_tree = d3.select(this).property('checked');
         viewer.update_viewer();
     });
 
