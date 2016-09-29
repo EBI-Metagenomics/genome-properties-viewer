@@ -3,6 +3,7 @@ import GenomePropertiesViewer from "./src/gp-viewer"
 import * as d3 from "./src/d3";
 export default {d3: d3,GenomePropertiesViewer:GenomePropertiesViewer};
 
+// TODO: change nodes-labels on the tree to provide options-info
 // TODO: MOve bottom panel to the top
 // TODO: Top genome properties as a dropdown
 // TODO: Filter rows by all with {YES, NO, PARTIAL}
@@ -11,6 +12,8 @@ export default {d3: d3,GenomePropertiesViewer:GenomePropertiesViewer};
 // TODO: Piechart in bottom frame
 // TODO: height and width using window size
 // TODO: Color tree
+// TODO: Extend the backgroud as atransparent layer for events
+// TODO: scrollbars?
 // DONE: tree frame resizable
 // DONE: Making the tree an exploratory widget
 // DONE: Genome properties categories

@@ -35,6 +35,8 @@ export default class GenomePropertiesViewer {
             "NO": "rgb(210,210,210)"
         };
         this.current_order=null;
+        this.legend_block_heigth=this.options.bottom_panel_height/5;
+        this.legend_block_width=100;
 
         this.svg = d3.select(element_selector).append("svg")
             .attr("width", width + margin.left + margin.right)
@@ -82,14 +84,13 @@ export default class GenomePropertiesViewer {
         this.create_gradient();
 
         this.gp_taxonomy = new GenomePropertiesTaxonomy({
-            path: server_tax,
-            x: 0,
-            y: -this.options.margin.top+20,
-            width: this.options.width,
-            height: this.options.margin.top
-        });
-        this.gp_taxonomy.load_taxonomy();
-        this.gp_taxonomy
+                path: server_tax,
+                x: 0,
+                y: -this.options.margin.top+20,
+                width: this.options.width,
+                height: this.options.margin.top
+            })
+            .load_taxonomy()
             .on("changeOrder",(order)=>{
                 this.current_order = order;
                 this.order_organisms_current_order();
@@ -112,8 +113,19 @@ export default class GenomePropertiesViewer {
                 this.update_viewer();
             });
 
-        this.gp_hierarchy = new GenomePropertiesHierarchy();
-        this.gp_hierarchy.load_hierarchy_from_path(this.options.hierarchy_path, ()=>this.update_top_level_legend()  );
+        this.gp_hierarchy = new GenomePropertiesHierarchy(
+                this.legend_block_width,
+                this.legend_block_heigth*4,
+                this.options.width -this.options.margin.right,
+                this.legend_block_heigth*0.8
+            )
+            .load_hierarchy_from_path(this.options.hierarchy_path)
+            .on("siwtchChanged",()=>{
+                this.update_viewer(false, 500);
+                this.update_total_per_organism_panel();
+            });
+
+
         this.draw_rows_panel();
         this.draw_columns_panel();
         this.gp_taxonomy.draw_tree_panel(this.svg);
@@ -323,8 +335,8 @@ export default class GenomePropertiesViewer {
     draw_bottom_panel(){
         const height_panel = this.options.bottom_panel_height,
             h_legend_item = height_panel/this.gp_values.length,
-            h_i= height_panel/5,
-            w = 100,
+            h_i= this.legend_block_heigth,
+            w = this.legend_block_width,
             empty_total={YES: 0, NO: 0, PARTIAL: 0};
 
         const bottom_g = this.svg.append("g")
@@ -417,52 +429,7 @@ export default class GenomePropertiesViewer {
             .attr("dy", ".32em")
             .text("");
 
-        const w_tl_g = this.options.width - 2*w -this.options.margin.right -35,
-            h_tl_g = h_i*0.8,
-            text_offset=2;
-
-        this.top_level_g = info_g.append("g")
-            .attr("transform", "translate("+w+", " + (4*h_i) + ")");
-
-        this.top_level_g.append("text")
-            .attr("id", "top-level-legend-all")
-            .attr("x", 0)
-            .attr("y", h_tl_g-text_offset)
-            .style("cursor", "pointer")
-            .style("fill", "#223399")
-            // .style("font-weight", "bold")
-            .text("All")
-            .on("click", d=> {
-                this.gp_hierarchy.hierarchy_switch.forEach(e=>e.enable=true);
-                this.update_top_level_legend();
-            });
-
-        const x = this.top_level_g.select("text").node().getBBox().width;
-
-        this.top_level_g.append("text")
-            .attr("x", x*1.3)
-            .attr("y", h_tl_g-text_offset)
-            .text("|");
-
-
-        this.top_level_g.append("text")
-            .attr("id", "top-level-legend-none")
-            .attr("x", x*1.7)
-            .attr("y", h_tl_g-text_offset)
-            .style("cursor", "pointer")
-            .style("fill", "#223399")
-            // .style("font-weight", "bold")
-            .text("None")
-            .on("click", d=> {
-                this.gp_hierarchy.hierarchy_switch.forEach(e=>e.enable=false);
-                this.update_top_level_legend();
-            });
-
-
-        this.top_level_g.append("text")
-            .attr("x", x*4)
-            .attr("y", h_tl_g-text_offset)
-            .text("|");
+        this.gp_hierarchy.draw_controller(info_g);
 
         // Drawing the stack graph
         info_g.append("rect")
@@ -519,45 +486,6 @@ export default class GenomePropertiesViewer {
 
     }
 
-    update_top_level_legend(){
-        const w = 100,
-            x = this.top_level_g.select("text").node().getBBox().width,
-            w_tl_g = this.options.width - 2*w -this.options.margin.right -35 -4.5*x,
-            h_tl_g = (this.options.bottom_panel_height*0.8/5)*0.8;
-
-        const tll = this.top_level_g.selectAll(".top-level-legend")
-            .data(this.gp_hierarchy.hierarchy_switch, d=>d.id);
-
-        tll
-            .style("opacity", d=> d.enable?1:0.5);
-
-        tll.enter().append("circle")
-            .attr("class", "top-level-legend")
-            .attr("cx", (d,i) => x*4.5+ (0.5+i) * w_tl_g/this.gp_hierarchy.hierarchy_switch.length)
-            .attr("cy", 1+h_tl_g/2)
-            .attr("r", h_tl_g/2 -1)
-            .style("opacity", d=> d.enable?1:0.5)
-            .style("cursor", "pointer")
-            .style("fill", d=> this.gp_hierarchy.color(d.id))
-            .on("mouseover", d => {
-                d3.select("#info_top_level_properties").text(this.gp_hierarchy.nodes[d.id].name)
-            })
-            .on("mouseout", () => {
-                d3.select("#info_top_level_properties").text("")
-            })
-            .on("click", d=> {
-                this.gp_hierarchy.hierarchy_switch.forEach(e=>{
-                    if (e.id==d.id)e.enable = !e.enable;
-                });
-                this.update_top_level_legend();
-            });
-        this.svg.y =0;
-        d3.select(".gpv-rows-group")
-            .attr("transform", "translate(0,0)");
-
-        this.update_viewer(false, 500);
-        this.update_total_per_organism_panel();
-    }
 
     update_viewer(zoom=false, time=0) {
         this.props = d3.values(this.data).filter(e=>{
@@ -759,7 +687,7 @@ export default class GenomePropertiesViewer {
 
     }
     order_organisms(value) {
-        this.current_order = this.orders[value];
+        this.current_order = this.gp_taxonomy.orders[value];
         this.order_organisms_current_order();
     }
     order_organisms_current_order(){
