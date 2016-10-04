@@ -3,11 +3,14 @@
 import * as d3 from "./d3";
 
 export default class TaxonomyNodeManager {
-    constructor(tax_component){
+    constructor(tax_component, r=6){
         this.tree_g = null;
         this.main = tax_component;
+        this.t = null;
+        this.r = r;
     }
     draw_nodes(visible_nodes, t){
+        this.t  = t;
         const node = this.tree_g.selectAll(".node")
             .data(visible_nodes, d=>d.id);
 
@@ -16,7 +19,9 @@ export default class TaxonomyNodeManager {
                 return "node " + (d.children ? " node--internal" : " node--leaf")+ (d.data.loaded ? " loaded" : "")
             })
             .transition(t)
-            .attr("transform", d => "translate(" + d.x + "," + d.y + ")");
+            .attr("transform", d => "translate(" + d.x + "," + d.y + ")")
+            .each((d,i,c)=>this.update_node(d, i, c));
+        ;
 
         node.exit().remove();
         const node_e = node
@@ -24,19 +29,30 @@ export default class TaxonomyNodeManager {
             .attr("class", d => "node " + (d.children ? " node--internal" : " node--leaf")+ (d.data.loaded ? " loaded" : "") )
             .on("mouseover", (d,i,c) => {
                 d3.select("#info_organism").text(`${d.label}${(d.data.taxId)?" - "+d.data.taxId:""}`);
-                d3.select(c[i]).selectAll("circle").transition(300).attr("r", 8);
+                d3.select(c[i]).selectAll("circle").transition(300)
+                    .attr("r", this.r+2);
             })
             .on("mouseout", (d,i,c) => {
                 d3.select("#info_organism").text("");
-                d3.select(c[i]).selectAll("circle").transition(300).attr("r", 4);
+                d3.select(c[i]).selectAll("circle").transition(300)
+                    .attr("r", d=>(d.children||d._children)?this.r:d.data.loaded?this.r/2:this.r-2);
+
             })
-            .on("dblclick", d=>{
+            .on("click", d=>{
                 if(d.data.taxId){ //Only leaves have taxId attached
                     this.main.dipatcher.call("spaciesRequested",this.main, d.data.taxId);
                 }
                 if (d.parent) {
                     d.data.expanded = !d.data.expanded;
                     this.main.update_tree(500);
+                }
+            })
+            .on("dblclick", d=>{
+                if(d.data.taxId){ //Only leaves have taxId attached
+                    this.main.dipatcher.call("spaciesRequested",this.main, d.data.taxId);
+                }
+                if (d.parent) {
+                    this.main.requestAll(d.data);
                 }
             })
             .call(d3.drag()
@@ -66,7 +82,8 @@ export default class TaxonomyNodeManager {
                             d => "translate(" + d.x + "," + d.y + ")");
                     }
                 })
-            );
+            )
+            .each((d,i,c)=>this.draw_node(d,i,c));
 
         const move_tree = (d, d_col) => {
             if (!d.children) {
@@ -90,33 +107,58 @@ export default class TaxonomyNodeManager {
             }
         };
 
-        node_e.append("circle")
-            .attr("r", 4);
-        node_e.transition(t)
-            .attr("transform", d => "translate(" + d.x + "," + d.y + ")" );
-
-        const text_to_node = (d, i ,context, full=false) => {
-            let text = (d.data.taxId ? "* " : "+ ");
-            text += (d.data.number_of_leaves > 1 ? ` (${d.data.number_of_leaves}) ` : "");
-            let name =  ((d.data.expanded && !d.data.taxId) ? "" : d.label);
-            text += (full?name:name.slice(0,5)+"...");
-            return text;
-        };
-        node_e.append("text")
-            .attr("dy", 3)
-            .attr("x", d =>  d.children ? (d.parent ? -8 : 0) : 8)
-            .style("text-anchor", d => d.parent ? this.main.collapse_tree?"start":"end" : "middle")
-            .style("transform", d=> {
-                if (this.main.collapse_tree)
-                    return d.children?
-                        (d.parent?"rotate(-90deg) translate(10px, -6px)":"translate(0px, -8px)"):
-                        "rotate(-90deg) translate(0, 6px)"
-
-            })
-            .text(text_to_node)
-            .on("mouseover", (d,i,c)=>d3.select(c[i]).text(text_to_node(d,i,c,true)))
-            .on("mouseout", (d,i,c)=>d3.select(c[i]).text(text_to_node(d,i,c,false)));
 
 
+
+    }
+    draw_node(node, i, context) {
+        const g =d3.select(context[i]);
+        g.append("circle");
+        g.attr("transform", d => "translate(" + d.x + "," + d.y + ")scale(0)" )
+            .transition(this.t).delay(300)
+            .attr("transform", d => "translate(" + d.x + "," + d.y + ")scale(1)" );
+
+        g.append("text")
+            .attr("class", "label-leaves")
+            .attr("x",-this.r)
+            .attr("y",-this.r)
+            .style("text-anchor","end")
+            .text(d=>d.data.number_of_leaves > 1 ? d.data.number_of_leaves: "");
+
+        g.append("text")
+            .attr("class", "label-species")
+            .attr("y",this.r+3)
+            .attr("x",this.r+3)
+            .style("text-anchor","start")
+            .style("transform","rotate(-90deg)")
+            .text(d=>d.label=="ROOT"?"":d.label);
+
+
+        g.append("path")
+            .attr("class","node-type")
+            .style("fill", "white");
+
+        this.update_node(node, i, context);
+    }
+    update_node(node, i, context) {
+        const g =d3.select(context[i]);
+        const r = this.r;
+
+        g.selectAll("circle")
+            .attr("r", d=>(d.children||d._children)?r:d.data.loaded?r/2:r-2);
+
+        g.selectAll(".node-type")
+            .attr("d", (d) =>{
+                if (d.data.loaded) return "";
+                const s = d3.symbol().size(4*r*r/5);
+                if (d.children||d._children) {
+                    s.type(d.data.expanded ? d3.symbolTriangle : d3.symbolCross);
+                }else{
+                    s.type(d3.symbolCircle);
+                }
+                return s();
+            });
+        // g.selectAll(".label-species")
+        //     .style("opacity",d=>d.data.loaded?0.7:null);
     }
 }

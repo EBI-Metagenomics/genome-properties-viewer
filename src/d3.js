@@ -2,7 +2,7 @@ export {event, select, selectAll} from "d3-selection";
 export {text, xml, json} from "d3-request";
 export {range} from "d3-array";
 export {drag} from "d3-drag";
-export {stack, pie, arc} from "d3-shape";
+export {stack, pie, arc, symbol, symbolCross,symbolCircle, symbolTriangle} from "d3-shape";
 export {transition} from "d3-transition";
 export {stratify, cluster, tree, hierarchy} from "d3-hierarchy";
 export {entries, keys, values} from "d3-collection";

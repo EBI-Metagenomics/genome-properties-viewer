@@ -20,9 +20,11 @@ export default class GenomePropertiesTaxonomy {
         this.dipatcher = d3.dispatch(
             "changeOrder",
             "spaciesRequested",
-            "changeHeight"
+            "changeHeight",
+            "taxonomyLoaded"
         );
-        this.node_manager = new TaxonomyNodeManager(this);
+        this.node_r = 6;
+        this.node_manager = new TaxonomyNodeManager(this, this.node_r);
         return this;
     }
 
@@ -32,6 +34,7 @@ export default class GenomePropertiesTaxonomy {
             this.root = data;
             this.nodes = this.load_nodes(this.root);
             this.root.expanded=true;
+            this.dipatcher.call("taxonomyLoaded", this, this.root);
             this.update_tree(500);
         });
         return this;
@@ -149,6 +152,15 @@ export default class GenomePropertiesTaxonomy {
             });
         }
     }
+    requestAll(tree){
+        tree.expanded = true;
+        if (tree.taxId) {
+            this.dipatcher.call("spaciesRequested", this, tree.taxId);
+        }
+        if(tree.children) {
+            tree.children.forEach(d=>this.requestAll(d))
+        }
+    }
 
     update_tree(time=0, cell_side=null){
         if (this.root==null) return;
@@ -188,7 +200,7 @@ export default class GenomePropertiesTaxonomy {
             .size([this.width-this.cell_side*leaves.length, this.height]);
         tree(root);
         this.tree(root);
-        const t = d3.transition().duration(time),
+        const t = d3.transition().duration(time).delay(100),
             visible_nodes = root.descendants().filter(d=>(
                 d.data.expanded ||
                 d.parent.data.expanded ||
@@ -203,24 +215,26 @@ export default class GenomePropertiesTaxonomy {
             .data(root.links(), d=>
                 d.source.id>d.target.id?d.source.id+d.target.id:d.target.id+d.source.id);
 
-        link.transition(t).attr("d", (d, i) =>
+        link.style("stroke-dashoffset",0).transition(t).attr("d", (d, i) =>
             "M" + d.target.x + "," + d.target.y +
             "V" + (d.source.y+10) +
             "H" + d.source.x+
-            "V" + d.source.y
+            "V" + (d.source.y + this.node_r)
         );
 
-        link.exit().remove();
+        link.exit().transition(t).attr("stroke-dashoffset",-500)
+            .remove();
         link.enter().append("path")
             .attr("class", "link")
             .attr("d", (d, i) =>
                 "M" + d.target.x + "," + d.target.y +
                 "V" + (d.source.y+10) +
                 "H" + d.source.x+
-                "V" + d.source.y
+                "V" + (d.source.y + this.node_r)
             )
-            .attr("transform", "scale(0)")
-            .transition(t).attr("transform", "scale(1)")
+            .attr("stroke-dasharray",500)
+            .attr("stroke-dashoffset",-500)
+            .transition(t).attr("stroke-dashoffset",0)
         ;
 
         this.node_manager.draw_nodes(visible_nodes, t);
