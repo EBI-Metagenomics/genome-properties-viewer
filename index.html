@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <style>
+    body{
+        font: 12px sans-serif;
+    }
 
     line {
         stroke: #fff;
@@ -40,7 +43,6 @@
 
     .node--internal circle {
         fill: rgb(173, 73, 74);
-
     }
 
     g.node.loaded {
@@ -188,11 +190,36 @@
         vertical-align: text-bottom;
         padding: 2px;
     }
-    body{
-        font: 12px sans-serif;
 
+    div.info-tooltip{
+        position: absolute;
+        border: 1px solid rgb(173, 73, 74);
+        border-radius: 2px;
+        background: white;
+        opacity: 0.8;
+        top: 300px;
+        left: 500px;
+        visibility: hidden;
     }
-
+    div.info-tooltip ul{
+        list-style: none;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    div.info-tooltip ul>li{
+        padding-bottom: 4px;
+        overflow: hidden;
+    }
+    div.info-tooltip ul>li .label{
+        float: left;
+        font-weight: bold;
+        text-align: right;
+        width: 40%;
+        padding-right: 4px;
+    }
+    div.info-tooltip ul>li .content{
+        overflow: hidden;
+    }
 </style>
 <body>
 <div id="gp-controllers" class="top-controllers">
@@ -209,9 +236,9 @@
         </li>
         <li><label for="collapse_tree">Collapse tree:</label><input type="checkbox" id="collapse_tree" checked="checked"/></li>
     </ul>
-    <div class="gp-legends">
-    </div>
+    <div class="gp-legends"></div>
 </div>
+<div class="info-tooltip"></div>
 <div id="gp-viewer"></div>
 <script src="bin/d3.custom.min.js"></script>
 <script>
