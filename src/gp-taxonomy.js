@@ -64,13 +64,12 @@ export default class GenomePropertiesTaxonomy {
                 .on("drag", (d,i,c)=>{
                     this.height = d3.event.y;
                     d3.select(c[i])
-                    d3.select(c[i])
                         .attr("y1",this.height)
                         .attr("y2",this.height);
                 })
                 .on("end", ()=>{
-                    this.update_tree();
                     this.dipatcher.call("changeHeight",this, this.height);
+                    this.update_tree();
                 })
             );
         this.node_manager.tree_g = this.tree_g;
@@ -222,7 +221,7 @@ export default class GenomePropertiesTaxonomy {
             "V" + (d.source.y + this.node_r)
         );
 
-        link.exit().transition(t).attr("stroke-dashoffset",-500)
+        link.exit().transition(t).attr("stroke-dashoffset",-1000)
             .remove();
         link.enter().append("path")
             .attr("class", "link")
@@ -232,8 +231,8 @@ export default class GenomePropertiesTaxonomy {
                 "H" + d.source.x+
                 "V" + (d.source.y + this.node_r)
             )
-            .attr("stroke-dasharray",500)
-            .attr("stroke-dashoffset",-500)
+            .attr("stroke-dasharray",1000)
+            .attr("stroke-dashoffset",-1000)
             .transition(t).attr("stroke-dashoffset",0)
         ;
 

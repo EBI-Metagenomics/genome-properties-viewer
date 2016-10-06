@@ -3,17 +3,20 @@ import GenomePropertiesViewer from "./src/gp-viewer"
 import * as d3 from "./src/d3";
 export default {d3: d3,GenomePropertiesViewer:GenomePropertiesViewer};
 
-// TODO: change nodes-labels on the tree to provide options-info
-// TODO: MOve bottom panel to the top
-// TODO: Top genome properties as a dropdown
 // TODO: Filter rows by all with {YES, NO, PARTIAL}
+// TODO: Filter properties by text
+// TODO: Different labels for GP(Name, id, both)
+// TODO: Different labels for Species(species, tax-id, none)
+// TODO: Search species
 // TODO: changing touch gestures
 // TODO: Focus/Filter on a tax branch.
-// TODO: Piechart in bottom frame
-// TODO: height and width using window size
-// TODO: Color tree
-// TODO: Extend the backgroud as atransparent layer for events
 // TODO: scrollbars?
+// DONE: Color tree
+// DONE: Extend the backgroud as atransparent layer for events
+// DONE: height and width using window size
+// DONE: change nodes-labels on the tree to provide options-info
+// DONE: MOve bottom panel to the top
+// DONE: Top genome properties as a dropdown
 // DONE: tree frame resizable
 // DONE: Making the tree an exploratory widget
 // DONE: Genome properties categories
