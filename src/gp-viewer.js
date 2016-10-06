@@ -18,12 +18,14 @@ export default class GenomePropertiesViewer {
         server_tax = "taxonomy.json",
         hierarchy_path = "../test-files/gp.dag.txt",
         controller_element_selector="#gp-selector",
-        legends_element_selector=".gp-legends"
+        legends_element_selector=".gp-legends",
+        gp_text_filter_selector="#gp-filter",
     }){
         this.data = {};
         this.organisms = [];
         this.organism_names = {};
         this.organism_totals = {};
+        this.filter_text="";
         if (width==null){
             const rect = d3.select(element_selector).node().getBoundingClientRect();
             width = rect.width-margin.left;
@@ -138,6 +140,7 @@ export default class GenomePropertiesViewer {
         this.controller = new GenomePropertiesController({
             gp_element_selector: controller_element_selector,
             legends_element_selector: legends_element_selector,
+            gp_text_filter_selector: gp_text_filter_selector,
             gp_viewer: this,
             hierarchy_contorller: this.gp_hierarchy
         });
@@ -408,6 +411,10 @@ export default class GenomePropertiesViewer {
                         return true;
             return false;
         });
+        if(this.filter_text)
+            this.props = this.props.filter(e=>{
+                return e.name.toLowerCase().indexOf(this.filter_text.toLowerCase())!=-1;
+            });
         this.column_total_width = this.options.cell_side;
         this.x.range([
             this.options.width-this.column_total_width-this.options.cell_side*this.organisms.length,
@@ -607,4 +614,10 @@ export default class GenomePropertiesViewer {
 
     }
 
+    filter_gp(text){
+        if (text!=this.filter_text) {
+            this.filter_text = text;
+            this.update_viewer();
+        }
+    }
 }

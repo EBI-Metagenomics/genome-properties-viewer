@@ -7,6 +7,7 @@ export default class GenomePropertiesController {
         gp_element_selector=null,
         legends_element_selector=null,
         tooltip_selector=".info-tooltip",
+        gp_text_filter_selector=null,
         gp_viewer=null,
         hierarchy_contorller=null,
         width=400
@@ -28,6 +29,13 @@ export default class GenomePropertiesController {
         if (tooltip_selector){
             this.tooltip_selector = tooltip_selector;
             this.draw_tooltip(null, true);
+        }
+        this.text_filter="";
+        if (gp_text_filter_selector) {
+            d3.select(gp_text_filter_selector).on("keyup", (d,i,c)=>{
+                this.text_filter = c[i].value.length>2?c[i].value:"";
+                this.gp_viewer.filter_gp(this.text_filter);
+            });
         }
         this.width = width;
     }
