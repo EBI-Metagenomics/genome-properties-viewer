@@ -20,6 +20,9 @@ export default class GenomePropertiesViewer {
         controller_element_selector="#gp-selector",
         legends_element_selector=".gp-legends",
         gp_text_filter_selector="#gp-filter",
+        gp_label_selector="#gp_label",
+        tax_label_selector="#tax_label",
+        tax_search_selector="#tax-search"
     }){
         this.data = {};
         this.organisms = [];
@@ -28,7 +31,7 @@ export default class GenomePropertiesViewer {
         this.filter_text="";
         if (width==null){
             const rect = d3.select(element_selector).node().getBoundingClientRect();
-            width = rect.width-margin.left;
+            width = rect.width-margin.left-margin.right;
         }
         if (height==null){
             let rect = d3.select(element_selector).node().getBoundingClientRect();
@@ -137,13 +140,24 @@ export default class GenomePropertiesViewer {
                 this.update_total_per_organism_panel();
             });
 
+        this.legends_filter={YES: "", NO: "", PARTIAL: ""};
+        this.gp_label_type = "name";
+
         this.controller = new GenomePropertiesController({
             gp_element_selector: controller_element_selector,
             legends_element_selector: legends_element_selector,
             gp_text_filter_selector: gp_text_filter_selector,
+            gp_label_selector: gp_label_selector,
+            tax_label_selector: tax_label_selector,
+            tax_search_selector: tax_search_selector,
             gp_viewer: this,
+            gp_taxonomy: this.gp_taxonomy,
             hierarchy_contorller: this.gp_hierarchy
+        }).on("legendFilterChanged", filters => {
+            this.legend_filters = filters;
+            this.update_viewer();
         });
+        this.gp_taxonomy.on("taxonomyLoaded",()=>this.controller.loadSearchOptions())
 
         this.draw_rows_panel();
         this.draw_masks();
@@ -154,9 +168,9 @@ export default class GenomePropertiesViewer {
         window.addEventListener('resize', (event)=>{
             d3.select(element_selector).select("svg").attr("height", 0);
             const rect = d3.select(element_selector).node().getBoundingClientRect();
-            this.options.width=rect.width-this.options.margin.left;
+            this.options.width=rect.width-this.options.margin.left-this.options.margin.right;
             this.options.height=rect.height- margin.top;
-            this.gp_taxonomy.width=rect.width-margin.left
+            this.gp_taxonomy.width=rect.width-margin.left;
             d3.select(element_selector).select("svg")
                 .attr("width", rect.width)
                 .attr("height", rect.height);
@@ -347,9 +361,6 @@ export default class GenomePropertiesViewer {
             .attr("transform", "translate("+
                 (-this.options.margin.left+this.svg.x) + ", " +
                 (this.options.height-this.options.margin.bottom-ph) + ")");
-        this.svg.selectAll(".total-background")
-            .attr("y", this.options.height-this.options.margin.bottom-ph)
-            .attr("height", ph);
 
         const arc = d3.arc()
             .outerRadius(ph*0.4)
@@ -400,6 +411,34 @@ export default class GenomePropertiesViewer {
             .style("fill", d => this.c[d.data.key]);
 
     }
+    filter_by_text(){
+        if(this.filter_text)
+            this.props = this.props.filter(e=>{
+                return e.name.toLowerCase().indexOf(this.filter_text.toLowerCase())!=-1;
+            });
+    }
+    filter_by_legend(){
+        if(this.legend_filters){
+            for (let x in this.legend_filters){
+                if (this.legend_filters[x]=="∀")
+                    this.props = this.props.filter(e=>{
+                        const values =d3.entries(e.values).filter(e=>e.key!="TOTAL");
+                        return values.filter(e=>e.value==x).length==values.length;
+                    });
+                else if (this.legend_filters[x]=="∃")
+                    this.props = this.props.filter(e=>{
+                        const values =d3.entries(e.values).filter(e=>e.key!="TOTAL");
+                        return values.filter(e=>e.value==x).length>0;
+                    });
+                else if (this.legend_filters[x]=="∄")
+                    this.props = this.props.filter(e=>{
+                        const values =d3.entries(e.values).filter(e=>e.key!="TOTAL");
+                        return values.filter(e=>e.value==x).length==0;
+                    });
+
+            }
+        }
+    }
 
     update_viewer(zoom=false, time=0) {
         this.props = d3.values(this.data).filter(e=>{
@@ -411,10 +450,9 @@ export default class GenomePropertiesViewer {
                         return true;
             return false;
         });
-        if(this.filter_text)
-            this.props = this.props.filter(e=>{
-                return e.name.toLowerCase().indexOf(this.filter_text.toLowerCase())!=-1;
-            });
+        this.filter_by_text();
+        this.filter_by_legend();
+
         this.column_total_width = this.options.cell_side;
         this.x.range([
             this.options.width-this.column_total_width-this.options.cell_side*this.organisms.length,
@@ -472,14 +510,15 @@ export default class GenomePropertiesViewer {
 
         row_p.selectAll(".row_title")
             .attr("x", this.x.range()[0]-6)
-            .attr("y", this.column_total_width/2);
+            .attr("y", this.column_total_width/2)
+            .text( d => this.gp_label_type=="name"?d.name:this.gp_label_type=="id"?d.property:d.property+":"+d.name );
 
         row.append("text")
             .attr("class", "row_title")
             .attr("x", this.x.range()[0]-6)
             .attr("y", this.column_total_width/2)
             .attr("text-anchor", "end")
-            .text( d => d.name );
+            .text( d => this.gp_label_type=="name"?d.name:this.gp_label_type=="id"?d.property:d.property+":"+d.name );
 
 
         let column_p = this.cols.selectAll(".column")
@@ -619,5 +658,9 @@ export default class GenomePropertiesViewer {
             this.filter_text = text;
             this.update_viewer();
         }
+    }
+    change_gp_label(type){
+        this.gp_label_type = type;
+        this.update_viewer();
     }
 }

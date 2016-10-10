@@ -7,6 +7,7 @@ body{
     margin: 0;
 }
 
+
 line {
     stroke: #fff;
 }
@@ -67,12 +68,6 @@ g.node.loaded {
     stroke: rgb(173, 73, 74);
     stroke-opacity: 0.7;
     stroke-width: 1.5px;
-}
-.total_cell, .total_cell_org {
-    opacity: 0.6;
-}
-.total_cell:hover, .total_cell_org:hover {
-    opacity: 1;
 }
 .legend_value {
     text-shadow: 0 0;
@@ -141,6 +136,7 @@ g.node.loaded {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 5px;
 }
 .top-controllers>ul {
     margin:0;
@@ -210,8 +206,74 @@ div.info-tooltip ul>li .content{
     overflow: hidden;
 }
 div.container {
-    padding: 10px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    height: 97%;
+    height: 95%;
+    background: #efefef;
 }
+div.container h1{
+    font-weight: 100;
+    font-size: 3em;
+    margin: -5px 0 10px 0;
+    text-align: center;
+}
+
+div.container>div {
+    background: white;
+}
+.top-controllers>div{
+    background: white;
+    border: 3px solid rgb(230, 230, 230);
+}
+.top-controllers>div>ul {
+    list-style-type: none;
+    padding: 0 10px 0 20px;
+}
+.top-controllers>div ul li{
+    padding-bottom: 4px;
+}
+.top-controllers>div ul li label{
+    color: gray;
+}
+.top-controllers input[type=text], .top-controllers select{
+    width: 197px;
+}
+.top-controllers>div header{
+    position: relative;
+    top: -0.7em;
+    margin-bottom: -0.7em;
+    font-weight: bold;
+    color: #666;
+    text-shadow: 0 0 3px white;
+}
+.top-controllers a.toggle-controllers{
+
+}
+
+div.container .top-block{
+    margin-bottom: 3px;
+    padding: 4px;
+    background: #FAFAFA;
+}
+.color.filter::after{
+    content: attr(type);
+    position: relative;
+    bottom: -1em;
+    right: 0;
+    font-size: 0.8em;
+}
+.color.filter{
+    box-shadow: 0 0 3px rgb(173, 73, 74);
+}
+
+
+.autocomplete-suggestions {
+    text-align: left; cursor: default; border: 1px solid #ccc; border-top: 0; background: #fff; box-shadow: -1px 1px 3px rgba(0,0,0,.1);
+
+    /* core styles should not be changed */
+    position: absolute; display: none; z-index: 9999; max-height: 254px; overflow: hidden; overflow-y: auto; box-sizing: border-box;
+}
+.autocomplete-suggestion { position: relative; padding: 0 .6em; line-height: 23px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 1.02em; color: #333; }
+.autocomplete-suggestion b { font-weight: normal; color: #1f8dd6; }
+.autocomplete-suggestion.selected { background: #f0f0f0; }

@@ -5,22 +5,47 @@
 </head>
 <body>
 <div class="container">
-    <div>
+    <h1>Genome Poperties Viewer</h1>
+    <div class="top-block">
         <div id="gp-controllers" class="top-controllers">
-            <ul>
-                <li><label for="tax-search">Search Species:</label>
-                    <input type="text" id="tax-search">
-                </li>
-                <li><label for="gp-selector">Genome Properties:</label>
-                    <div id="gp-selector" class="selector"></div>
+            <div>
+                <header>Taxonomy Options</header>
+                <ul>
+                    <li><label for="tax-search">Search:</label><br/>
+                        <input type="text" id="tax-search">
+                    </li>
+                    <li><input type="checkbox" id="collapse_tree" checked="checked"/><label for="collapse_tree">Collapse tree</label></li>
+                    <li><label for="tax_label">Labels:</label><br/>
+                        <select id="tax_label">
+                            <option value="name">Species</option>
+                            <option value="id">Tax ID</option>
+                            <option value="both">Both</option>
+                        </select>
+                    </li>
 
-                </li>
-                <li><label for="gp-filter">Filter Genome Properties:</label>
-                    <input type="text" id="gp-filter">
-                </li>
-                <li><label for="collapse_tree">Collapse tree:</label><input type="checkbox" id="collapse_tree" checked="checked"/></li>
-            </ul>
-            <div class="gp-legends"></div>
+                </ul>
+            </div>
+            <div>
+                <header>Genome Properties Options</header>
+                <ul>
+                    <li><label for="gp-selector">Top level category:</label><br/>
+                        <div id="gp-selector" class="selector"></div>
+                    </li>
+                    <li><label for="gp-filter">Filter:</label><br/>
+                        <input type="text" id="gp-filter">
+                    </li>
+                    <li><label for="gp_label">Label:</label><br/>
+                        <select id="gp_label">
+                            <option value="name">Name</option>
+                            <option value="id">ID</option>
+                            <option value="both">Both</option>
+                        </select>
+                    </li>
+                </ul>
+            </div>
+            <div class="gp-legends">
+                <header>Legends</header>
+            </div>
         </div>
     </div>
     <div id="gp-viewer"></div>
@@ -43,7 +68,6 @@
             var id = ids[i];
             viewer.load_genome_properties_file(id.trim());
         }
-
     });
     d3.select("#order").on("change", function() {
         viewer.order_organisms(this.value);

@@ -131,7 +131,24 @@ export default class TaxonomyNodeManager {
             .attr("x",this.r+3)
             .style("text-anchor","start")
             .style("transform","rotate(-90deg)")
-            .text(d=>d.label=="ROOT"?"":d.label);
+            .text(d=> {
+                let label= "";
+                if (d.label!="ROOT") {
+                    if (d.children || d._children)
+                        label = d.label;
+                    else {
+                        switch (this.main.tax_label_type) {
+                            case "id":
+                                label = d.data.taxId;
+                                break;
+                            case "both":
+                                label = d.data.taxId+": "+d.label;
+                                break;
+                        }
+                    }
+                }
+                return label
+            });
 
 
         g.append("path")
@@ -158,7 +175,23 @@ export default class TaxonomyNodeManager {
                 }
                 return s();
             });
-        // g.selectAll(".label-species")
-        //     .style("opacity",d=>d.data.loaded?0.7:null);
+        g.selectAll(".label-species")
+            .text(d=> {
+                let label= "";
+                if (d.label!="ROOT") {
+                    label = d.label;
+                    if (d.data.taxId){
+                        switch (this.main.tax_label_type) {
+                            case "id":
+                                label = d.data.taxId;
+                                break;
+                            case "both":
+                                label = d.data.taxId+": "+d.label;
+                                break;
+                        }
+                    }
+                }
+                return label
+            });
     }
 }

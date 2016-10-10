@@ -24,6 +24,7 @@ export default class GenomePropertiesTaxonomy {
             "taxonomyLoaded"
         );
         this.node_r = 6;
+        this.tax_label_type = "name";
         this.node_manager = new TaxonomyNodeManager(this, this.node_r);
         return this;
     }
@@ -251,5 +252,9 @@ export default class GenomePropertiesTaxonomy {
     on(typename, callback){
         this.dipatcher.on(typename, callback);
         return this;
+    }
+    change_tax_label(type){
+        this.tax_label_type = type;
+        this.update_tree();
     }
 }

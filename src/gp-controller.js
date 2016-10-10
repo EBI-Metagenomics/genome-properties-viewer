@@ -1,6 +1,7 @@
 "use strict";
 
 import * as d3 from "./d3";
+import "js-autocomplete-tremby";
 
 export default class GenomePropertiesController {
     constructor({
@@ -9,11 +10,22 @@ export default class GenomePropertiesController {
         tooltip_selector=".info-tooltip",
         gp_text_filter_selector=null,
         gp_viewer=null,
+        gp_taxonomy=null,
+        gp_label_selector=null,
+        tax_label_selector=null,
+        tax_search_selector=null,
         hierarchy_contorller=null,
         width=400
     }){
         this.gp_viewer = gp_viewer;
         this.hierarchy_contorller = hierarchy_contorller;
+        this.gp_taxonomy = gp_taxonomy;
+        this.width = width;
+        this.dipatcher = d3.dispatch(
+            "textFilterChanged",
+            "legendFilterChanged"
+        );
+
         if (gp_element_selector) {
             this.gp_component = d3.select(gp_element_selector);
 
@@ -22,14 +34,17 @@ export default class GenomePropertiesController {
             else
                 this.hierarchy_contorller.on("hierarchyLoaded", ()=>this.draw_hierarchy_selector());
         }
+
         if(legends_element_selector) {
             this.legends_component = d3.select(legends_element_selector).append("ul");
             this.draw_legends();
         }
+
         if (tooltip_selector){
             this.tooltip_selector = tooltip_selector;
             this.draw_tooltip(null, true);
         }
+
         this.text_filter="";
         if (gp_text_filter_selector) {
             d3.select(gp_text_filter_selector).on("keyup", (d,i,c)=>{
@@ -37,11 +52,46 @@ export default class GenomePropertiesController {
                 this.gp_viewer.filter_gp(this.text_filter);
             });
         }
-        this.width = width;
+        if (gp_label_selector){
+            d3.select(gp_label_selector).on("change", (d,i,c)=>{
+                this.gp_viewer.change_gp_label(c[i].value);
+            });
+        }
+        if (tax_label_selector && gp_taxonomy){
+            d3.select(tax_label_selector).on("change", (d,i,c)=>{
+                this.gp_taxonomy.change_tax_label(c[i].value);
+            });
+        }
+        if (tax_search_selector && gp_taxonomy) {
+            this.search_options=[]
+            this.ac = new autoComplete({
+                selector: tax_search_selector,
+                minChars: 2,
+                source: (term, suggest) => {
+                    term = term.toLowerCase();
+                    suggest(this.search_options.filter(d=>d.toLowerCase().indexOf(term) != -1));
+                },
+                onSelect: (event, term, item)=> {
+                    const tax = term.substr(0,term.indexOf(":"));
+                    console.log(item);
+                    this.gp_taxonomy.dipatcher.call("spaciesRequested",this.gp_taxonomy, tax);
+                    d3.select(tax_search_selector).node().value=""
+                }
+            });
+        }
     }
 
-    draw_tooltip(items=null, first_time=false){
+    loadSearchOptions(){
+        this.search_options = this.gp_taxonomy.organisms.map(e=>e+": "+this.gp_taxonomy.nodes[e].species)
+        // this.search_options.splice(0,0,...this.search_options.map(e=>this.gp_taxonomy.nodes[e].species))
+        // this.search_options = this.search_options.map(String);
+    }
+    draw_tooltip(items=null, first_time=false, header=null){
         const parent =d3.select(this.tooltip_selector);
+
+        if (header) parent.insert("header", ":first-child").text(header);
+        else parent.select("header").remove();
+
         if (first_time)
             this.tooltip_component = parent.append("ul");
 
@@ -79,9 +129,12 @@ export default class GenomePropertiesController {
 
     }
     draw_legends(total={YES: 0, NO: 0, PARTIAL: 0}) {
-
         const legend_item = this.legends_component.selectAll("li")
             .data(d3.entries(total).sort((a,b)=>a.key>b.key?-1:1), d=>d.key);
+
+        const legends_filter={YES: "", NO: "", PARTIAL: ""},
+            filter_symbols = ["", "∀", "∃", "∄"];
+
 
         legend_item.select(".color>div").html(d=>d.value>0?d.value:"&nbsp;");
 
@@ -92,6 +145,24 @@ export default class GenomePropertiesController {
             .attr("class", "color")
             .style("background", d => this.gp_viewer.c[d.key])
             .style("color", d => d.key=="NO"?"rgb(49, 130, 189)":"rgb(230,230,230)")
+            .style("cursor", "pointer")
+            .attr("type", "")
+            .on("click",(d,i,c)=>{
+                const e = d3.select(c[i]), //Element
+                    cu = filter_symbols.indexOf(e.attr("type")), //Current
+                    n = (cu+1)%filter_symbols.length; //Next
+
+                e   .classed("filter", filter_symbols[n]!="")
+                    .attr("type", filter_symbols[n]);
+                legends_filter[d.key]=filter_symbols[n];
+                this.dipatcher.call("legendFilterChanged", this, legends_filter);
+            })
+            .on("mouseover", d=>this.draw_tooltip({
+                    "∀": `All the species in the row have the value (${d.key})`,
+                    "∃": `There is at least one species in each row with the value (${d.key})`,
+                    "∄": `There is not a single species in each row with the value (${d.key})`
+                }, false, "Click in this area to apply one of the following filters"))
+            .on("mouseout", d=>this.draw_tooltip())
             .append("div")
             .style("margin", "0 auto")
             .style("padding", "2px");
@@ -161,6 +232,10 @@ export default class GenomePropertiesController {
         }
         this.gp_component.select(".options ul").selectAll(".top-level-option div")
             .style("background", d=> d.enable?this.hierarchy_contorller.color(d.id):"#e3e3e3");
+    }
+    on(typename, callback){
+        this.dipatcher.on(typename, callback);
+        return this;
     }
 
 }
