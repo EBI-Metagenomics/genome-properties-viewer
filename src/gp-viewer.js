@@ -165,18 +165,20 @@ export default class GenomePropertiesViewer {
         this.gp_taxonomy.draw_tree_panel(this.svg);
         this.draw_total_per_organism_panel();
 
-        window.addEventListener('resize', (event)=>{
-            d3.select(element_selector).select("svg").attr("height", 0);
-            const rect = d3.select(element_selector).node().getBoundingClientRect();
-            this.options.width=rect.width-this.options.margin.left-this.options.margin.right;
-            this.options.height=rect.height- margin.top;
-            this.gp_taxonomy.width=rect.width-margin.left;
-            d3.select(element_selector).select("svg")
-                .attr("width", rect.width)
-                .attr("height", rect.height);
-            this.y.range([0, this.options.height]);
-            this.update_viewer();
-        });
+        window.addEventListener('resize', ()=>this.refresh_size());
+    }
+    refresh_size(){
+        const margin = this.options.margin;
+        d3.select(this.options.element_selector).select("svg").attr("height", 0);
+        const rect = d3.select(this.options.element_selector).node().getBoundingClientRect();
+        this.options.width=rect.width-this.options.margin.left-this.options.margin.right;
+        this.options.height=rect.height- margin.top;
+        this.gp_taxonomy.width=rect.width-margin.left;
+        d3.select(this.options.element_selector).select("svg")
+            .attr("width", rect.width)
+            .attr("height", rect.height);
+        this.y.range([0, this.options.height]);
+        this.update_viewer();
     }
 
     create_gradient(){
@@ -254,12 +256,12 @@ export default class GenomePropertiesViewer {
 
 
     load_genome_properties_file(tax_id) {
-        if (this.organisms.indexOf(tax_id) != -1)
+        if (this.organisms.indexOf(Number(tax_id)) != -1)
             return;
         d3.text(`${this.options.server}${tax_id}`)
             .get((error, text) => {
                 if (error) throw error;
-                this.organisms.push(tax_id);
+                this.organisms.push(Number(tax_id));
                 this.organism_totals[tax_id] = {"YES":0, "NO":0, "PARTIAL":0};
                 d3.tsvParseRows(text, (d) => {
                     if (!(d[0] in this.data))
@@ -414,7 +416,8 @@ export default class GenomePropertiesViewer {
     filter_by_text(){
         if(this.filter_text)
             this.props = this.props.filter(e=>{
-                return e.name.toLowerCase().indexOf(this.filter_text.toLowerCase())!=-1;
+                return e.name.toLowerCase().indexOf(this.filter_text.toLowerCase())!=-1 ||
+                    String(e.property).toLowerCase().indexOf(this.filter_text.toLowerCase())!=-1;
             });
     }
     filter_by_legend(){
@@ -656,6 +659,9 @@ export default class GenomePropertiesViewer {
     filter_gp(text){
         if (text!=this.filter_text) {
             this.filter_text = text;
+            this.svg.y=0;
+            d3.select(".gpv-rows-group")
+                .attr("transform", "translate(" + this.svg.x + "," + this.svg.y + ")");
             this.update_viewer();
         }
     }

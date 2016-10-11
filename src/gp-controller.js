@@ -73,7 +73,6 @@ export default class GenomePropertiesController {
                 },
                 onSelect: (event, term, item)=> {
                     const tax = term.substr(0,term.indexOf(":"));
-                    console.log(item);
                     this.gp_taxonomy.dipatcher.call("spaciesRequested",this.gp_taxonomy, tax);
                     d3.select(tax_search_selector).node().value=""
                 }

@@ -247,14 +247,21 @@ div.container>div {
     color: #666;
     text-shadow: 0 0 3px white;
 }
-.top-controllers a.toggle-controllers{
-
-}
 
 div.container .top-block{
     margin-bottom: 3px;
     padding: 4px;
     background: #FAFAFA;
+    position: relative;
+}
+div.container .top-block .minimise{
+    position: absolute;
+    right: 3px;
+    top: 0;
+    cursor: pointer;
+}
+div.container .top-block .minimise::after{
+    content: '▾';
 }
 .color.filter::after{
     content: attr(type);

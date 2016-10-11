@@ -7,6 +7,7 @@
 <div class="container">
     <h1>Genome Poperties Viewer</h1>
     <div class="top-block">
+        <a class="minimise"></a>
         <div id="gp-controllers" class="top-controllers">
             <div>
                 <header>Taxonomy Options</header>
@@ -75,6 +76,20 @@
     d3.select("#collapse_tree").on("change", function() {
         viewer.gp_taxonomy.collapse_tree = d3.select(this).property('checked');
         viewer.update_viewer();
+    });
+    d3.select(".minimise").on("click",(d,i,c)=>{
+        const on = d3.select(c[i]).classed("on");
+        d3.selectAll(".top-controllers>div")
+                .style("max-height", on?"0px":"500px")
+                .style("overflow", on?null:"hidden")
+                .transition(200)
+                .style("max-height", on?"500px":"0px")
+                .style("opacity", on?1:0);
+        d3.select(c[i]).transition(200).style("transform", on?"rotate(0deg)":"rotate(180deg)");
+        d3.selectAll(".top-controllers").transition(200).style("padding", on?"5px":"0px");
+        d3.select(c[i]).classed("on", !on);
+        setTimeout(function(){ viewer.refresh_size(); }, 250);
+
     });
 
 </script>
