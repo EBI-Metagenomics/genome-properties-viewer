@@ -13,12 +13,12 @@ line {
 }
 
 text {
-    font: 10px sans-serif ;
+    font: 12px sans-serif ;
     text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
     fill: #80808f;
 }
 text.col_title, text.row_title {
-    opacity: 0.5;
+    opacity: 0.7;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -37,7 +37,6 @@ text.col_title:hover, text.row_title:hover, text.active, .node text.active {
 }
 
 .node text {
-    font: 10px sans-serif;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -256,12 +255,16 @@ div.container .top-block{
 }
 div.container .top-block .minimise{
     position: absolute;
-    right: 3px;
+    right: 1em;
     top: 0;
     cursor: pointer;
 }
 div.container .top-block .minimise::after{
     content: '▾';
+    position: absolute;
+}
+div.container .top-block .minimise.on::after {
+    transform: rotate(180deg);
 }
 .color.filter::after{
     content: attr(type);

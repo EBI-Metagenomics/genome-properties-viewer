@@ -379,11 +379,11 @@ export default class GenomePropertiesViewer {
                 d=>d.key);
 
         cells_t.transition(t)
-            .attr("transform", (d,i)=>"translate("+(this.x(i)+ph/2+this.options.margin.left)+", "+ph*0.5+")");
+            .attr("transform", (d,i)=> "translate("+(this.x(this.organisms.indexOf(+d.key))+ph/2+this.options.margin.left)+", "+ph*0.5+")");
 
         const g_e = cells_t.enter().append("g")
             .attr("class", "total_cell_org")
-            .attr("transform", (d,i)=>"translate("+(this.x(i)+ph/2+this.options.margin.left)+", "+ph*0.5+")")
+            .attr("transform", (d,i)=>"translate("+(this.x(this.organisms.indexOf(+d.key))+ph/2+this.options.margin.left)+", "+ph*0.5+")")
             .on("mouseover", p => {
                 d3.selectAll(".node--leaf text").classed("active", function() {
                     return this.textContent == p.key;
