@@ -39,7 +39,7 @@ export default class TaxonomyNodeManager {
 
             })
             .on("click", d=>{
-                if(d.data.taxId){ //Only leaves have taxId attached
+                if(!d.data.children || d.data.children.length==0){ //Only leaves have taxId attached
                     this.main.dipatcher.call("spaciesRequested",this.main, d.data.taxId);
                 }
                 if (d.parent) {
@@ -48,7 +48,7 @@ export default class TaxonomyNodeManager {
                 }
             })
             .on("dblclick", d=>{
-                if(d.data.taxId){ //Only leaves have taxId attached
+                if(!d.data.children || d.data.children.length==0){ //Only leaves have taxId attached
                     this.main.dipatcher.call("spaciesRequested",this.main, d.data.taxId);
                 }
                 if (d.parent) {

@@ -154,7 +154,7 @@ export default class GenomePropertiesTaxonomy {
     }
     requestAll(tree){
         tree.expanded = true;
-        if (tree.taxId) {
+        if (!tree.children || tree.children.length==0) {
             this.dipatcher.call("spaciesRequested", this, tree.taxId);
         }
         if(tree.children) {
