@@ -17,6 +17,7 @@ export default class GenomePropertiesViewer {
         server= "../test-files/SUMMARY_FILE_",
         server_tax = "taxonomy.json",
         hierarchy_path = "../test-files/gp.dag.txt",
+        whitelist_path = "../test-files/gp_white_list.json",
         controller_element_selector="#gp-selector",
         legends_element_selector=".gp-legends",
         gp_text_filter_selector="#gp-filter",
@@ -29,11 +30,13 @@ export default class GenomePropertiesViewer {
         this.organism_names = {};
         this.organism_totals = {};
         this.filter_text="";
-        if (width==null){
+        this.whitelist=null;
+
+        if (width===null){
             const rect = d3.select(element_selector).node().getBoundingClientRect();
             width = rect.width-margin.left-margin.right;
         }
-        if (height==null){
+        if (height===null){
             let rect = d3.select(element_selector).node().getBoundingClientRect();
             if (rect.height<1) {
                 d3.select(element_selector).style("flex", "1");
@@ -56,6 +59,9 @@ export default class GenomePropertiesViewer {
         };
         this.current_order=null;
 
+        if(whitelist_path){
+            d3.json(whitelist_path, (data)=>this.whitelist = data);
+        }
         this.svg = d3.select(element_selector).append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
@@ -256,6 +262,7 @@ export default class GenomePropertiesViewer {
 
 
     load_genome_properties_file(tax_id) {
+        const wl = this.whitelist;
         if (this.organisms.indexOf(Number(tax_id)) != -1)
             return;
         d3.text(`${this.options.server}${tax_id}`)
@@ -264,6 +271,7 @@ export default class GenomePropertiesViewer {
                 this.organisms.push(Number(tax_id));
                 this.organism_totals[tax_id] = {"YES":0, "NO":0, "PARTIAL":0};
                 d3.tsvParseRows(text, (d) => {
+                    if (wl && wl.indexOf(d[0]) === -1) return;
                     if (!(d[0] in this.data))
                         this.data[d[0]] = {
                             property: d[0],
