@@ -262,35 +262,41 @@ export default class GenomePropertiesViewer {
 
 
     load_genome_properties_file(tax_id) {
-        const wl = this.whitelist;
-        if (this.organisms.indexOf(Number(tax_id)) != -1)
+        if (this.organisms.indexOf(Number(tax_id)) !== -1)
             return;
         d3.text(`${this.options.server}${tax_id}`)
             .get((error, text) => {
                 if (error) throw error;
-                this.organisms.push(Number(tax_id));
-                this.organism_totals[tax_id] = {"YES":0, "NO":0, "PARTIAL":0};
-                d3.tsvParseRows(text, (d) => {
-                    if (wl && wl.indexOf(d[0]) === -1) return;
-                    if (!(d[0] in this.data))
-                        this.data[d[0]] = {
-                            property: d[0],
-                            name: d[1],
-                            values: {"TOTAL": {"YES":0, "NO":0, "PARTIAL":0}},
-                            parent_top_properties: this.gp_hierarchy.get_top_level_gp_by_id(d[0])
-                        };
-                    if (tax_id in this.data[d[0]]["values"])
-                        return;
-                    this.data[d[0]]["values"][tax_id] = d[2];
-                    this.data[d[0]]["values"]["TOTAL"][d[2]]++;
-                    this.organism_totals[tax_id][d[2]]++;
-                });
-                this.gp_taxonomy.set_organisms_loaded(tax_id, this.organisms);
+                this.load_genome_properties_text(tax_id, text);
                 this.update_viewer(false,500);
             });
     }
 
-
+    load_genome_properties_text(label, text) {
+        const wl = this.whitelist;
+        let tax_id = Number(label);
+        if (Number.isNaN(tax_id))
+            tax_id = label;
+        this.organisms.push(tax_id);
+        this.organism_totals[tax_id] = {"YES":0, "NO":0, "PARTIAL":0};
+        d3.tsvParseRows(text, (d) => {
+            if (wl && wl.indexOf(d[0]) === -1) return;
+            if (!(d[0] in this.data))
+                this.data[d[0]] = {
+                    property: d[0],
+                    name: d[1],
+                    values: {"TOTAL": {"YES":0, "NO":0, "PARTIAL":0}},
+                    parent_top_properties: this.gp_hierarchy.get_top_level_gp_by_id(d[0])
+                };
+            if (tax_id in this.data[d[0]]["values"])
+                return;
+            this.data[d[0]]["values"][tax_id] = d[2];
+            this.data[d[0]]["values"]["TOTAL"][d[2]]++;
+            this.organism_totals[tax_id][d[2]]++;
+        });
+        this.gp_taxonomy.set_organisms_loaded(tax_id, this.organisms);
+        this.update_viewer(false,500);
+    }
 
     draw_rows_panel() {
         this.rows = this.svg.append("g")
@@ -387,11 +393,19 @@ export default class GenomePropertiesViewer {
                 d=>d.key);
 
         cells_t.transition(t)
-            .attr("transform", (d,i)=> "translate("+(this.x(this.organisms.indexOf(+d.key))+ph/2+this.options.margin.left)+", "+ph*0.5+")");
+            .attr("transform", (d,i)=> "translate("+(
+                this.x(this.organisms.indexOf(Number.isNaN(+d.key)?d.key:+d.key)) +
+                ph/2 + this.options.margin.left) +
+                ", "+ph*0.5+")"
+            );
 
         const g_e = cells_t.enter().append("g")
             .attr("class", "total_cell_org")
-            .attr("transform", (d,i)=>"translate("+(this.x(this.organisms.indexOf(+d.key))+ph/2+this.options.margin.left)+", "+ph*0.5+")")
+            .attr("transform", (d,i)=>"translate("+(
+                this.x(this.organisms.indexOf(Number.isNaN(+d.key)?d.key:+d.key)) +
+                ph/2 + this.options.margin.left) +
+                ", "+ph*0.5+")"
+            )
             .on("mouseover", p => {
                 d3.selectAll(".node--leaf text").classed("active", function() {
                     return this.textContent == p.key;

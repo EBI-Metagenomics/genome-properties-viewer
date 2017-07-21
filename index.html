@@ -25,8 +25,12 @@
                     <li><label for="tax-search">Search:</label><br/>
                         <input type="text" id="tax-search">
                     </li>
+                    <li>
+                        <label for="newfile">Upload File: </label>
+                        <input type="file" id="newfile" onchange="uploadFile()"/>
+                    </li>
                     <li><input type="checkbox" id="collapse_tree" checked="checked"/><label for="collapse_tree">Collapse tree</label></li>
-                    <li><label for="tax_label">Labels:</label><br/>
+                    <li><label for="tax_label">Labels:</label>
                         <select id="tax_label">
                             <option value="name">Species</option>
                             <option value="id">Tax ID</option>
@@ -102,6 +106,16 @@
         setTimeout(function(){ viewer.refresh_size(); }, 250);
 
     });
-
+    function uploadFile() {
+        const oFiles = document.getElementById("newfile").files;
+        for (let i=0; i < oFiles.length; i++){
+            const reader = new FileReader();
+            reader.fileToRead = oFiles[i];
+            reader.onload = function(evt) {
+                viewer.load_genome_properties_text(evt.target.fileToRead.name, evt.target.result);
+            };
+            reader.readAsText(oFiles[i]);
+        }
+    }
 </script>
 </body>

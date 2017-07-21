@@ -167,11 +167,10 @@ export default class GenomePropertiesTaxonomy {
         if (cell_side!=null) this.cell_side = cell_side;
         const root = d3.hierarchy(this.root);
 
-
         if (this.collapse_tree)
             this.prune_inner_nodes(root);
         else
-            root.descendants().forEach(e=>e.label=e.data.species);
+            root.descendants().forEach(e=>{e.label=e.data.species || e.data.taxId});
         root.leaves().filter(d=>d.data.loaded).forEach(d=>this.mark_branch_for_loaded_leaves(d));
         this.filter_collapsed_nodes(root);
         root.sort((a,b)=>{
@@ -240,7 +239,17 @@ export default class GenomePropertiesTaxonomy {
         this.node_manager.draw_nodes(visible_nodes, t);
     }
     set_organisms_loaded(tax_id, tax_loaded){
-        this.nodes[tax_id].loaded=true;
+        if (tax_id in this.nodes)
+            this.nodes[tax_id].loaded=true;
+        else{
+            this.nodes[tax_id] = {
+                id: tax_id,
+                loaded: true,
+                taxId: tax_id,
+                species: tax_id
+            };
+            this.root.children.push(this.nodes[tax_id]);
+        }
         // this.organisms.sort((a,b)=>{
         //     return tax_loaded.indexOf(tax_loaded.indexOf(String(this.nodes[a].taxId))-tax_loaded.indexOf(String(this.nodes[b].taxId)));
         // });
