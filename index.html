@@ -112,7 +112,12 @@
             const reader = new FileReader();
             reader.fileToRead = oFiles[i];
             reader.onload = function(evt) {
-                viewer.load_genome_properties_text(evt.target.fileToRead.name, evt.target.result);
+                try {
+                    viewer.load_genome_properties_text(evt.target.fileToRead.name, evt.target.result);
+                }catch(e){
+                    alert('Bad formatted file');
+                    console.error(e);
+                }
             };
             reader.readAsText(oFiles[i]);
         }

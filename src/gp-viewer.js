@@ -64,43 +64,44 @@ export default class GenomePropertiesViewer {
         }
         this.svg = d3.select(element_selector).append("svg")
             .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
+            .attr("height", "90vh")
+            // .attr("height", height + margin.top + margin.bottom)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-            .on('wheel',()=>{
-                // d3.event.preventDefault();
-                // ZOOMING
-                if (d3.event.ctrlKey || d3.event.shiftKey){
-                    this.svg.k= (this.svg.k!=null)?this.svg.k-d3.event.deltaY/2:0;
-                    if (this.svg.k<20) this.svg.k = 20;
-                    if (this.svg.k>120) this.svg.k = 120;
-                    this.options.cell_side = this.svg.k;
-                    this.update_viewer(true);
-                }
-                // PANNING-SCROLLING
-                this.svg.x= (this.svg.x!=null)?this.svg.x+d3.event.deltaX:0;
-                this.svg.x = Math.max(0,
-                    Math.min(this.svg.x,
-                        d3.select(".gpv-rows-group").node().getBBox().width
-                        - this.options.width
-                        - this.options.margin.left
-                    )
-                );
-
-                this.svg.y= (this.svg.y!=null)?this.svg.y+d3.event.deltaY:0;
-                this.svg.y = Math.min(0,
-                    Math.max(this.svg.y,
-                    this.options.height
-                    + this.options.margin.bottom
-                    - this.props.length*this.y(1)
-                    - this.options.margin.top)
-                );
-                d3.select(".gpv-rows-group")
-                    .attr("transform", "translate(" + this.svg.x + "," + this.svg.y + ")");
-                d3.select(".gpv-cols-group")
-                    .attr("transform", "translate(" + this.svg.x + ",0)");
-                this.update_viewer();
-            });
+            // .on('wheel',()=>{
+            //     // d3.event.preventDefault();
+            //     // ZOOMING
+            //     if (d3.event.ctrlKey || d3.event.shiftKey){
+            //         this.svg.k= (this.svg.k!=null)?this.svg.k-d3.event.deltaY/2:0;
+            //         if (this.svg.k<20) this.svg.k = 20;
+            //         if (this.svg.k>120) this.svg.k = 120;
+            //         this.options.cell_side = this.svg.k;
+            //         this.update_viewer(true);
+            //     }
+            //     // PANNING-SCROLLING
+            //     this.svg.x= (this.svg.x!=null)?this.svg.x+d3.event.deltaX:0;
+            //     this.svg.x = Math.max(0,
+            //         Math.min(this.svg.x,
+            //             d3.select(".gpv-rows-group").node().getBBox().width
+            //             - this.options.width
+            //             - this.options.margin.left
+            //         )
+            //     );
+            //
+            //     this.svg.y= (this.svg.y!=null)?this.svg.y+d3.event.deltaY:0;
+            //     this.svg.y = Math.min(0,
+            //         Math.max(this.svg.y,
+            //         this.options.height
+            //         + this.options.margin.bottom
+            //         - this.props.length*this.y(1)
+            //         - this.options.margin.top)
+            //     );
+            //     d3.select(".gpv-rows-group")
+            //         .attr("transform", "translate(" + this.svg.x + "," + this.svg.y + ")");
+            //     d3.select(".gpv-cols-group")
+            //         .attr("transform", "translate(" + this.svg.x + ",0)");
+            //     this.update_viewer();
+            // });
         ;
         this.svg.x=0;
         this.svg.y=0;
@@ -175,14 +176,14 @@ export default class GenomePropertiesViewer {
     }
     refresh_size(){
         const margin = this.options.margin;
-        d3.select(this.options.element_selector).select("svg").attr("height", 0);
+        d3.select(this.options.element_selector).select("svg");
         const rect = d3.select(this.options.element_selector).node().getBoundingClientRect();
         this.options.width=rect.width-this.options.margin.left-this.options.margin.right;
         this.options.height=rect.height- margin.top;
         this.gp_taxonomy.width=rect.width-margin.left;
         d3.select(this.options.element_selector).select("svg")
-            .attr("width", rect.width)
-            .attr("height", rect.height);
+            .attr("width", rect.width);
+            // .attr("height", rect.height);
         this.y.range([0, this.options.height]);
         this.update_viewer();
     }
@@ -272,6 +273,12 @@ export default class GenomePropertiesViewer {
             });
     }
 
+    checkLineisOK(line){
+        if (line.length !== 3)
+            return false;
+        return true;
+    }
+
     load_genome_properties_text(label, text) {
         const wl = this.whitelist;
         let tax_id = Number(label);
@@ -279,7 +286,14 @@ export default class GenomePropertiesViewer {
             tax_id = label;
         this.organisms.push(tax_id);
         this.organism_totals[tax_id] = {"YES":0, "NO":0, "PARTIAL":0};
-        d3.tsvParseRows(text, (d) => {
+        let allLinesAreOK = true;
+        const errorLines = [];
+        d3.tsvParseRows(text, (d, i) => {
+            if (!this.checkLineisOK(d)) {
+                allLinesAreOK = false;
+                errorLines.push([i, d]);
+
+            }
             if (wl && wl.indexOf(d[0]) === -1) return;
             if (!(d[0] in this.data))
                 this.data[d[0]] = {
@@ -294,39 +308,47 @@ export default class GenomePropertiesViewer {
             this.data[d[0]]["values"]["TOTAL"][d[2]]++;
             this.organism_totals[tax_id][d[2]]++;
         });
-        this.gp_taxonomy.set_organisms_loaded(tax_id, this.organisms);
-        this.update_viewer(false,500);
+        if (allLinesAreOK) {
+            this.gp_taxonomy.set_organisms_loaded(tax_id, this.organisms);
+            this.update_viewer(false,500);
+        } else {
+            delete this.organisms[tax_id];
+            delete this.organism_totals[tax_id];
+            throw new Error("File didn't load. The following lines have errors:" +
+                errorLines.map(l=>l.join(': ')).join('\n')
+            );
+        }
     }
 
     draw_rows_panel() {
         this.rows = this.svg.append("g")
             .attr("class", "gpv-rows-group")
             .attr("transform", "translate(0,0)")
-            // .call(d3.drag() // Window panning.
-            //     .subject(function(){
-            //         const g = d3.select(this),
-            //             t = g.attr("transform").match(/translate\((.*),(.*)\)/);
-            //         return {
-            //             x:Number(t[1]) + Number(g.attr("x")),
-            //             y:Number(t[2]) + Number(g.attr("y")),
-            //         };
-            //     })
-            //     .on("drag", function(_this) {
-            //         return function() {
-            //             d3.event.sourceEvent.stopPropagation();
-            //             const dy = Math.max(
-            //                 Math.min(d3.event.y, 0),
-            //                 _this.options.height
-            //                 + _this.options.margin.bottom
-            //                 - _this.props.length*_this.y(1)
-            //                 - _this.options.margin.top
-            //             );
-            //             d3.select(".gpv-rows-group")
-            //                 .attr("transform", d => "translate(0, " + dy + ")");
-            //             _this.update_viewer();
-            //         }
-            //     }(this))
-            // )
+            .call(d3.drag() // Window panning.
+                .subject(function(){
+                    const g = d3.select(this),
+                        t = g.attr("transform").match(/translate\((.*),(.*)\)/);
+                    return {
+                        x:Number(t[1]) + Number(g.attr("x")),
+                        y:Number(t[2]) + Number(g.attr("y")),
+                    };
+                })
+                .on("drag", function(_this) {
+                    return function() {
+                        d3.event.sourceEvent.stopPropagation();
+                        const dy = Math.max(
+                            Math.min(d3.event.y, 0),
+                            _this.options.height
+                            + _this.options.margin.bottom
+                            - _this.props.length*_this.y(1)
+                            - _this.options.margin.top
+                        );
+                        d3.select(".gpv-rows-group")
+                            .attr("transform", d => "translate(0, " + dy + ")");
+                        _this.update_viewer();
+                    }
+                }(this))
+            )
         ;
     }
 

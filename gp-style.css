@@ -80,7 +80,6 @@ g.node.loaded {
 }
 .selector ul{
     list-style-type: none;
-    margin-left: -40px;
     margin-top: 10px;
 }
 .selector ul li {
@@ -91,7 +90,6 @@ g.node.loaded {
     width: 200px;
     color: #666;
     text-align: right;
-    display: inline-block;
     margin-bottom: 2px;
     cursor: context-menu;
 }
@@ -124,8 +122,8 @@ g.node.loaded {
 .top-controllers {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 5px;
+    align-items: stretch;
+    padding: 5px 20px 5px 5px;
 }
 .top-controllers>ul {
     margin:0;
@@ -213,20 +211,20 @@ div.container>div {
 }
 .top-controllers>div{
     background: white;
-    border: 3px solid rgb(230, 230, 230);
+    border: 0;
+    margin-right: 2%;
 }
 .top-controllers>div>ul {
     list-style-type: none;
     padding: 0 10px 0 20px;
 }
-.top-controllers>div ul li{
-    padding-bottom: 4px;
-}
 .top-controllers>div ul li label{
     color: gray;
+    display: inline;
 }
 .top-controllers input[type=text], .top-controllers select{
     width: 197px;
+    display: block;
 }
 .top-controllers>div header{
     position: relative;
@@ -246,7 +244,7 @@ div.container .top-block{
 div.container .top-block .minimise{
     position: absolute;
     right: 1em;
-    top: 0;
+    top: -0.2em;
     cursor: pointer;
 }
 div.container .top-block .minimise::after{
@@ -259,7 +257,6 @@ div.container .top-block .minimise.on::after {
 .color.filter::after{
     content: attr(type);
     position: relative;
-    bottom: -1em;
     right: 0;
     font-size: 0.8em;
 }
