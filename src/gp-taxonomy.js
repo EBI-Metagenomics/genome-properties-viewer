@@ -231,6 +231,7 @@ export default class GenomePropertiesTaxonomy {
                 "H" + d.source.x+
                 "V" + (d.source.y + this.node_r)
             )
+            .style("stroke", d => d.target.data.isFromFile ? 'transparent': null)
             .attr("stroke-dasharray",1000)
             .attr("stroke-dashoffset",-1000)
             .transition(t).attr("stroke-dashoffset",0)
@@ -238,7 +239,7 @@ export default class GenomePropertiesTaxonomy {
 
         this.node_manager.draw_nodes(visible_nodes, t);
     }
-    set_organisms_loaded(tax_id, tax_loaded){
+    set_organisms_loaded(tax_id, isFromFile){
         if (tax_id in this.nodes)
             this.nodes[tax_id].loaded=true;
         else{
@@ -246,7 +247,8 @@ export default class GenomePropertiesTaxonomy {
                 id: tax_id,
                 loaded: true,
                 taxId: tax_id,
-                species: tax_id
+                species: tax_id,
+                isFromFile: isFromFile
             };
             this.root.children.push(this.nodes[tax_id]);
         }

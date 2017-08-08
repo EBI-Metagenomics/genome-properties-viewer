@@ -263,7 +263,13 @@ div.container .top-block .minimise.on::after {
 .color.filter{
     box-shadow: 0 0 3px rgb(173, 73, 74);
 }
-
+.gpv-scrollbar rect{
+    fill: rgba(180,180,180,0.4);
+    cursor: ns-resize;
+}
+.gpv-scrollbar rect:hover{
+    fill: rgba(180,180,180,0.7);
+}
 
 .autocomplete-suggestions {
     text-align: left; cursor: default; border: 1px solid #ccc; border-top: 0; background: #fff; box-shadow: -1px 1px 3px rgba(0,0,0,.1);

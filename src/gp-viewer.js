@@ -8,7 +8,7 @@ import GenomePropertiesController from "./gp-controller";
 export default class GenomePropertiesViewer {
 
     constructor({
-        margin={top: 180, right: 10, bottom: 0, left: 80},
+        margin={top: 180, right: 50, bottom: 0, left: 80},
         width= null,
         height= null,
         element_selector= "body",
@@ -171,7 +171,7 @@ export default class GenomePropertiesViewer {
         this.draw_columns_panel();
         this.gp_taxonomy.draw_tree_panel(this.svg);
         this.draw_total_per_organism_panel();
-
+        this.draw_scroll_bar();
         window.addEventListener('resize', ()=>this.refresh_size());
     }
     refresh_size(){
@@ -180,14 +180,68 @@ export default class GenomePropertiesViewer {
         const rect = d3.select(this.options.element_selector).node().getBoundingClientRect();
         this.options.width=rect.width-this.options.margin.left-this.options.margin.right;
         this.options.height=rect.height- margin.top;
-        this.gp_taxonomy.width=rect.width-margin.left;
+        this.gp_taxonomy.width=rect.width-margin.left-margin.right;
         d3.select(this.options.element_selector).select("svg")
             .attr("width", rect.width);
             // .attr("height", rect.height);
         this.y.range([0, this.options.height]);
         this.update_viewer();
     }
+    draw_scroll_bar(){
+        this.skip_scroll_refreshing = false;
+        this.scrollbar_g = this.svg.append("g")
+            .attr("class", "gpv-scrollbar")
+            .attr("transform", "translate("+
+                (this.options.width + 10) + ", 0)");
 
+        this.scrollbar = this.scrollbar_g.append("rect")
+            .attr("width", 10)
+            .attr("height", this.options.height)
+            .attr("rx", 5).attr("ry", 5)
+            .call(d3.drag() // Window panning.
+                // .subject(function(){
+                //     const g = d3.select(this),
+                //         t = g.attr("transform").match(/translate\((.*),(.*)\)/);
+                //     return {
+                //         x:Number(t[1]) + Number(g.attr("x")),
+                //         y:Number(t[2]) + Number(g.attr("y")),
+                //     };
+                // })
+                .on("end", ()=>this.skip_scroll_refreshing=false)
+                .on("drag", function(_this) {
+                    return function() {
+                        _this.skip_scroll_refreshing = true;
+                        d3.event.sourceEvent.stopPropagation();
+                        const th = _this.options.cell_side * _this.props.length;
+                        _this.scrollbar
+                            .attr("transform", "translate(0, "+
+                                Math.min(
+                                    Math.max(d3.event.y,0),
+                                    _this.options.height - this.getAttribute("height")
+                                ) + ")");
+                        let dy = -d3.event.y * th / (_this.options.height - this.getAttribute("height"));
+                        dy = Math.max(
+                            Math.min(dy, 0),
+                            -th+_this.options.height-_this.options.cell_side
+                        );
+                        d3.select(".gpv-rows-group")
+                            .attr("transform", d => "translate(0, " + dy + ")");
+                        _this.update_viewer();
+                    }
+                }(this))
+            );
+    }
+
+    update_scroll_bar(total_rows, visible_rows, current_row){
+        this.scrollbar_g
+            .attr("transform", "translate("+
+                (this.options.width + 10) + ", 0)");
+        this.scrollbar.transition()
+            .attr("height", this.options.height*Math.min(1,(total_rows!==0?visible_rows/total_rows:1)))
+            .attr("transform", "translate(0, "+
+                    (total_rows?current_row*this.options.height/total_rows:0) +
+                    ")");
+    }
     create_gradient(){
         const defs = this.svg.append("defs");
         const gradient_d = defs
@@ -282,7 +336,8 @@ export default class GenomePropertiesViewer {
     load_genome_properties_text(label, text) {
         const wl = this.whitelist;
         let tax_id = Number(label);
-        if (Number.isNaN(tax_id))
+        const isFromFile = Number.isNaN(tax_id);
+        if (isFromFile)
             tax_id = label;
         this.organisms.push(tax_id);
         this.organism_totals[tax_id] = {"YES":0, "NO":0, "PARTIAL":0};
@@ -309,7 +364,7 @@ export default class GenomePropertiesViewer {
             this.organism_totals[tax_id][d[2]]++;
         });
         if (allLinesAreOK) {
-            this.gp_taxonomy.set_organisms_loaded(tax_id, this.organisms);
+            this.gp_taxonomy.set_organisms_loaded(tax_id, isFromFile);
             this.update_viewer(false,500);
         } else {
             delete this.organisms[tax_id];
@@ -509,6 +564,7 @@ export default class GenomePropertiesViewer {
         const visible_rows = Math.round(this.options.height/this.options.cell_side);
 
         this.y.domain([0, visible_rows]);
+
         let dy = this.current_dy;
         if (!zoom){
             dy = -Math.floor(
@@ -517,6 +573,8 @@ export default class GenomePropertiesViewer {
             dy = dy < 0 ? 0 : dy;
             this.current_dy = dy;
         }
+        if (!this.skip_scroll_refreshing)
+            this.update_scroll_bar(this.props.length, visible_rows, dy);
         this.current_props = this.props.slice(dy, visible_rows + dy + 1);
         this.gp_taxonomy.update_tree(time, this.options.cell_side);
         this.current_order = this.gp_taxonomy.current_order;
