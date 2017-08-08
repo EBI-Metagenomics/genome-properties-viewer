@@ -39,16 +39,17 @@ text.col_title:hover, text.row_title:hover, text.active, .node text.active {
 
 g.node.loaded {
     cursor: ew-resize;
+    opacity:1;
 }
 
 .node--internal text {
     text-shadow: 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff;
-    opacity:0.5;
+    opacity:0.1;
 }
 .node text.label-species {
-    opacity:0.3;
+    opacity:0.1;
 }
-.node:hover text.label-species {
+.node:hover text.label-species, g.node.loaded text.label-species{
     opacity:1;
 }
 

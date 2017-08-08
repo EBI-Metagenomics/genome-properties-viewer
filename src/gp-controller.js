@@ -109,10 +109,11 @@ export default class GenomePropertiesController {
 
         if(d3.event) {
             const h =parent.node().getBoundingClientRect().height;
-            let top =10 + d3.event.y,
-                left = Math.max(d3.event.x - this.width/2,0);
+            console.log(d3.event);
+            let top =10 + d3.event.pageY,
+                left = Math.max(d3.event.pageX - this.width/2,0);
             if (top+h>this.gp_viewer.options.height+this.gp_viewer.options.margin.top)
-                top = d3.event.y - h -10;
+                top = d3.event.pageY - h -10;
             if (left+this.width>this.gp_viewer.options.width+this.gp_viewer.options.margin.left)
                 left=this.gp_viewer.options.width+this.gp_viewer.options.margin.left-this.width;
 
@@ -120,10 +121,6 @@ export default class GenomePropertiesController {
                 .style("width", this.width + "px")
                 .style("top", top + "px")
                 .style("left", left + "px");
-            // to adjust the position of the arrow I will need to modify its left value by
-            // 100*(d3.event.x-left)/this.width
-            // however this doesn't seem possible via d3 manipulation.
-            // Arrows were created as in http://www.w3schools.com/css/css_tooltip.asp
         }
 
     }

@@ -65,44 +65,8 @@ export default class GenomePropertiesViewer {
         this.svg = d3.select(element_selector).append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", "90vh")
-            // .attr("height", height + margin.top + margin.bottom)
             .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-            // .on('wheel',()=>{
-            //     // d3.event.preventDefault();
-            //     // ZOOMING
-            //     if (d3.event.ctrlKey || d3.event.shiftKey){
-            //         this.svg.k= (this.svg.k!=null)?this.svg.k-d3.event.deltaY/2:0;
-            //         if (this.svg.k<20) this.svg.k = 20;
-            //         if (this.svg.k>120) this.svg.k = 120;
-            //         this.options.cell_side = this.svg.k;
-            //         this.update_viewer(true);
-            //     }
-            //     // PANNING-SCROLLING
-            //     this.svg.x= (this.svg.x!=null)?this.svg.x+d3.event.deltaX:0;
-            //     this.svg.x = Math.max(0,
-            //         Math.min(this.svg.x,
-            //             d3.select(".gpv-rows-group").node().getBBox().width
-            //             - this.options.width
-            //             - this.options.margin.left
-            //         )
-            //     );
-            //
-            //     this.svg.y= (this.svg.y!=null)?this.svg.y+d3.event.deltaY:0;
-            //     this.svg.y = Math.min(0,
-            //         Math.max(this.svg.y,
-            //         this.options.height
-            //         + this.options.margin.bottom
-            //         - this.props.length*this.y(1)
-            //         - this.options.margin.top)
-            //     );
-            //     d3.select(".gpv-rows-group")
-            //         .attr("transform", "translate(" + this.svg.x + "," + this.svg.y + ")");
-            //     d3.select(".gpv-cols-group")
-            //         .attr("transform", "translate(" + this.svg.x + ",0)");
-            //     this.update_viewer();
-            // });
-        ;
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
         this.svg.x=0;
         this.svg.y=0;
         this.create_gradient();
