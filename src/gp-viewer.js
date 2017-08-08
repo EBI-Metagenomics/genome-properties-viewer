@@ -687,14 +687,14 @@ export default class GenomePropertiesViewer {
             .attr("class", "total_cell")
             .attr("transform", "translate("+(this.options.width-this.column_total_width/2)+", "+cell_height*0.5+")")
             .on("mouseover", mouseover)
-            .on("mouseout", mouseout)
-            .selectAll(".arc")
-            .data(pie(d3.entries(r.values["TOTAL"])), d=>d);
+            .on("mouseout", mouseout);
 
-        cells_t.selectAll(".arc")
-            .attr("d", arc);
+        const arcs = d3.select(c[i]).selectAll(".total_cell").selectAll(".arc")
+            .data(pie(d3.entries(r.values["TOTAL"])), d=>d.data.key);
 
-        g.enter().append("path")
+        arcs.attr("d", arc);
+
+        arcs.enter().append("path")
             .attr("class", "arc")
             .attr("d", arc)
             .style("fill", d => {

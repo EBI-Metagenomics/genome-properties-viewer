@@ -109,7 +109,6 @@ export default class GenomePropertiesController {
 
         if(d3.event) {
             const h =parent.node().getBoundingClientRect().height;
-            console.log(d3.event);
             let top =10 + d3.event.pageY,
                 left = Math.max(d3.event.pageX - this.width/2,0);
             if (top+h>this.gp_viewer.options.height+this.gp_viewer.options.margin.top)
