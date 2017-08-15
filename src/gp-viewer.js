@@ -31,12 +31,14 @@ export default class GenomePropertiesViewer {
         this.organism_totals = {};
         this.filter_text="";
         this.whitelist=null;
+        this.fixedHeight=height!==null;
 
         if (width===null){
             const rect = d3.select(element_selector).node().getBoundingClientRect();
             width = rect.width-margin.left-margin.right;
         }
-        if (height===null){
+
+        if (!this.fixedHeight){
             let rect = d3.select(element_selector).node().getBoundingClientRect();
             if (rect.height<1) {
                 d3.select(element_selector).style("flex", "1");
@@ -64,7 +66,7 @@ export default class GenomePropertiesViewer {
         }
         this.svg = d3.select(element_selector).append("svg")
             .attr("width", width + margin.left + margin.right)
-            .attr("height", "90vh")
+            .attr("height", height+margin.top+margin.bottom)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
         this.svg.x=0;
@@ -85,6 +87,10 @@ export default class GenomePropertiesViewer {
             })
             .on("spaciesRequested",(taxId)=>{
                 this.load_genome_properties_file(taxId);
+            })
+            .on("removeSpacies",(taxId,e)=>{
+                d3.event.stopPropagation();
+                this.remove_genome_properties_file(taxId);
             })
             .on("changeHeight", h=>{
                 const dh = this.options.margin.top-h;
@@ -143,7 +149,8 @@ export default class GenomePropertiesViewer {
         d3.select(this.options.element_selector).select("svg");
         const rect = d3.select(this.options.element_selector).node().getBoundingClientRect();
         this.options.width=rect.width-this.options.margin.left-this.options.margin.right;
-        this.options.height=rect.height- margin.top;
+        if (!this.fixedHeight)
+            this.options.height=rect.height- margin.top;
         this.gp_taxonomy.width=rect.width-margin.left-margin.right;
         d3.select(this.options.element_selector).select("svg")
             .attr("width", rect.width);
@@ -288,6 +295,24 @@ export default class GenomePropertiesViewer {
                 this.update_viewer(false,500);
             });
     }
+    remove_genome_properties_file(id) {
+        let tax_id = Number(id);
+        const isFromFile = Number.isNaN(tax_id);
+        if (isFromFile)
+            tax_id = id;
+        delete this.organism_totals[tax_id];
+        const i = this.organisms.indexOf(tax_id);
+        this.organisms.splice(i,1);
+        this.gp_taxonomy.remove_organism_loaded(tax_id, isFromFile);
+        if (this.organisms.length===0) {
+            this.data = {};
+        }
+        for (let gp in this.data){
+            this.data[gp].values["TOTAL"][this.data[gp].values[tax_id]]--;
+            delete this.data[gp].values[tax_id];
+        }
+        this.update_viewer(false,500);
+    }
 
     static checkLineisOK(line){
         return line.length === 3;
@@ -307,7 +332,6 @@ export default class GenomePropertiesViewer {
             if (!GenomePropertiesViewer.checkLineisOK(d)) {
                 allLinesAreOK = false;
                 errorLines.push([i, d]);
-
             }
             if (wl && wl.indexOf(d[0]) === -1) return;
             if (!(d[0] in this.data))
@@ -392,10 +416,6 @@ export default class GenomePropertiesViewer {
 
     refresh_organism_totals(){
         const ph=this.options.total_panel_height;
-        this.total_g
-            .attr("transform", "translate("+
-                (-this.options.margin.left) + ", " +
-                (this.options.height-this.options.margin.bottom-ph) + ")");
 
         for (let o in this.organism_totals)
             this.organism_totals[o]={"YES":0, "NO":0, "PARTIAL":0};
@@ -410,7 +430,7 @@ export default class GenomePropertiesViewer {
             t = d3.transition().duration(time);
         this.total_g
             .attr("transform", "translate("+
-                (-this.options.margin.left+this.svg.x) + ", " +
+                (-this.options.margin.left) + ", " +
                 (this.options.height-this.options.margin.bottom-ph) + ")");
 
         const arc = d3.arc()
@@ -433,6 +453,7 @@ export default class GenomePropertiesViewer {
                 ph/2 + this.options.margin.left) +
                 ", "+ph*0.5+")"
             );
+        cells_t.exit().remove();
 
         const g_e = cells_t.enter().append("g")
             .attr("class", "total_cell_org")
@@ -627,6 +648,8 @@ export default class GenomePropertiesViewer {
             .attr("x", (d,i) => this.x(i))
             .attr("height", cell_height)
             .attr("width", this.x.bandwidth());
+
+        cells.exit().remove();
 
         const mouseover = (p,i,c)=> {
             d3.select(c[i].parentNode).select("text").classed("active", true);

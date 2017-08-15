@@ -73,7 +73,8 @@
             GenomePropertiesViewer = gpv.GenomePropertiesViewer,
             viewer = new GenomePropertiesViewer({
                 element_selector: "#gp-viewer",
-                controller_element_selector: "#gp-selector"
+                controller_element_selector: "#gp-selector",
+                height:500
             });
     viewer.update_viewer();
     d3.select("#upload-button").on("click", function() {
@@ -118,9 +119,11 @@
                     alert('Bad formatted file');
                     console.error(e);
                 }
+                document.getElementById("newfile").value =null;
             };
             reader.readAsText(oFiles[i]);
         }
+
     }
 </script>
 </body>

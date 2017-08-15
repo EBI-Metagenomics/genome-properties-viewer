@@ -39,7 +39,7 @@ export default class TaxonomyNodeManager {
 
             })
             .on("click", d=>{
-                if(!d.data.children || d.data.children.length==0){ //Only leaves have taxId attached
+                if(!d.data.loaded && (!d.data.children || d.data.children.length===0)){ //Only leaves have taxId attached
                     this.main.dipatcher.call("spaciesRequested",this.main, d.data.taxId);
                 }
                 if (d.parent) {
@@ -154,7 +154,11 @@ export default class TaxonomyNodeManager {
 
         g.append("path")
             .attr("class","node-type")
-            .style("fill", "white");
+            .attr("fill", "white")
+            .on("click", d=>{
+                if (d.data.loaded)
+                    this.main.dipatcher.call("removeSpacies",this.main, d.data.taxId);
+            });
 
         this.update_node(node, i, context);
     }
@@ -167,15 +171,21 @@ export default class TaxonomyNodeManager {
 
         g.selectAll(".node-type")
             .attr("d", (d) =>{
-                if (d.data.loaded) return "";
                 const s = d3.symbol().size(4*r*r/5);
+                if (d.data.loaded) {
+                    s.type(d3.symbolCross);
+                    return s();
+                }
                 if (d.children||d._children) {
                     s.type(d.data.expanded ? d3.symbolTriangle : d3.symbolCross);
                 }else{
                     s.type(d3.symbolCircle);
                 }
                 return s();
-            });
+            })
+            .attr('transform', d => d.data.loaded ? 'rotate(45)' : null)
+            .attr('fill', d => d.data.loaded ? 'rgb(183, 83, 84)' : 'white')
+        ;
         g.selectAll(".label-species")
             .text(d=> {
                 let label= "";

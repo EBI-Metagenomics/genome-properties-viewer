@@ -21,7 +21,8 @@ export default class GenomePropertiesTaxonomy {
             "changeOrder",
             "spaciesRequested",
             "changeHeight",
-            "taxonomyLoaded"
+            "taxonomyLoaded",
+            "removeSpacies"
         );
         this.node_r = 6;
         this.tax_label_type = "name";
@@ -278,5 +279,13 @@ export default class GenomePropertiesTaxonomy {
     change_tax_label(type){
         this.tax_label_type = type;
         this.update_tree();
+    }
+    remove_organism_loaded(tax_id, isFromFile){
+        this.nodes[tax_id].loaded=false;
+        if(isFromFile){
+            const i = this.root.children.indexOf(this.nodes[tax_id]);
+            this.root.children.splice(i,1);
+            delete this.nodes[tax_id];
+        }
     }
 }
