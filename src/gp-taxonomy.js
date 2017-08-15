@@ -11,8 +11,8 @@ export default class GenomePropertiesTaxonomy {
         this.x = x;
         this.y = y;
         this.width = width;
-        this.height = height;
         this.cell_side = 20;
+        this.height = height;
         this.current_order=[];
         this.organisms=[];
         this.svg=null;
@@ -42,10 +42,10 @@ export default class GenomePropertiesTaxonomy {
     }
 
     load_nodes(node){
-        if (this.nodes==null) this.nodes = {};
+        if (this.nodes===null) this.nodes = {};
         this.nodes[node.id]=node;
         this.nodes[node.id].expanded=false;
-        if (node.children==null || node.children.length<1)
+        if (node.children===null || node.children.length<1)
             this.organisms.push(node.id);
         node.children.forEach(child=>{ this.load_nodes(child); });
         return this.nodes;
@@ -56,23 +56,35 @@ export default class GenomePropertiesTaxonomy {
         this.tree_g = svg.append("g")
             .attr("class", "taxon_tree")
             .attr("transform", `translate(${this.x}, ${this.y})`);
-        this.tree_g.append("line")
-            .attr("class","height-sizer")
-            .attr("x1",this.width)
-            .attr("y1",this.height)
-            .attr("y2",this.height)
+        const g = this.tree_g.append("g")
+            .attr("class","height-dragger")
+            .attr("transform",`translate(${-this.cell_side}, ${this.height-this.cell_side})`)
             .call(d3.drag()
                 .on("drag", (d,i,c)=>{
-                    this.height = d3.event.y;
-                    d3.select(c[i])
-                        .attr("y1",this.height)
-                        .attr("y2",this.height);
+                    this.height = d3.event.y+this.cell_side;
+                    g.attr("transform",`translate(${-this.cell_side}, ${this.height-this.cell_side})`)
                 })
                 .on("end", ()=>{
                     this.dipatcher.call("changeHeight",this, this.height);
                     this.update_tree();
                 })
             );
+        const side = this.cell_side/2;
+        g.append("rect")
+            .attr("y",-side/2)
+            .attr("width",side*2)
+            .attr("height",side)
+            .style("fill", "transparent");
+        for (let index=-1; index<2; index++){
+            g.append("line")
+                .attr("x1",side*2)
+                .attr("y1",index*side/2)
+                .attr("y2",index*side/2)
+                .style("stroke", "#333");
+        }
+        g.append("line")
+            .attr("class","height-sizer")
+            .attr("x1",this.width);
         this.node_manager.tree_g = this.tree_g;
     }
 
@@ -81,8 +93,7 @@ export default class GenomePropertiesTaxonomy {
         const ol = this.organisms.length,
             w_leaves = this.cell_side*ol,
             h = this.height-20,
-            w_fr = w_leaves/ol,
-            w_explore = this.width-w_leaves;
+            w_fr = w_leaves/ol;
         const heatmap_start =this.width
             - this.cell_side*(ol+1) // 1 for the TOTAL column
             +this.svg.x;
@@ -98,7 +109,7 @@ export default class GenomePropertiesTaxonomy {
                     node.deepness = (!node.deepness || child.deepness > node.deepness) ? child.deepness : node.deepness;
                 }
                 node.x = avg / node.children.length;
-                const tmp = (node.depth)*h/node.height;
+                // const tmp = (node.depth)*h/node.height;
                 // node.y = (tmp<h)?tmp:(node.parent.y+node.y)/2;
             } else {
                 node.x = heatmap_start+ (w_fr / 2 + w_fr * this.current_order.indexOf(this.organisms.indexOf(node.data.id)));
@@ -112,7 +123,7 @@ export default class GenomePropertiesTaxonomy {
         if (!tree.id) tree.id = tree.data.id;
         tree.depth = depth;
         if (tree.children){
-            if (tree.children.length == 1){
+            if (tree.children.length === 1){
                 tree.label = tree.children[0].data.species;
                 tree.height = tree.children[0].height;
                 tree.data = tree.children[0].data;
@@ -154,7 +165,7 @@ export default class GenomePropertiesTaxonomy {
     }
     requestAll(tree){
         tree.expanded = true;
-        if (!tree.children || tree.children.length==0) {
+        if (!tree.children || tree.children.length===0) {
             this.dipatcher.call("spaciesRequested", this, tree.taxId);
         }
         if(tree.children) {
@@ -163,8 +174,8 @@ export default class GenomePropertiesTaxonomy {
     }
 
     update_tree(time=0, cell_side=null){
-        if (this.root==null) return;
-        if (cell_side!=null) this.cell_side = cell_side;
+        if (this.root===null) return;
+        if (cell_side!==null) this.cell_side = cell_side;
         const root = d3.hierarchy(this.root);
 
         if (this.collapse_tree)
@@ -173,11 +184,11 @@ export default class GenomePropertiesTaxonomy {
             root.descendants().forEach(e=>{e.label=e.data.species || e.data.taxId});
         root.leaves().filter(d=>d.data.loaded).forEach(d=>this.mark_branch_for_loaded_leaves(d));
         this.filter_collapsed_nodes(root);
-        root.sort((a,b)=>{
+        root.sort((a)=>{
             return a.has_loaded_leaves?1:-1;
         });
         root.eachBefore(function computeHeight(node) {
-            var height = 0;
+            let height = 0;
             do node.height = height;
             while ((node = node.parent) && (node.height < ++height));
         });
@@ -192,11 +203,11 @@ export default class GenomePropertiesTaxonomy {
             org_name: d3.range(ol).sort((a, b) => leaves[a].data.species - leaves[b].data.species),
             tree: d3.range(ol).sort((a, b) => leaves[a].data.lineage - leaves[b].data.lineage),
         };
-        if (!this.current_order || this.current_order.length!=leaves.length)
+        if (!this.current_order || this.current_order.length!==leaves.length)
             this.current_order = this.orders.tree;
 
         const tree = d3.tree()
-            .size([this.width-this.cell_side*leaves.length, this.height]);
+            .size([this.width-this.cell_side*leaves.length, this.height-this.cell_side]);
         tree(root);
         this.tree(root);
         const t = d3.transition().duration(time).delay(100),

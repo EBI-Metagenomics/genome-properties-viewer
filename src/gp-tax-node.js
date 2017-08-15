@@ -127,13 +127,14 @@ export default class TaxonomyNodeManager {
 
         g.append("text")
             .attr("class", "label-species")
-            .attr("y",this.r+3)
+            .attr("y",this.r)
             .attr("x",this.r+3)
             .style("text-anchor","start")
-            .style("transform","rotate(-90deg)")
+            .style("transform","rotate(-70deg)")
+            .style("fill",d=>d.data.isFromFile?"darkred":null)
             .text(d=> {
                 let label= "";
-                if (d.label!="ROOT") {
+                if (d.label!=="ROOT") {
                     if (d.children || d._children)
                         label = d.label;
                     else {
@@ -178,7 +179,7 @@ export default class TaxonomyNodeManager {
         g.selectAll(".label-species")
             .text(d=> {
                 let label= "";
-                if (d.label!="ROOT") {
+                if (d.label!=="ROOT") {
                     label = d.label;
                     if (d.data.taxId){
                         switch (this.main.tax_label_type) {
