@@ -8,7 +8,7 @@ import GenomePropertiesController from "./gp-controller";
 export default class GenomePropertiesViewer {
 
     constructor({
-        margin={top: 180, right: 50, bottom: 0, left: 40},
+        margin={top: 180, right: 50, bottom: 10, left: 40},
         width= null,
         height= null,
         element_selector= "body",
@@ -44,7 +44,7 @@ export default class GenomePropertiesViewer {
                 d3.select(element_selector).style("flex", "1");
                 rect = d3.select(element_selector).node().getBoundingClientRect();
             }
-            height = rect.height - margin.top;
+            height = rect.height - margin.top - margin.bottom;
         }
 
         this.options = {
@@ -88,7 +88,7 @@ export default class GenomePropertiesViewer {
             .on("spaciesRequested",(taxId)=>{
                 this.load_genome_properties_file(taxId);
             })
-            .on("removeSpacies",(taxId,e)=>{
+            .on("removeSpacies",(taxId)=>{
                 d3.event.stopPropagation();
                 this.remove_genome_properties_file(taxId);
             })
@@ -136,12 +136,16 @@ export default class GenomePropertiesViewer {
         });
         this.gp_taxonomy.on("taxonomyLoaded",()=>this.controller.loadSearchOptions());
 
+        this.current_scroll={x:0,y:0};
         this.draw_rows_panel();
         this.draw_masks();
         this.draw_columns_panel();
         this.gp_taxonomy.draw_tree_panel(this.svg);
+        this.draw_zoom_panel();
         this.draw_total_per_organism_panel();
-        this.draw_scroll_bar();
+        this.draw_scroll_x_bar();
+        this.draw_scroll_y_bar();
+        this.draw_drag_area();
         window.addEventListener('resize', ()=>this.refresh_size());
     }
     refresh_size(){
@@ -150,15 +154,98 @@ export default class GenomePropertiesViewer {
         const rect = d3.select(this.options.element_selector).node().getBoundingClientRect();
         this.options.width=rect.width-this.options.margin.left-this.options.margin.right;
         if (!this.fixedHeight)
-            this.options.height=rect.height- margin.top;
+            this.options.height=rect.height- margin.top- margin.bottom;
         this.gp_taxonomy.width=rect.width-margin.left-margin.right;
         d3.select(this.options.element_selector).select("svg")
             .attr("width", rect.width);
             // .attr("height", rect.height);
         this.y.range([0, this.options.height]);
+
         this.update_viewer();
     }
-    draw_scroll_bar(){
+    draw_zoom_panel(){
+        this.zoom_panel = this.svg.append("g")
+            .attr("class", "gpv-zoomer")
+            .attr("transform", "translate(-20,"+
+                (-this.options.margin.top) + ")");
+        GenomePropertiesViewer.add_button(this.zoom_panel, "+", 10,30,10)
+            .on("click", ()=>{
+                this.cell_side = this.options.cell_side + 10;
+            });
+        GenomePropertiesViewer.add_button(this.zoom_panel, "-", 10,60,10)
+            .on("click", ()=>{
+                this.cell_side = this.options.cell_side - 10;
+            });
+
+    }
+    set cell_side(value){
+        const p = this.options.cell_side;
+        this.options.cell_side = Math.max(20, Math.min(200, value));
+        if (p !== this.options.cell_side){
+            this.current_scroll.y=this.current_scroll.y*this.options.cell_side/p;
+            this.transform_by_scroll();
+        }
+    }
+    static add_button(panel, text, x, y, r){
+        const c = panel.append("circle")
+            .attr("cx", x)
+            .attr("cy", y)
+            .attr("r", r);
+        panel.append("text")
+            .attr("x", x)
+            .attr("y", y)
+            .text(text);
+        return c;
+    }
+    draw_scroll_x_bar(){
+        this.scrollbar_x_g = this.svg.append("g")
+            .attr("class", "gpv-scrollbar")
+            .attr("transform", "translate(0,"+
+                (this.options.height - this.options.margin.bottom) + ")");
+
+        this.scrollbar_x_bg = this.scrollbar_x_g.append("rect")
+            .attr("class", "gpv-scrollbar-bg")
+            .attr("width", this.options.width)
+            .attr("height", this.options.margin.bottom);
+
+        this.scrollbar_x = this.scrollbar_x_g.append("rect")
+            .attr("class", "gpv-scrollbar-handle")
+            .attr("width", this.options.width)
+            .attr("height", this.options.margin.bottom)
+            .attr("rx", 5).attr("ry", 5)
+            .style("cursor", "ew-resize")
+            .call(d3.drag()
+                .on("end", ()=>this.skip_scroll_refreshing=false)
+                .on("drag", function(_this) {
+                    return function() {
+                        _this.skip_scroll_refreshing = true;
+                        d3.event.sourceEvent.stopPropagation();
+                        // const th = _this.options.cell_side * _this.props.length;
+                        const w =Number(_this.options.width);
+                        const sw = Number(this.getAttribute("width"));
+                        const x = Number(this.getAttribute("x"));
+                        const w1 = _this.rows.node().getBBox().width;
+                        const dx = Math.max(0,
+                            Math.min(
+                                x+d3.event.dx,
+                                _this.options.width - sw
+                            )
+                        );
+
+                        _this.scrollbar_x.attr("x",dx);
+
+                        _this.current_scroll.x = dx*w1/w;
+                        // let dy = -d3.event.y * th / (_this.options.height - this.getAttribute("height"));
+                        // dy = Math.min(0,
+                        //     Math.max(dy, -th+_this.options.height-_this.options.cell_side)
+                        // );
+                        _this.transform_by_scroll();
+                    }
+                }(this))
+            );
+    }
+
+    draw_scroll_y_bar(){
         this.skip_scroll_refreshing = false;
         this.scrollbar_g = this.svg.append("g")
             .attr("class", "gpv-scrollbar")
@@ -183,34 +270,56 @@ export default class GenomePropertiesViewer {
                         d3.event.sourceEvent.stopPropagation();
                         const th = _this.options.cell_side * _this.props.length;
                         _this.scrollbar
-                            .attr("transform", "translate(0, "+
+                            .attr("y",
                                 Math.max(0,
                                     Math.min(
                                         d3.event.y,
                                         _this.options.height - this.getAttribute("height")
                                     )
-                                ) + ")");
+                                ));
                         let dy = -d3.event.y * th / (_this.options.height - this.getAttribute("height"));
-                        dy = Math.min(0,
+                        _this.current_scroll.y = Math.min(0,
                             Math.max(dy, -th+_this.options.height-_this.options.cell_side)
                         );
-                        d3.select(".gpv-rows-group")
-                            .attr("transform", d => "translate(0, " + dy + ")");
-                        _this.update_viewer();
+                        _this.transform_by_scroll();
                     }
                 }(this))
             );
     }
+    transform_by_scroll(){
+        this.rows
+            .attr("transform", d => "translate("+this.current_scroll.x+", " + this.current_scroll.y + ")");
+        this.cols
+            .attr("transform", "translate("+
+                (this.current_scroll.x) + ", 0)");
+        this.gp_taxonomy.x = this.current_scroll.x;
+        this.update_viewer();
+    }
 
     update_scroll_bar(total_rows, visible_rows, current_row){
         this.scrollbar_g
-            .attr("transform", "translate("+
-                (this.options.width + 10) + ", 0)");
+            .attr("transform", "translate("+ (this.options.width + 10) + ", 0)");
+        this.scrollbar_x_g
+            .attr("transform", "translate(0,"+
+                (this.options.height - this.options.margin.bottom) + ")");
+
         this.scrollbar.transition()
             .attr("height", this.options.height*Math.min(1,(total_rows!==0?visible_rows/total_rows:1)))
-            .attr("transform", "translate(0, "+
-                    (total_rows?current_row*this.options.height/total_rows:0) +
-                    ")");
+            .attr("y",
+                    (total_rows?current_row*this.options.height/total_rows:0)
+                    );
+        this.scrollbar_x_bg.attr("width", this.options.width);
+        this.scrollbar_bg.attr("height", this.options.height);
+
+        const w1 = this.rows.node().getBBox().width;
+        const w2 = this.options.width;
+        const factor = w1>w2 ? w2/w1 : 1;
+        const pw =Number(this.scrollbar_x.attr("width"));
+        if (Math.abs(pw-w2*factor)>0.2) {
+            this.current_scroll.x=0;
+            this.scrollbar_x.transition()
+                .attr("width", w2 * factor);
+        }
     }
     create_gradient(){
         const defs = this.svg.append("defs");
@@ -261,12 +370,54 @@ export default class GenomePropertiesViewer {
             .attr("height", this.options.height-this.options.margin.bottom-ph);
         this.masks.append("rect")
             .attr("class", "total-background background")
-            .style("fill","#fff")
-            .style("opacity","0.7")
+            .style("fill", "url(#gradientup)")
             .attr("x", -this.options.margin.left)
             .attr("y", this.options.height-this.options.margin.bottom-ph)
             .attr("width", this.options.width + this.options.margin.left + this.options.margin.right)
-            .attr("height", ph);
+            .attr("height", ph*2);
+    }
+    draw_drag_area(){
+        const offset = 20;
+        const zoom_height = 90;
+        const g = this.svg.append("g")
+            .attr("class","height-dragger")
+            .attr("transform",`translate(${-offset}, 0)`)
+            .call(d3.drag()
+                .on("drag", ()=>{
+                    this.options.margin.dy = Math.min(
+                        Math.max(d3.event.y, zoom_height-this.options.margin.top),this.options.height - this.options.margin.bottom
+                    );
+                    // if (this.height-offset < 70)
+                    //     this.height=70+offset;
+                    g.attr("transform",`translate(${-offset}, ${this.options.margin.dy})`)
+                })
+                .on("end", ()=>{
+                    const new_height = this.options.margin.top+this.options.margin.dy;
+                    this.gp_taxonomy.dipatcher.call(
+                        "changeHeight",this.gp_taxonomy, new_height
+                    );
+                    g.attr("transform",`translate(${-offset}, 0)`);
+                    this.gp_taxonomy.height = this.options.margin.top;
+                    this.gp_taxonomy.y = -this.gp_taxonomy.height;
+                    this.gp_taxonomy.update_tree();
+                })
+            );
+        const side = this.options.cell_side/2;
+        g.append("rect")
+            .attr("y",-side/2)
+            .attr("width",side*2)
+            .attr("height",side)
+            .style("fill", "transparent");
+        for (let index=-1; index<2; index++){
+            g.append("line")
+                .attr("x1",side*2)
+                .attr("y1",index*side/2)
+                .attr("y2",index*side/2)
+                .style("stroke", "#333");
+        }
+        g.append("line")
+            .attr("class","height-sizer")
+            .attr("x1",this.options.width);
     }
 
     update_masks(){
@@ -274,7 +425,7 @@ export default class GenomePropertiesViewer {
         this.masks.select(".total-background")
             .attr("y", this.options.height-this.options.margin.bottom-ph)
             .attr("width", this.options.width + this.options.margin.left + this.options.margin.right)
-            .attr("height", ph);
+            .attr("height", ph*2);
         this.svg.select(".event-mask background")
             .attr("width", this.options.width + this.options.margin.left + this.options.margin.right)
             .attr("height", this.options.height-this.options.margin.bottom-ph);
@@ -409,7 +560,7 @@ export default class GenomePropertiesViewer {
         this.total_g = this.svg.append("g")
             .attr("class", "total-group")
             .attr("transform", "translate("+
-                (-this.options.margin.left) + ", " +
+                (this.current_scroll.x-this.options.margin.left) + ", " +
                 (this.options.height-this.options.margin.bottom-ph) + ")");
 
     }
@@ -430,7 +581,7 @@ export default class GenomePropertiesViewer {
             t = d3.transition().duration(time);
         this.total_g
             .attr("transform", "translate("+
-                (-this.options.margin.left) + ", " +
+                (this.current_scroll.x-this.options.margin.left) + ", " +
                 (this.options.height-this.options.margin.bottom-ph) + ")");
 
         const arc = d3.arc()
@@ -550,10 +701,9 @@ export default class GenomePropertiesViewer {
                     d3.select(".gpv-rows-group").attr("transform").match(/translate\((.*),(.*)\)/)[2] / this.y(1)
                 ) - 2;
             dy = dy < 0 ? 0 : dy;
+            dy = dy < this.props.length-visible_rows ? dy : this.props.length-visible_rows-1;
             this.current_dy = dy;
         }
-        if (!this.skip_scroll_refreshing)
-            this.update_scroll_bar(this.props.length, visible_rows, dy);
         this.current_props = this.props.slice(dy, visible_rows + dy + 1);
         this.gp_taxonomy.update_tree(time, this.options.cell_side);
         this.current_order = this.gp_taxonomy.current_order;
@@ -619,6 +769,12 @@ export default class GenomePropertiesViewer {
 
         this.update_total_per_organism_panel();
         this.update_masks();
+        this.zoom_panel
+            .attr("transform", "translate(-20,"+
+                (-this.options.margin.top) + ")");
+        if (!this.skip_scroll_refreshing)
+            this.update_scroll_bar(this.props.length, visible_rows, dy);
+
     }
     update_row(r,i,c) {
         const cell_height = this.options.cell_side;

@@ -52,6 +52,9 @@ g.node.loaded:hover .node-type{
 .node text.label-species {
     opacity:0.1;
 }
+.node text.label-species:hover {
+    opacity: 1;
+}
 .node:hover text.label-species, g.node.loaded text.label-species{
     opacity:1;
 }
@@ -284,7 +287,28 @@ div.container .top-block .minimise.on::after {
 .gpv-scrollbar rect.gpv-scrollbar-handle:hover{
     fill: rgba(180,180,180,0.7);
 }
-
+.gpv-zoomer circle {
+    fill: white;
+    stroke: #333;
+    stroke-width: 2;
+    opacity: 0.7;
+    cursor: pointer;
+}
+.gpv-zoomer text {
+    text-anchor: middle;
+    alignment-baseline: central;
+    opacity: 0.7;
+    cursor: pointer;
+    pointer-events: none;
+    user-select:none;
+}
+.gpv-zoomer circle:hover,.gpv-zoomer text:hover {
+    opacity: 1;
+}
+.total_title{
+    pointer-events: none;
+    user-select:none;
+}
 .autocomplete-suggestions {
     text-align: left; cursor: default; border: 1px solid #ccc; border-top: 0; background: #fff; box-shadow: -1px 1px 3px rgba(0,0,0,.1);
 

@@ -57,35 +57,6 @@ export default class GenomePropertiesTaxonomy {
         this.tree_g = svg.append("g")
             .attr("class", "taxon_tree")
             .attr("transform", `translate(${this.x}, ${this.y})`);
-        const g = this.tree_g.append("g")
-            .attr("class","height-dragger")
-            .attr("transform",`translate(${-this.cell_side}, ${this.height-this.cell_side})`)
-            .call(d3.drag()
-                .on("drag", (d,i,c)=>{
-                    this.height = d3.event.y+this.cell_side;
-                    g.attr("transform",`translate(${-this.cell_side}, ${this.height-this.cell_side})`)
-                })
-                .on("end", ()=>{
-                    this.dipatcher.call("changeHeight",this, this.height);
-                    this.update_tree();
-                })
-            );
-        const side = this.cell_side/2;
-        g.append("rect")
-            .attr("y",-side/2)
-            .attr("width",side*2)
-            .attr("height",side)
-            .style("fill", "transparent");
-        for (let index=-1; index<2; index++){
-            g.append("line")
-                .attr("x1",side*2)
-                .attr("y1",index*side/2)
-                .attr("y2",index*side/2)
-                .style("stroke", "#333");
-        }
-        g.append("line")
-            .attr("class","height-sizer")
-            .attr("x1",this.width);
         this.node_manager.tree_g = this.tree_g;
     }
 
@@ -174,9 +145,28 @@ export default class GenomePropertiesTaxonomy {
         }
     }
 
+    set_organisms_loaded(tax_id, isFromFile){
+        if (tax_id in this.nodes)
+            this.nodes[tax_id].loaded=true;
+        else{
+            this.nodes[tax_id] = {
+                id: tax_id,
+                loaded: true,
+                taxId: tax_id,
+                species: tax_id,
+                isFromFile: isFromFile
+            };
+            this.root.children.push(this.nodes[tax_id]);
+        }
+        // this.organisms.sort((a,b)=>{
+        //     return tax_loaded.indexOf(tax_loaded.indexOf(String(this.nodes[a].taxId))-tax_loaded.indexOf(String(this.nodes[b].taxId)));
+        // });
+    }
     update_tree(time=0, cell_side=null){
         if (this.root===null) return;
         if (cell_side!==null) this.cell_side = cell_side;
+        this.tree_g.attr("transform", `translate(${this.x}, ${20+this.y})`);
+
         const root = d3.hierarchy(this.root);
 
         if (this.collapse_tree)
@@ -218,10 +208,10 @@ export default class GenomePropertiesTaxonomy {
                 d.parent.has_loaded_leaves
             ));
 
-        d3.select(".taxon_tree").attr("transform",
-            "translate(0 ,"
-            +(-this.height+20)
-            +")");
+        // d3.select(".taxon_tree").attr("transform",
+        //     "translate(0 ,"
+        //     +(-this.height+20)
+        //     +")");
         const link = this.tree_g.selectAll(".link")
             .data(root.links(), d=>
                 d.source.id>d.target.id?d.source.id+d.target.id:d.target.id+d.source.id);
@@ -250,23 +240,6 @@ export default class GenomePropertiesTaxonomy {
         ;
 
         this.node_manager.draw_nodes(visible_nodes, t);
-    }
-    set_organisms_loaded(tax_id, isFromFile){
-        if (tax_id in this.nodes)
-            this.nodes[tax_id].loaded=true;
-        else{
-            this.nodes[tax_id] = {
-                id: tax_id,
-                loaded: true,
-                taxId: tax_id,
-                species: tax_id,
-                isFromFile: isFromFile
-            };
-            this.root.children.push(this.nodes[tax_id]);
-        }
-        // this.organisms.sort((a,b)=>{
-        //     return tax_loaded.indexOf(tax_loaded.indexOf(String(this.nodes[a].taxId))-tax_loaded.indexOf(String(this.nodes[b].taxId)));
-        // });
     }
     get_tax_list(){
         return this.organisms.map(d=>this.nodes[d].taxId);

@@ -187,6 +187,8 @@ export default class TaxonomyNodeManager {
             .attr('fill', d => d.data.loaded ? 'rgb(183, 83, 84)' : 'white')
         ;
         g.selectAll(".label-species")
+            .style("pointer-events",d=>d.data.loaded?'auto':'none')
+            .style("user-select",d=>d.data.loaded?'auto':'none')
             .text(d=> {
                 let label= "";
                 if (d.label!=="ROOT") {
