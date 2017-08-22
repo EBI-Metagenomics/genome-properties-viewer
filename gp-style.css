@@ -83,7 +83,10 @@ g.node.loaded:hover .node-type{
     stroke: lightblue;
     opacity: 0.7;
 }
-
+input[type='file'] {
+    color: transparent;
+    width: 150px;
+}
 .selector a{
     color:#3c67c1;
     cursor: pointer;
@@ -138,6 +141,7 @@ g.node.loaded:hover .node-type{
     justify-content: space-between;
     align-items: stretch;
     padding: 5px 20px 5px 5px;
+    flex-wrap: wrap;
 }
 .top-controllers>ul {
     margin:0;

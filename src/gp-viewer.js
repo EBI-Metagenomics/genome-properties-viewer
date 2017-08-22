@@ -14,9 +14,9 @@ export default class GenomePropertiesViewer {
         element_selector= "body",
         cell_side= 20,
         total_panel_height=cell_side,
-        server= "../test-files/SUMMARY_FILE_",
+        server= "https://raw.githubusercontent.com/rdfinn/genome-properties/master/docs/release/GP_calculation/SUMMARY_FILE_",
         server_tax = "taxonomy.json",
-        hierarchy_path = "../test-files/gp.dag.txt",
+        hierarchy_path = "../test-files/hierarchy.json",
         whitelist_path = "../test-files/gp_white_list.json",
         controller_element_selector="#gp-selector",
         legends_element_selector=".gp-legends",
@@ -393,6 +393,7 @@ export default class GenomePropertiesViewer {
                 })
                 .on("end", ()=>{
                     const new_height = this.options.margin.top+this.options.margin.dy;
+                    if (isNaN(new_height)) return;
                     this.gp_taxonomy.dipatcher.call(
                         "changeHeight",this.gp_taxonomy, new_height
                     );
@@ -700,8 +701,8 @@ export default class GenomePropertiesViewer {
             dy = -Math.floor(
                     d3.select(".gpv-rows-group").attr("transform").match(/translate\((.*),(.*)\)/)[2] / this.y(1)
                 ) - 2;
-            dy = dy < 0 ? 0 : dy;
             dy = dy < this.props.length-visible_rows ? dy : this.props.length-visible_rows-1;
+            dy = dy < 0 ? 0 : dy;
             this.current_dy = dy;
         }
         this.current_props = this.props.slice(dy, visible_rows + dy + 1);
