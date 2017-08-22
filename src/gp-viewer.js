@@ -164,15 +164,50 @@ export default class GenomePropertiesViewer {
         this.update_viewer();
     }
     draw_zoom_panel(){
+        const centerX = 17;
+        const top = 30;
+        const r = 10;
+        const padding = 3;
+        const scrollH = 40;
+        const scrollW = 10;
+        const slider = this.slider = d3.scaleLinear()
+            .domain([20,200])
+            .range([top + r + scrollH, top + r + padding]);
+
         this.zoom_panel = this.svg.append("g")
             .attr("class", "gpv-zoomer")
             .attr("transform", "translate(-20,"+
                 (-this.options.margin.top) + ")");
-        GenomePropertiesViewer.add_button(this.zoom_panel, "+", 10,30,10)
+        GenomePropertiesViewer.add_button(this.zoom_panel, "+", centerX, top,r)
             .on("click", ()=>{
                 this.cell_side = this.options.cell_side + 10;
             });
-        GenomePropertiesViewer.add_button(this.zoom_panel, "-", 10,60,10)
+        this.zoom_panel.append("line")
+            .attr("x1", centerX)
+            .attr("x2", centerX)
+            .attr("y1", top + r + padding )
+            .attr("y2", top + r + padding +scrollH)
+            .style("stroke", "lightgrey");
+        this.zoomBar = this.zoom_panel.append("rect")
+            .attr("x", centerX - scrollW/2)
+            .attr("y", slider(this.options.cell_side))
+            .attr("width", scrollW)
+            .attr("height", 4)
+            .style("cursor", "ns-resize")
+            .style("fill", "darkgrey")
+            .call(d3.drag()
+                .on("drag", ()=>{
+                    const newY = Math.max(slider(200),
+                        Math.min(
+                            d3.event.y,
+                            slider(20)
+                        )
+                    );
+                    this.cell_side = Math.round(slider.invert(newY));
+                })
+            );
+
+        GenomePropertiesViewer.add_button(this.zoom_panel, "-", centerX,top + 2*r + 2*padding +scrollH,r)
             .on("click", ()=>{
                 this.cell_side = this.options.cell_side - 10;
             });
@@ -183,6 +218,7 @@ export default class GenomePropertiesViewer {
         this.options.cell_side = Math.max(20, Math.min(200, value));
         if (p !== this.options.cell_side){
             this.current_scroll.y=this.current_scroll.y*this.options.cell_side/p;
+            this.zoomBar.attr("y", this.slider(this.options.cell_side));
             this.transform_by_scroll();
         }
     }
@@ -377,7 +413,7 @@ export default class GenomePropertiesViewer {
             .attr("height", ph*2);
     }
     draw_drag_area(){
-        const offset = 20;
+        const offset = 35;
         const zoom_height = 90;
         const g = this.svg.append("g")
             .attr("class","height-dragger")
@@ -727,6 +763,7 @@ export default class GenomePropertiesViewer {
                 .attr("class", "row")
                 .each((d,i,c)=>this.update_row(d,i,c));
         row.append("line")
+            .attr("class", "puff")
             .attr("x2", this.options.width);
         row
             .attr("transform", (d,i) =>
