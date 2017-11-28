@@ -71,6 +71,7 @@ g.node.loaded:hover .node-type{
 .height-sizer {
     stroke-width: 3px;
     opacity: 0;
+    pointer-events: none;
 }
 .height-dragger{
     cursor: ns-resize;
