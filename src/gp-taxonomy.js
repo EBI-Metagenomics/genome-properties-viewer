@@ -4,7 +4,7 @@ import * as d3 from "./d3";
 import TaxonomyNodeManager from "./gp-tax-node";
 
 export default class GenomePropertiesTaxonomy {
-    constructor({path, x=0, y=0, width=600, height=200}){
+    constructor({path, x=0, y=0, width=600, height=200, show_tree=true}){
         this.nodes = null;
         this.root = null;
         this.path=path;
@@ -17,6 +17,7 @@ export default class GenomePropertiesTaxonomy {
         this.organisms=[];
         this.svg=null;
         this.collapse_tree = true;
+        this.show_tree = show_tree;
         this.dipatcher = d3.dispatch(
             "changeOrder",
             "spaciesRequested",
@@ -162,17 +163,46 @@ export default class GenomePropertiesTaxonomy {
         //     return tax_loaded.indexOf(tax_loaded.indexOf(String(this.nodes[a].taxId))-tax_loaded.indexOf(String(this.nodes[b].taxId)));
         // });
     }
+    get_tree_to_show(){
+        const leaves = Object.values(this.nodes).filter(d=>d.loaded);
+        leaves.forEach(l => {
+            if (this.show_tree){
+                l.parent = l.parent === "fake-root" ? l._parent : l.parent;
+                l._parent = null;
+            } else {
+                l._parent = l.parent === "fake-root" ? l._parent : l.parent;
+                l.parent = "fake-root";
+            }
+        });
+        if (this.show_tree){
+            return this.root;
+        } else {
+            return {
+                children: leaves,
+                expanded: true,
+                id: "fake-root",
+                lineage: "",
+                number_of_leaves: leaves.length,
+                parent: null,
+                rank: null,
+                species: "root",
+                taxId: "root",
+                taxonomy: "",
+            }
+        }
+    }
     update_tree(time=0, cell_side=null){
         if (this.root===null) return;
         if (cell_side!==null) this.cell_side = cell_side;
         this.tree_g.attr("transform", `translate(${this.x}, ${20+this.y})`);
 
-        const root = d3.hierarchy(this.root);
+        const root = d3.hierarchy(this.get_tree_to_show());
 
-        if (this.collapse_tree)
+        if (this.show_tree && this.collapse_tree)
             this.prune_inner_nodes(root);
         else
             root.descendants().forEach(e=>{e.label=e.data.species || e.data.taxId});
+
         root.leaves().filter(d=>d.data.loaded).forEach(d=>this.mark_branch_for_loaded_leaves(d));
         this.filter_collapsed_nodes(root);
         root.sort((a)=>{
@@ -233,7 +263,11 @@ export default class GenomePropertiesTaxonomy {
                 "H" + d.source.x+
                 "V" + (d.source.y + this.node_r)
             )
-            .style("stroke", d => d.target.data.isFromFile ? 'transparent': null)
+            .style("stroke", d =>
+                d.target.data.isFromFile ||
+                d.target.data.parent === "fake-root" ||
+                (d.target.data.parent.data && d.target.data.parent.data.id === "fake-root")
+                    ? 'transparent': null)
             .attr("stroke-dasharray",1000)
             .attr("stroke-dashoffset",-1000)
             .transition(t).attr("stroke-dashoffset",0)

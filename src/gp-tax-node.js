@@ -15,9 +15,9 @@ export default class TaxonomyNodeManager {
             .data(visible_nodes, d=>d.id);
 
         node
-            .attr("class", d => {
-                return "node " + (d.children ? " node--internal" : " node--leaf")+ (d.data.loaded ? " loaded" : "")
-            })
+            .attr("class", d =>
+                "node " + (d.children ? " node--internal" : " node--leaf")+ (d.data.loaded ? " loaded" : ""))
+            .style("fill-opacity", d =>  d.data.id === "fake-root" ? 0 : null)
             .transition(t)
             .attr("transform", d => "translate(" + d.x + "," + d.y + ")")
             .each((d,i,c)=>this.update_node(d, i, c));
@@ -27,6 +27,7 @@ export default class TaxonomyNodeManager {
         const node_e = node
             .enter().append("g")
             .attr("class", d => "node " + (d.children ? " node--internal" : " node--leaf")+ (d.data.loaded ? " loaded" : "") )
+            .style("fill-opacity", d =>  d.data.id === "fake-root" ? 0 : null)
             .on("mouseover", (d,i,c) => {
                 d3.select("#info_organism").text(`${d.label}${(d.data.taxId)?" - "+d.data.taxId:""}`);
                 d3.select(c[i]).selectAll("circle").transition(300)

@@ -37,6 +37,7 @@
                             <option value="both">Both</option>
                         </select>
                     </li>
+                    <li><button id="toggle-tree">Hide Taxonomy</button></li>
 
                 </ul>
             </div>
@@ -107,6 +108,14 @@
         setTimeout(function(){ viewer.refresh_size(); }, 250);
 
     });
+    let showTaxonomy = true;
+    d3.select("#toggle-tree").on("click",(d,i,c)=>{
+        d3.select(c[i]).text(showTaxonomy ? "Show Taxonomy" : "Hide Taxonomy");
+        showTaxonomy = !showTaxonomy;
+        viewer.gp_taxonomy.show_tree = showTaxonomy;
+        viewer.update_viewer();
+    });
+
     function uploadFile() {
         const oFiles = document.getElementById("newfile").files;
         for (let i=0; i < oFiles.length; i++){

@@ -3,9 +3,8 @@ import GenomePropertiesViewer from "./src/gp-viewer"
 import * as d3 from "./src/d3";
 export default {d3: d3,GenomePropertiesViewer:GenomePropertiesViewer};
 
-// TODO: changing touch gestures
 // TODO: Focus/Filter on a tax branch.
-// TODO: scrollbars?
+// DONE: scrollbars
 // DONE: Different labels for Species(species, tax-id, none)
 // DONE: Search species
 // DONE: Different labels for GP(Name, id, both)
