@@ -225,7 +225,8 @@ export default class GenomePropertiesViewer {
 
                         _this.scrollbar_x.attr("x",dx);
 
-                        _this.current_scroll.x = dx*w1/w;
+
+                        _this.current_scroll.x = (w-sw-dx)*w1/w;
                         // let dy = -d3.event.y * th / (_this.options.height - this.getAttribute("height"));
                         // dy = Math.min(0,
                         //     Math.max(dy, -th+_this.options.height-_this.options.cell_side)
@@ -310,6 +311,7 @@ export default class GenomePropertiesViewer {
             this.current_scroll.x=0;
             this.scrollbar_x.transition()
                 .attr("width", w2 * factor);
+            this.scrollbar_x.attr("x", w2 * (1 - factor));
         }
     }
     create_gradient(){
