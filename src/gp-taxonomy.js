@@ -214,7 +214,9 @@ export default class GenomePropertiesTaxonomy {
             while ((node = node.parent) && (node.height < ++height));
         });
 
-        const leaves = root.leaves().filter(d=>d.data.loaded),
+        const leaves = root.leaves()
+            .filter(d=>d.data.loaded)
+            .sort((a, b) => a.data.taxId - b.data.taxId),
             ol = leaves.length;
         this.organisms = leaves.map(n=>n.data.id);
 
@@ -227,9 +229,9 @@ export default class GenomePropertiesTaxonomy {
         if (!this.current_order || this.current_order.length!==leaves.length)
             this.current_order = this.orders.tree;
 
-        const tree = d3.tree()
+        const tree_f = d3.tree()
             .size([this.width-this.cell_side*leaves.length, this.height-this.cell_side]);
-        tree(root);
+        tree_f(root);
         this.tree(root);
         const t = d3.transition().duration(time).delay(100),
             visible_nodes = root.descendants().filter(d=>(

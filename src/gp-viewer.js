@@ -1,10 +1,39 @@
 "use strict";
 
-import * as d3 from "./d3";
 import GenomePropertiesHierarchy from "./gp-hierarchy";
 import GenomePropertiesTaxonomy from "./gp-taxonomy";
 import ZoomPanel from "./zoomer";
 import GenomePropertiesController from "./gp-controller";
+
+import * as d3 from "./d3";
+//
+// import {event, select, selectAll} from "d3-selection";
+// import {text, xml, json} from "d3-request";
+// import {range} from "d3-array";
+// import {drag} from "d3-drag";
+// import {stack, pie, arc as arc_tmp, symbol, symbolCross,symbolCircle, symbolTriangle} from "d3-shape";
+// import {transition} from "d3-transition";
+// import {stratify, cluster, tree, hierarchy} from "d3-hierarchy";
+// import {entries, keys, values} from "d3-collection";
+// import {scaleLinear, scaleBand, scaleOrdinal, schemeCategory20b} from "d3-scale";
+// import {tsvParseRows} from "d3-dsv";
+// import {zoom} from "d3-zoom";
+// import {interpolate} from "d3-interpolate";
+// import {dispatch} from "d3-dispatch";
+//
+// const d3 ={
+//     event,
+//     select,
+//     selectAll,
+//     scaleBand,
+//     scaleLinear,
+//     json,
+//     drag,
+//     entries,
+//     keys,
+//     values,
+//     transition,
+// };
 
 export default class GenomePropertiesViewer {
 
@@ -578,11 +607,11 @@ export default class GenomePropertiesViewer {
                 (this.current_scroll.x-this.options.margin.left) + ", " +
                 (this.options.height-this.options.margin.bottom-ph) + ")");
 
-        const arc = d3.arc()
+        const arc_f = d3.arc()
             .outerRadius(ph*0.4)
             .innerRadius(0);
 
-        const pie = d3.pie()
+        const pie_f = d3.pie()
             .value(d => d.value);
 
         this.refresh_organism_totals();
@@ -624,15 +653,15 @@ export default class GenomePropertiesViewer {
 
         const group = g_e.size()?g_e:cells_t,
             arcs = group.selectAll(".arc")
-                .data(d=>pie(d3.entries(d.value)));
+                .data(d=>pie_f(d3.entries(d.value)));
 
         arcs.transition(t)
-            .attr("d", arc)
+            .attr("d", arc_f)
             .attr("transform", "scale(1)");
 
         arcs.enter().append("path")
             .attr("class", "arc")
-            .attr("d", arc)
+            .attr("d", arc_f)
             .style("fill", d => this.c[d.data.key]);
 
     }
@@ -838,10 +867,10 @@ export default class GenomePropertiesViewer {
             .on("mouseout", mouseout)
             .style("fill", d => d in r.values ? this.c[r.values[d]] : null);
 
-        const arc = d3.arc()
+        const arc_f = d3.arc()
             .outerRadius(cell_height*0.4)
             .innerRadius(0);
-        const pie = d3.pie()
+        const pie_f = d3.pie()
             .value(d => d.value);
 
         const cells_t = d3.select(c[i]).selectAll(".total_cell")
@@ -857,13 +886,13 @@ export default class GenomePropertiesViewer {
             .on("mouseout", mouseout);
 
         const arcs = d3.select(c[i]).selectAll(".total_cell").selectAll(".arc")
-            .data(pie(d3.entries(r.values["TOTAL"])), d=>d.data.key);
+            .data(pie_f(d3.entries(r.values["TOTAL"])), d=>d.data.key);
 
-        arcs.attr("d", arc);
+        arcs.attr("d", arc_f);
 
         arcs.enter().append("path")
             .attr("class", "arc")
-            .attr("d", arc)
+            .attr("d", arc_f)
             .style("fill", d => {
                 return this.c[d.data.key]
             });

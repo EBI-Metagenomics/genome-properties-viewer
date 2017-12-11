@@ -1,3 +1,15 @@
 {
-  "presets": ["es2015-rollup"]
+  "presets": [
+    [
+      "env", {
+      "targets": {
+        "ie": 11
+      },
+      "modules": false
+    }
+    ]
+  ],
+  "plugins": [
+    "external-helpers", "transform-object-rest-spread"
+  ]
 }
