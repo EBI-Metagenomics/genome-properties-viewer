@@ -7,7 +7,7 @@
     "build": "rollup -c",
     "watch": "rollup -cw",
     "test": "mocha",
-    "browser-sync": "browser-sync start --server -f bin/**/*.*",
+    "browser-sync": "browser-sync start --server -f bin/*.*",
     "serve": "npm run watch & npm run browser-sync",
     "create-taxonomy-file": "node src/taxonomy/taxonomy_retriever.js > taxonomy.json"
   },

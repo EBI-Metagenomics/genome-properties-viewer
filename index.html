@@ -13,6 +13,7 @@
         }
 
     </style>
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -116,6 +117,8 @@
         viewer.update_viewer();
     });
 
+    const gp_server = 'http://localhost/cgi-bin/test.pl';
+
     function uploadFile() {
         const oFiles = document.getElementById("newfile").files;
         for (let i=0; i < oFiles.length; i++){
@@ -123,7 +126,25 @@
             reader.fileToRead = oFiles[i];
             reader.onload = function(evt) {
                 try {
-                    viewer.load_genome_properties_text(evt.target.fileToRead.name, evt.target.result);
+                    const firstline = evt.target.result.split('\n')[0];
+                    if (isIpproLine(firstline)){
+                        fetch(gp_server, {
+                            method: 'POST',
+                            body: 'ipprotsv='+evt.target.result,
+                            headers: new Headers({
+                                "Content-Type": "application/x-www-form-urlencoded",
+                                "Access-Control-Request-Method": "POST",
+                                "Access-Control-Request-Headers": "X-PINGOTHER, Content-Type",
+                            })
+                        }).then(response => response.text()).then(
+                            x=> {
+                                viewer.load_genome_properties_text(evt.target.fileToRead.name, x)
+                            }
+                        )
+                    } else {
+                        viewer.load_genome_properties_text(evt.target.fileToRead.name, evt.target.result);
+
+                    }
                 }catch(e){
                     alert('Bad formatted file');
                     console.error(e);
@@ -133,6 +154,11 @@
             reader.readAsText(oFiles[i]);
         }
 
+    }
+    function isIpproLine(line){
+        const parts = line.split('\t');
+        const uniprot = /[OPQ][0-9][A-Z0-9]{3}[0-9]|[A-NR-Z][0-9]([A-Z][A-Z0-9]{2}[0-9]){1,2}/;
+        return !(parts.length < 11 || !uniprot.test(parts[0]) || parts[1].length !== 32);
     }
 </script>
 </body>

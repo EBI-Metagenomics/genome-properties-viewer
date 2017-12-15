@@ -45,7 +45,7 @@ export default class GenomePropertiesViewer {
         cell_side= 20,
         total_panel_height=cell_side,
         server= "https://raw.githubusercontent.com/rdfinn/genome-properties/master/docs/release/GP_calculation/SUMMARY_FILE_",
-        server_tax = "taxonomy.json",
+        server_tax = "../test-files/tree.json",
         hierarchy_path = "../test-files/hierarchy.json",
         whitelist_path = "../test-files/gp_white_list.json",
         controller_element_selector="#gp-selector",
@@ -157,7 +157,6 @@ export default class GenomePropertiesViewer {
                 const newY = Math.max(this.zoomer.slider(this.zoomer.domain[1]),
                     Math.min(d3.event.y, this.zoomer.slider(this.zoomer.domain[0]))
                 );
-                console.log(newY);
                 this.cell_side = Math.round(this.zoomer.slider.invert(newY));
             },
         });
@@ -623,7 +622,7 @@ export default class GenomePropertiesViewer {
 
         cells_t.transition(t)
             .attr("transform", (d,i)=> "translate("+(
-                this.x(this.organisms.indexOf(Number.isNaN(+d.key)?d.key:+d.key)) +
+                this.x(this.organisms.indexOf(d.key.toString())) +
                 ph/2 + this.options.margin.left) +
                 ", "+ph*0.5+")"
             );
@@ -632,7 +631,7 @@ export default class GenomePropertiesViewer {
         const g_e = cells_t.enter().append("g")
             .attr("class", "total_cell_org")
             .attr("transform", (d,i)=>"translate("+(
-                this.x(this.organisms.indexOf(Number.isNaN(+d.key)?d.key:+d.key)) +
+                this.x(this.organisms.indexOf(d.key.toString())) +
                 ph/2 + this.options.margin.left) +
                 ", "+ph*0.5+")"
             )

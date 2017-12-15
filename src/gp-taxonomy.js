@@ -30,11 +30,21 @@ export default class GenomePropertiesTaxonomy {
         this.node_manager = new TaxonomyNodeManager(this, this.node_r);
         return this;
     }
-
+    // TODO: remove when the data is correct.
+    redifine_parents(tree) {
+        if (tree.children) {
+            for (let child of tree.children) {
+                child.parent = tree.id;
+                this.redifine_parents(child);
+            }
+        }
+    }
     load_taxonomy() {
         d3.json(this.path, (error, data) => {
             if (error) throw error;
             this.root = data;
+            this.root.parent = null;
+            this.redifine_parents(this.root);
             this.nodes = this.load_nodes(this.root);
             this.root.expanded=true;
             this.dipatcher.call("taxonomyLoaded", this, this.root);
@@ -45,10 +55,11 @@ export default class GenomePropertiesTaxonomy {
 
     load_nodes(node){
         if (this.nodes===null) this.nodes = {};
-        this.nodes[node.id]=node;
-        this.nodes[node.id].expanded=false;
+        node.id = node.id || node.taxid;
+        this.nodes[node.taxid]=node;
+        this.nodes[node.taxid].expanded=false;
         if (node.children===null || node.children.length<1)
-            this.organisms.push(node.id);
+            this.organisms.push(node.taxid);
         node.children.forEach(child=>{ this.load_nodes(child); });
         return this.nodes;
     }
@@ -85,19 +96,19 @@ export default class GenomePropertiesTaxonomy {
                 // const tmp = (node.depth)*h/node.height;
                 // node.y = (tmp<h)?tmp:(node.parent.y+node.y)/2;
             } else {
-                node.x = heatmap_start+ (w_fr / 2 + w_fr * this.current_order.indexOf(this.organisms.indexOf(node.data.id)));
+                node.x = heatmap_start+ (w_fr / 2 + w_fr * this.current_order.indexOf(this.organisms.indexOf(node.data.taxid)));
                 node.y = h;
                 node.deepness = deepness;
             }
         }
     }
     prune_inner_nodes(tree, depth=0){
-        if (!tree.label) tree.label = tree.data.species;
-        if (!tree.id) tree.id = tree.data.id;
+        if (!tree.label) tree.label = tree.data.name;
+        if (!tree.taxid) tree.taxid = tree.data.taxid;
         tree.depth = depth;
         if (tree.children){
             if (tree.children.length === 1){
-                tree.label = tree.children[0].data.species;
+                tree.label = tree.children[0].data.name;
                 tree.height = tree.children[0].height;
                 tree.data = tree.children[0].data;
                 tree.children = tree.children[0].children;
@@ -139,7 +150,7 @@ export default class GenomePropertiesTaxonomy {
     requestAll(tree){
         tree.expanded = true;
         if (!tree.children || tree.children.length===0) {
-            this.dipatcher.call("spaciesRequested", this, tree.taxId);
+            this.dipatcher.call("spaciesRequested", this, tree.taxid);
         }
         if(tree.children) {
             tree.children.forEach(d=>this.requestAll(d))
@@ -153,16 +164,19 @@ export default class GenomePropertiesTaxonomy {
             this.nodes[tax_id] = {
                 id: tax_id,
                 loaded: true,
-                taxId: tax_id,
-                species: tax_id,
+                taxid: tax_id,
+                name: tax_id,
                 isFromFile: isFromFile
             };
             this.root.children.push(this.nodes[tax_id]);
         }
         // this.organisms.sort((a,b)=>{
-        //     return tax_loaded.indexOf(tax_loaded.indexOf(String(this.nodes[a].taxId))-tax_loaded.indexOf(String(this.nodes[b].taxId)));
+        //     return tax_loaded.indexOf(tax_loaded.indexOf(String(this.nodes[a].taxid))-tax_loaded.indexOf(String(this.nodes[b].taxid)));
         // });
     }
+    // A fake tree is created when the taxonomy is hidden.
+    // The new tree is only the root and the loaded leaves.
+    // This method either contructs the fake tree or uses the taxonomy one.
     get_tree_to_show(){
         const leaves = Object.values(this.nodes).filter(d=>d.loaded);
         leaves.forEach(l => {
@@ -185,8 +199,8 @@ export default class GenomePropertiesTaxonomy {
                 number_of_leaves: leaves.length,
                 parent: null,
                 rank: null,
-                species: "root",
-                taxId: "root",
+                name: "root",
+                taxid: "root",
                 taxonomy: "",
             }
         }
@@ -201,7 +215,7 @@ export default class GenomePropertiesTaxonomy {
         if (this.show_tree && this.collapse_tree)
             this.prune_inner_nodes(root);
         else
-            root.descendants().forEach(e=>{e.label=e.data.species || e.data.taxId});
+            root.descendants().forEach(e=>{e.label=e.data.name || e.data.taxid});
 
         root.leaves().filter(d=>d.data.loaded).forEach(d=>this.mark_branch_for_loaded_leaves(d));
         this.filter_collapsed_nodes(root);
@@ -216,14 +230,14 @@ export default class GenomePropertiesTaxonomy {
 
         const leaves = root.leaves()
             .filter(d=>d.data.loaded)
-            .sort((a, b) => a.data.taxId - b.data.taxId),
+            .sort((a, b) => a.data.taxid - b.data.taxid),
             ol = leaves.length;
-        this.organisms = leaves.map(n=>n.data.id);
+        this.organisms = leaves.map(n=>n.data.taxid);
 
         // Precompute the orders.
         this.orders = {
-            tax_id: d3.range(ol).sort((a, b) => leaves[a].data.taxId - leaves[b].data.taxId),
-            org_name: d3.range(ol).sort((a, b) => leaves[a].data.species - leaves[b].data.species),
+            tax_id: d3.range(ol).sort((a, b) => leaves[a].data.taxid - leaves[b].data.taxid),
+            org_name: d3.range(ol).sort((a, b) => leaves[a].data.name - leaves[b].data.name),
             tree: d3.range(ol).sort((a, b) => leaves[a].data.lineage - leaves[b].data.lineage),
         };
         if (!this.current_order || this.current_order.length!==leaves.length)
@@ -246,7 +260,7 @@ export default class GenomePropertiesTaxonomy {
         //     +")");
         const link = this.tree_g.selectAll(".link")
             .data(root.links(), d=>
-                d.source.id>d.target.id?d.source.id+d.target.id:d.target.id+d.source.id);
+                d.source.data.id>d.target.data.id?d.source.data.id+d.target.data.id:d.target.data.id+d.source.data.id);
 
         link.style("stroke-dashoffset",0).transition(t).attr("d", (d, i) =>
             "M" + d.target.x + "," + d.target.y +
@@ -268,7 +282,7 @@ export default class GenomePropertiesTaxonomy {
             .style("stroke", d =>
                 d.target.data.isFromFile ||
                 d.target.data.parent === "fake-root" ||
-                (d.target.data.parent.data && d.target.data.parent.data.id === "fake-root")
+                (d.target.data.parent && d.target.data.parent.data && d.target.data.parent.data.taxid === "fake-root")
                     ? 'transparent': null)
             .attr("stroke-dasharray",1000)
             .attr("stroke-dashoffset",-1000)
@@ -278,7 +292,7 @@ export default class GenomePropertiesTaxonomy {
         this.node_manager.draw_nodes(visible_nodes, t);
     }
     get_tax_list(){
-        return this.organisms.map(d=>this.nodes[d].taxId);
+        return this.organisms.map(d=>this.nodes[d].taxid);
     }
 
     on(typename, callback){

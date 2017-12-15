@@ -12,7 +12,7 @@ export default class TaxonomyNodeManager {
     draw_nodes(visible_nodes, t){
         this.t  = t;
         const node = this.tree_g.selectAll(".node")
-            .data(visible_nodes, d=>d.id);
+            .data(visible_nodes, d=>d.data.id);
 
         node
             .attr("class", d =>
@@ -29,7 +29,7 @@ export default class TaxonomyNodeManager {
             .attr("class", d => "node " + (d.children ? " node--internal" : " node--leaf")+ (d.data.loaded ? " loaded" : "") )
             .style("fill-opacity", d =>  d.data.id === "fake-root" ? 0 : null)
             .on("mouseover", (d,i,c) => {
-                d3.select("#info_organism").text(`${d.label}${(d.data.taxId)?" - "+d.data.taxId:""}`);
+                d3.select("#info_organism").text(`${d.label}${(d.data.taxid)?" - "+d.data.taxid:""}`);
                 d3.select(c[i]).selectAll("circle").transition(300)
                     .attr("r", this.r+2);
             })
@@ -40,17 +40,19 @@ export default class TaxonomyNodeManager {
 
             })
             .on("click", d=>{
-                if(!d.data.loaded && (!d.data.children || d.data.children.length===0)){ //Only leaves have taxId attached
-                    this.main.dipatcher.call("spaciesRequested",this.main, d.data.taxId);
+                if (!d.data.loaded && (!d.data.children || d.data.children.length === 0)) { //Only leaves have taxId attached
+                    this.main.dipatcher.call("spaciesRequested", this.main, d.data.taxid);
                 }
                 if (d.parent) {
-                    d.data.expanded = !d.data.expanded;
-                    this.main.update_tree(500);
+                    setTimeout( () => {
+                        d.data.expanded = !d.data.expanded;
+                        this.main.update_tree(500);
+                    }, 200);
                 }
             })
             .on("dblclick", d=>{
-                if(!d.data.children || d.data.children.length==0){ //Only leaves have taxId attached
-                    this.main.dipatcher.call("spaciesRequested",this.main, d.data.taxId);
+                if(!d.data.children || d.data.children.length===0){ //Only leaves have taxId attached
+                    this.main.dipatcher.call("spaciesRequested",this.main, d.data.taxid);
                 }
                 if (d.parent) {
                     this.main.requestAll(d.data);
@@ -100,7 +102,7 @@ export default class TaxonomyNodeManager {
             const current_i = this.main.organisms.indexOf(d.data.id),
                 current_o = this.main.current_order.indexOf(current_i);
             d_col = current_o+d_col<0?-current_o:d_col;
-            if (d_col != 0) {
+            if (d_col !== 0) {
                 const e = this.main.current_order.splice(current_o, 1);
                 this.main.current_order.splice(current_o+d_col, 0, e[0]);
                 this.main.update_tree(1000);
@@ -141,10 +143,10 @@ export default class TaxonomyNodeManager {
                     else {
                         switch (this.main.tax_label_type) {
                             case "id":
-                                label = d.data.taxId;
+                                label = d.data.taxid;
                                 break;
                             case "both":
-                                label = d.data.taxId+": "+d.label;
+                                label = d.data.taxid+": "+d.label;
                                 break;
                         }
                     }
@@ -158,7 +160,7 @@ export default class TaxonomyNodeManager {
             .attr("fill", "white")
             .on("click", d=>{
                 if (d.data.loaded)
-                    this.main.dipatcher.call("removeSpacies",this.main, d.data.taxId);
+                    this.main.dipatcher.call("removeSpacies",this.main, d.data.taxid);
             });
 
         this.update_node(node, i, context);
@@ -194,13 +196,13 @@ export default class TaxonomyNodeManager {
                 let label= "";
                 if (d.label!=="ROOT") {
                     label = d.label;
-                    if (d.data.taxId){
+                    if (d.data.taxid){
                         switch (this.main.tax_label_type) {
                             case "id":
-                                label = d.data.taxId;
+                                label = d.data.taxid;
                                 break;
                             case "both":
-                                label = d.data.taxId+": "+d.label;
+                                label = d.data.taxid+": "+d.label;
                                 break;
                         }
                     }
