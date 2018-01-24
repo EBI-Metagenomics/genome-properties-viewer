@@ -63,13 +63,15 @@ export default class GenomePropertiesController {
             });
         }
         if (tax_search_selector && gp_taxonomy) {
-            this.search_options=[]
+            this.search_options=[];
             this.ac = new autoComplete({
                 selector: tax_search_selector,
                 minChars: 2,
                 source: (term, suggest) => {
                     term = term.toLowerCase();
-                    suggest(this.search_options.filter(d=>d.toLowerCase().indexOf(term) != -1));
+                    suggest(this.search_options.filter(
+                        d => d.toLowerCase().indexOf(term) !== -1)
+                    );
                 },
                 onSelect: (event, term, item)=> {
                     const tax = term.substr(0,term.indexOf(":"));
@@ -80,8 +82,10 @@ export default class GenomePropertiesController {
         }
     }
 
-    loadSearchOptions(){
-        this.search_options = this.gp_taxonomy.organisms.map(e=>e+": "+this.gp_taxonomy.nodes[e].species)
+    loadSearchOptions() {
+        this.search_options = this.gp_taxonomy.organisms.map(
+            e => e+": "+this.gp_taxonomy.nodes[e].name
+        )
         // this.search_options.splice(0,0,...this.search_options.map(e=>this.gp_taxonomy.nodes[e].species))
         // this.search_options = this.search_options.map(String);
     }
