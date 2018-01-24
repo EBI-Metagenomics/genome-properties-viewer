@@ -44,10 +44,10 @@ export default class GenomePropertiesViewer {
         element_selector= "body",
         cell_side= 20,
         total_panel_height=cell_side,
-        server= "https://raw.githubusercontent.com/rdfinn/genome-properties/master/docs/release/GP_calculation/SUMMARY_FILE_",
-        server_tax = "../test-files/tree.json",
+        server= "https://raw.githubusercontent.com/rdfinn/genome-properties/master/flatfiles/gp_assignments/SUMMARY_FILE_{}.gp",
+        server_tax = "https://raw.githubusercontent.com/rdfinn/genome-properties/master/flatfiles/taxonomy.json",
         hierarchy_path = "../test-files/hierarchy.json",
-        whitelist_path = "../test-files/gp_white_list.json",
+        whitelist_path = null,
         controller_element_selector="#gp-selector",
         legends_element_selector=".gp-legends",
         gp_text_filter_selector="#gp-filter",
@@ -461,7 +461,7 @@ export default class GenomePropertiesViewer {
     load_genome_properties_file(tax_id) {
         if (this.organisms.indexOf(Number(tax_id)) !== -1)
             return;
-        d3.text(`${this.options.server}${tax_id}`)
+        d3.text(this.options.server.replace('{}',tax_id))
             .get((error, text) => {
                 if (error) throw error;
                 this.load_genome_properties_text(tax_id, text);

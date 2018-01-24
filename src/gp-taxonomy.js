@@ -44,7 +44,7 @@ export default class GenomePropertiesTaxonomy {
             if (error) throw error;
             this.root = data;
             this.root.parent = null;
-            this.redifine_parents(this.root);
+            // this.redifine_parents(this.root);
             this.nodes = this.load_nodes(this.root);
             this.root.expanded=true;
             this.dipatcher.call("taxonomyLoaded", this, this.root);
@@ -140,7 +140,7 @@ export default class GenomePropertiesTaxonomy {
             }
         }
         if (node.children){
-            node.children.sort((a,b)=>a.has_loaded_leaves?1:-1);
+            node.children.sort((a)=>a.has_loaded_leaves?1:-1);
             node.children.forEach(n=>{
                 n.data.expanded=node.data.expanded&&n.data.expanded;
                 this.filter_collapsed_nodes(n)
@@ -260,9 +260,12 @@ export default class GenomePropertiesTaxonomy {
         //     +")");
         const link = this.tree_g.selectAll(".link")
             .data(root.links(), d=>
-                d.source.data.id>d.target.data.id?d.source.data.id+d.target.data.id:d.target.data.id+d.source.data.id);
+                d.source.data.id>d.target.data.id ?
+                    d.source.data.id+d.target.data.id :
+                    d.target.data.id+d.source.data.id
+            );
 
-        link.style("stroke-dashoffset",0).transition(t).attr("d", (d, i) =>
+        link.style("stroke-dashoffset",0).transition(t).attr("d", d =>
             "M" + d.target.x + "," + d.target.y +
             "V" + (d.source.y+10) +
             "H" + d.source.x+
@@ -273,7 +276,7 @@ export default class GenomePropertiesTaxonomy {
             .remove();
         link.enter().append("path")
             .attr("class", "link")
-            .attr("d", (d, i) =>
+            .attr("d", d =>
                 "M" + d.target.x + "," + d.target.y +
                 "V" + (d.source.y+10) +
                 "H" + d.source.x+

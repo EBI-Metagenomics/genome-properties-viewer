@@ -5,7 +5,7 @@
          "lineage" : "Bacteria;",
          "rgt" : 1353,
          "rank" : "superkingdom",
-         "parent" : "131567",
+         "parent" : "0",
          "number_of_leaves" : 133,
          "taxid" : "2",
          "lft" : 0,
@@ -8129,7 +8129,7 @@
          "lineage" : "Archaea;",
          "rgt" : 1541,
          "rank" : "superkingdom",
-         "parent" : "131567",
+         "parent" : "0",
          "number_of_leaves" : 18,
          "lft" : 1354,
          "taxid" : "2157",
@@ -12839,7 +12839,7 @@
          "rgt" : 2139,
          "lineage" : "Eukaryota;",
          "rank" : "superkingdom",
-         "parent" : "131567"
+         "parent" : "0"
       }
    ],
    "parent" : null,
