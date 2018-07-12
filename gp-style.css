@@ -5,7 +5,7 @@ line {
 text {
     font: 12px sans-serif ;
     text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
-    fill: #80808f;
+    fill: #20202f;
 }
 text.col_title, text.row_title {
     opacity: 0.7;

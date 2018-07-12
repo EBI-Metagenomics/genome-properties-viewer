@@ -53,7 +53,8 @@ export default class GenomePropertiesViewer {
         gp_text_filter_selector="#gp-filter",
         gp_label_selector="#gp_label",
         tax_label_selector="#tax_label",
-        tax_search_selector="#tax-search"
+        tax_search_selector="#tax-search",
+        template_link_to_GP_page="https://www.ebi.ac.uk/interpro/genomeproperties/#{}"
     }){
         this.data = {};
         this.organisms = [];
@@ -62,6 +63,7 @@ export default class GenomePropertiesViewer {
         this.filter_text="";
         this.whitelist=null;
         this.fixedHeight=height!==null;
+        this.propsOrder = null;
 
         if (width===null){
             const rect = d3.select(element_selector).node().getBoundingClientRect();
@@ -79,7 +81,7 @@ export default class GenomePropertiesViewer {
 
         this.options = {
             margin, width, height, element_selector, cell_side, server, server_tax,
-            total_panel_height, hierarchy_path};
+            total_panel_height, hierarchy_path, template_link_to_GP_page};
         this.column_total_width = cell_side;
         this.x = d3.scaleBand().range([0, width-this.column_total_width]);
         this.y = d3.scaleLinear().range([0, height]);
@@ -522,6 +524,8 @@ export default class GenomePropertiesViewer {
         });
         if (allLinesAreOK) {
             this.gp_taxonomy.set_organisms_loaded(tax_id, isFromFile);
+            if (!this.propsOrder)
+                this.propsOrder = Object.keys(this.data).sort();
             this.update_viewer(false,500);
         } else {
             delete this.organisms[tax_id];
@@ -545,21 +549,6 @@ export default class GenomePropertiesViewer {
                         y:Number(t[2]) + Number(g.attr("y")),
                     };
                 })
-                // .on("drag", function(_this) {
-                //     return function() {
-                //         d3.event.sourceEvent.stopPropagation();
-                //         const dy = Math.max(
-                //             Math.min(d3.event.y, 0),
-                //             _this.options.height
-                //             + _this.options.margin.bottom
-                //             - _this.props.length*_this.y(1)
-                //             - _this.options.margin.top
-                //         );
-                //         d3.select(".gpv-rows-group")
-                //             .attr("transform", d => "translate(0, " + dy + ")");
-                //         _this.update_viewer();
-                //     }
-                // }(this))
             )
         ;
     }
@@ -694,6 +683,23 @@ export default class GenomePropertiesViewer {
         }
     }
 
+    move_row(prop, delta){
+        const pos = this.propsOrder.indexOf(prop);
+        if (pos !== -1) {
+            const tmp = this.propsOrder.splice(pos, 1);
+            const newPos = Math.max(0, pos + delta);
+            this.propsOrder = this.propsOrder.slice(0, newPos)
+                .concat(tmp)
+                .concat(this.propsOrder.slice(newPos));
+            this.update_viewer();
+        }
+    }
+    sort_props(){
+        if (this.propsOrder) {
+            this.props = this.props.sort((a, b) => this.propsOrder.indexOf(a.property) - this.propsOrder.indexOf(b.property))
+        }
+    }
+
     update_viewer(zoom=false, time=0) {
         this.props = d3.values(this.data).filter(e=>{
             if (e.parent_top_properties===null)
@@ -706,6 +712,7 @@ export default class GenomePropertiesViewer {
         });
         this.filter_by_text();
         this.filter_by_legend();
+        this.sort_props();
 
         this.column_total_width = this.options.cell_side;
         this.x.range([
@@ -768,14 +775,30 @@ export default class GenomePropertiesViewer {
         row_p.selectAll(".row_title")
             .attr("x", this.x.range()[0]-6)
             .attr("y", this.column_total_width/2)
-            .text( d => this.gp_label_type==="name"?d.name:this.gp_label_type==="id"?d.property:d.property+":"+d.name );
+            .text( d => this.gp_label_type==="name"?d.name:this.gp_label_type==="id"?d.property:d.property+":"+d.name )
+            .call(d3.drag()
+                .on("drag", (d, i, c)=> {
+                    d3.select(c[i]).attr("transform", "translate(0, " + d3.event.y + ")");
+                })
+                .on("end", (d, i, c) => {
+                    const h = this.options.cell_side;
+                    let d_row = Math.round(d3.event.y / h);
+                    d3.select(c[i]).attr("transform", "translate( 0, 0 )");
+                    this.move_row(d.property, d_row);
+                })
+            );
 
-        row.append("text")
-            .attr("class", "row_title")
-            .attr("x", this.x.range()[0]-6)
-            .attr("y", this.column_total_width/2)
-            .attr("text-anchor", "end")
-            .text( d => this.gp_label_type==="name"?d.name:this.gp_label_type==="id"?d.property:d.property+":"+d.name );
+        const template = this.options.template_link_to_GP_page;
+        row.append("a")
+            .attr("xlink:href", d => template.replace("{}", d.property))
+            .attr("target", "_blank")
+            .style("cursor", "pointer")
+            .append("text")
+                .attr("class", "row_title")
+                .attr("x", this.x.range()[0]-6)
+                .attr("y", this.column_total_width/2)
+                .attr("text-anchor", "end")
+                .text( d => this.gp_label_type==="name"?d.name:this.gp_label_type==="id"?d.property:d.property+":"+d.name );
 
 
         let column_p = this.cols.selectAll(".column")

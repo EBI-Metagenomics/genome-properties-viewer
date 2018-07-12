@@ -1,6 +1,6 @@
 {
   "name": "genome-properties-viewer",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A heatmap styled viewer for the genome properties",
   "main": "index.js",
   "scripts": {
