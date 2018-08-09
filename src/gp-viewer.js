@@ -514,13 +514,27 @@ export default class GenomePropertiesViewer {
                     property: d[0],
                     name: d[1],
                     values: {"TOTAL": {"YES":0, "NO":0, "PARTIAL":0}},
-                    parent_top_properties: this.gp_hierarchy.get_top_level_gp_by_id(d[0])
+                    parent_top_properties: this.gp_hierarchy.get_top_level_gp_by_id(d[0]),
+                    // TODO: Replace for actual steps information
+                    steps: d[0].slice(7).split("")
+                        .filter(x => x!=="0")
+                        .reduce((agg, v) => {
+                            agg.push({
+                                step: agg.length+1,
+                                values: {}
+                            });
+                            return agg;
+                        }, []),
                 };
             if (tax_id in this.data[d[0]]["values"])
                 return;
             this.data[d[0]]["values"][tax_id] = d[2];
             this.data[d[0]]["values"]["TOTAL"][d[2]]++;
             this.organism_totals[tax_id][d[2]]++;
+            // TODO: Replace for actual steps information
+            this.data[d[0]].steps.forEach(
+                step => step.values[tax_id] = (tax_id+d[1].length) % 2 === 0
+            )
         });
         if (allLinesAreOK) {
             this.gp_taxonomy.set_organisms_loaded(tax_id, isFromFile);
