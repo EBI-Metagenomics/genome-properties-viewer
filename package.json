@@ -10,7 +10,7 @@
     "browser-sync": "browser-sync start --server -f bin/*.*",
     "serve": "npm run watch & npm run browser-sync",
     "create-taxonomy-file": "node src/taxonomy/taxonomy_retriever.js > taxonomy.json",
-    "precommit": "pretty-quick --staged"
+    "precommit": "prettier --write src/*"
   },
   "repository": {
     "type": "git",
