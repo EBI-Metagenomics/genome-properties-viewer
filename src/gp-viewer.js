@@ -4,36 +4,9 @@ import GenomePropertiesHierarchy from "./gp-hierarchy";
 import GenomePropertiesTaxonomy from "./gp-taxonomy";
 import ZoomPanel from "./zoomer";
 import GenomePropertiesController from "./gp-controller";
+import {updateStepToggler} from "./steps-toggler";
 
 import * as d3 from "./d3";
-//
-// import {event, select, selectAll} from "d3-selection";
-// import {text, xml, json} from "d3-request";
-// import {range} from "d3-array";
-// import {drag} from "d3-drag";
-// import {stack, pie, arc as arc_tmp, symbol, symbolCross,symbolCircle, symbolTriangle} from "d3-shape";
-// import {transition} from "d3-transition";
-// import {stratify, cluster, tree, hierarchy} from "d3-hierarchy";
-// import {entries, keys, values} from "d3-collection";
-// import {scaleLinear, scaleBand, scaleOrdinal, schemeCategory20b} from "d3-scale";
-// import {tsvParseRows} from "d3-dsv";
-// import {zoom} from "d3-zoom";
-// import {interpolate} from "d3-interpolate";
-// import {dispatch} from "d3-dispatch";
-//
-// const d3 ={
-//     event,
-//     select,
-//     selectAll,
-//     scaleBand,
-//     scaleLinear,
-//     json,
-//     drag,
-//     entries,
-//     keys,
-//     values,
-//     transition,
-// };
 
 export default class GenomePropertiesViewer {
   constructor({
@@ -101,7 +74,7 @@ export default class GenomePropertiesViewer {
     };
     this.column_total_width = cell_side;
     this.x = d3.scaleBand().range([0, width - this.column_total_width]);
-    this.y = d3.scaleLinear().range([0, height]);
+    this.y = d3.scaleLinear().range([0, cell_side]);
     this.gp_values = ["YES", "PARTIAL", "NO"];
     this.c = {
       YES: "rgb(49, 130, 189)",
@@ -147,7 +120,8 @@ export default class GenomePropertiesViewer {
         const dh = this.options.margin.top - h;
         this.options.margin.top = h;
         this.options.height += dh;
-        this.y.range([0, this.options.height]);
+        // this.y.range([0, this.options.height]);
+        this.y.range([0, this.options.cell_side]);
         this.svg.attr(
           "transform",
           "translate(" +
@@ -245,7 +219,8 @@ export default class GenomePropertiesViewer {
       .select("svg")
       .attr("width", rect.width);
     // .attr("height", rect.height);
-    this.y.range([0, this.options.height]);
+    // this.y.range([0, this.options.height]);
+    this.y.range([0, this.options.cell_side]);
 
     this.update_viewer();
   }
@@ -256,6 +231,7 @@ export default class GenomePropertiesViewer {
       this.current_scroll.y =
         (this.current_scroll.y * this.options.cell_side) / p;
       this.zoomer.zoomBar.attr("y", this.zoomer.slider(this.options.cell_side));
+      this.y.range([0, this.options.cell_side]);
       this.transform_by_scroll();
     }
   }
@@ -348,19 +324,21 @@ export default class GenomePropertiesViewer {
               return function() {
                 _this.skip_scroll_refreshing = true;
                 d3.event.sourceEvent.stopPropagation();
-                const th = _this.options.cell_side * _this.props.length;
+                const th = _this.y(_this.props.length); //_this.options.cell_side * _this.props.length;
+                const prevY = parseInt(this.getAttribute("y"));
+                const nextY = prevY + d3.event.dy;
                 _this.scrollbar.attr(
                   "y",
                   Math.max(
                     0,
                     Math.min(
-                      d3.event.y,
+                      nextY,
                       _this.options.height - this.getAttribute("height")
                     )
                   )
                 );
                 let dy =
-                  (-d3.event.y * th) /
+                  (-nextY * th) /
                   (_this.options.height - this.getAttribute("height"));
                 _this.current_scroll.y = Math.min(
                   0,
@@ -378,7 +356,7 @@ export default class GenomePropertiesViewer {
   transform_by_scroll() {
     this.rows.attr(
       "transform",
-      d =>
+      () =>
         "translate(" +
         this.current_scroll.x +
         ", " +
@@ -610,9 +588,9 @@ export default class GenomePropertiesViewer {
     if (this.organisms.length === 0) {
       this.data = {};
     }
-    for (let gp in this.data) {
+    for (const gp of Object.keys(this.data)) {
       this.data[gp].values["TOTAL"][this.data[gp].values[tax_id]]--;
-      delete this.data[gp].values[tax_id];
+      if (this.data[gp].values[tax_id]) delete this.data[gp].values[tax_id];
     }
     this.update_viewer(false, 500);
   }
@@ -621,6 +599,33 @@ export default class GenomePropertiesViewer {
     return line.length === 3;
   }
 
+  _adjustYScaleBasedOnSteps() {
+    if (!this.props) return this.y;
+    const side = this.options.cell_side;
+    const marks = {
+      0: 0,
+      1: side
+    };
+
+    const newY = d3
+      .scaleLinear()
+      .domain([0, 1])
+      .range([0, side]);
+    this.props.forEach((prop, i) => {
+      if (prop.isShowingSteps) {
+        const prevY = newY(i);
+
+        if (!marks[i]) marks[i] = prevY;
+        marks[i + 1] = marks[i] + prop.steps.length * side;
+        marks[i + 2] = marks[i + 1] + side;
+      }
+    });
+    const domain = Object.keys(marks)
+      .map(Number)
+      .sort((a, b) => a - b);
+    const range = domain.map(x => marks[x]).map(Number);
+    this.y = newY.range(range).domain(domain);
+  }
   load_genome_properties_text(label, text) {
     const wl = this.whitelist;
     let tax_id = Number(label);
@@ -647,7 +652,7 @@ export default class GenomePropertiesViewer {
             .slice(7)
             .split("")
             .filter(x => x !== "0")
-            .reduce((agg, v) => {
+            .reduce(agg => {
               agg.push({
                 step: agg.length + 1,
                 values: {}
@@ -731,12 +736,10 @@ export default class GenomePropertiesViewer {
   }
 
   refresh_organism_totals() {
-    const ph = this.options.total_panel_height;
-
-    for (let o in this.organism_totals)
+    for (let o of Object.keys(this.organism_totals))
       this.organism_totals[o] = { YES: 0, NO: 0, PARTIAL: 0 };
     this.props.forEach(e => {
-      for (let v in this.organism_totals)
+      for (let v of Object.keys(this.organism_totals))
         this.organism_totals[v][e.values[v]]++;
     });
   }
@@ -778,7 +781,7 @@ export default class GenomePropertiesViewer {
       .transition(t)
       .attr(
         "transform",
-        (d, i) =>
+        d =>
           "translate(" +
           (this.x(this.organisms.indexOf(d.key.toString())) +
             ph / 2 +
@@ -795,7 +798,7 @@ export default class GenomePropertiesViewer {
       .attr("class", "total_cell_org")
       .attr(
         "transform",
-        (d, i) =>
+        d =>
           "translate(" +
           (this.x(this.organisms.indexOf(d.key.toString())) +
             ph / 2 +
@@ -847,7 +850,7 @@ export default class GenomePropertiesViewer {
   }
   filter_by_legend() {
     if (this.legend_filters) {
-      for (let x in this.legend_filters) {
+      for (let x of Object.keys(this.legend_filters)) {
         if (this.legend_filters[x] === "∀")
           this.props = this.props.filter(e => {
             const values = d3.entries(e.values).filter(e => e.key !== "TOTAL");
@@ -888,18 +891,22 @@ export default class GenomePropertiesViewer {
       );
     }
   }
-
-  update_viewer(zoom = false, time = 0) {
-    this.props = d3.values(this.data).filter(e => {
+  filter_by_hierarchy() {
+    this.props = this.props.filter(e => {
       if (e.parent_top_properties === null) return true;
       for (let p of e.parent_top_properties)
         for (let tp of this.gp_hierarchy.hierarchy_switch)
           if (p === tp.id && tp.enable) return true;
       return false;
     });
+  }
+  update_viewer(zoom = false, time = 0) {
+    this.props = d3.values(this.data);
+    this.filter_by_hierarchy();
     this.filter_by_text();
     this.filter_by_legend();
     this.sort_props();
+    this._adjustYScaleBasedOnSteps();
 
     this.column_total_width = this.options.cell_side;
     this.x.range([
@@ -909,29 +916,13 @@ export default class GenomePropertiesViewer {
       this.options.width - this.column_total_width
     ]);
 
-    const visible_rows = Math.round(
-      this.options.height / this.options.cell_side
+    this.current_props = this.props.filter(
+      (gp, i) =>
+        this.y(i) + this.current_scroll.y > 0 &&
+        this.y(i) + this.current_scroll.y < this.options.height
     );
-
-    this.y.domain([0, visible_rows]);
-
-    let dy = this.current_dy;
-    if (!zoom) {
-      dy =
-        -Math.floor(
-          d3
-            .select(".gpv-rows-group")
-            .attr("transform")
-            .match(/translate\((.*),(.*)\)/)[2] / this.y(1)
-        ) - 2;
-      dy =
-        dy < this.props.length - visible_rows
-          ? dy
-          : this.props.length - visible_rows - 1;
-      dy = dy < 0 ? 0 : dy;
-      this.current_dy = dy;
-    }
-    this.current_props = this.props.slice(dy, visible_rows + dy + 1);
+    const dy = this.props.indexOf(this.current_props[0]);
+    const visible_rows = this.current_props.length;
     this.gp_taxonomy.update_tree(time, this.options.cell_side);
     this.current_order = this.gp_taxonomy.current_order;
     this.organisms = this.gp_taxonomy.get_tax_list();
@@ -985,7 +976,7 @@ export default class GenomePropertiesViewer {
 
     row_p
       .selectAll(".row_title")
-      .attr("x", this.x.range()[0] - 6)
+      .attr("x", this.x.range()[0] - 6 - this.options.cell_side)
       .attr("y", this.column_total_width / 2)
       .text(
         d =>
@@ -1056,27 +1047,28 @@ export default class GenomePropertiesViewer {
     if (!this.skip_scroll_refreshing)
       this.update_scroll_bar(this.props.length, visible_rows, dy);
   }
-  update_row(r, i, c) {
-    const cell_height = this.options.cell_side;
+  update_row(gp, i, c) {
+    const cell_height = this.options.cell_side * (gp.isShowingSteps ?  gp.steps.length : 1);
+    const side = this.options.cell_side;
 
     const gps = d3
         .select(c[i])
         .selectAll(".top_level_gp")
-        .data(r.parent_top_properties, d => d),
+        .data(gp.parent_top_properties, d => d),
       text_heigth = d3
         .select("text")
         .node()
         .getBBox().height;
-    let radius = (cell_height - text_heigth) / 2 - 4;
+    let radius = (side - text_heigth) / 2 - 4;
     if (radius < 2) radius = 2;
     if (radius > 6) radius = 6;
 
     gps
       .attr(
         "cx",
-        (d, i) => this.x.range()[0] - 6 - radius - (2 * radius + 2) * i
+        (d, i) => this.x.range()[0] - side - 6 - radius - (2 * radius + 2) * i
       )
-      .attr("cy", cell_height / 2 + text_heigth / 2 + radius - 2)
+      .attr("cy", side / 2 + text_heigth / 2 + radius - 2)
       .attr("r", radius);
 
     gps
@@ -1087,7 +1079,7 @@ export default class GenomePropertiesViewer {
         "cx",
         (d, i) => this.x.range()[0] - 6 - radius - (2 * radius + 2) * i
       )
-      .attr("cy", cell_height / 2 + text_heigth / 2 + radius - 2)
+      .attr("cy", side / 2 + text_heigth / 2 + radius - 2)
       .attr("r", radius)
       .style("fill", d => this.gp_hierarchy.color(d));
 
@@ -1147,11 +1139,11 @@ export default class GenomePropertiesViewer {
       .attr("width", this.x.bandwidth())
       .on("mouseover", mouseover)
       .on("mouseout", mouseout)
-      .style("fill", d => (d in r.values ? this.c[r.values[d]] : null));
+      .style("fill", d => (d in gp.values ? this.c[gp.values[d]] : null));
 
     const arc_f = d3
       .arc()
-      .outerRadius(cell_height * 0.4)
+      .outerRadius(side * 0.4)
       .innerRadius(0);
     const pie_f = d3.pie().value(d => d.value);
 
@@ -1188,7 +1180,7 @@ export default class GenomePropertiesViewer {
       .select(c[i])
       .selectAll(".total_cell")
       .selectAll(".arc")
-      .data(pie_f(d3.entries(r.values["TOTAL"])), d => d.data.key);
+      .data(pie_f(d3.entries(gp.values["TOTAL"])), d => d.data.key);
 
     arcs.attr("d", arc_f);
 
@@ -1200,6 +1192,7 @@ export default class GenomePropertiesViewer {
       .style("fill", d => {
         return this.c[d.data.key];
       });
+    updateStepToggler(this, gp, c[i], side);
   }
 
   order_organisms(value) {
