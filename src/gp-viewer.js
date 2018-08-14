@@ -11,6 +11,12 @@ import {
   transformByScroll,
   updateScrollBar
 } from "./gp-scroller";
+import {
+  createGradient,
+  drawMasks,
+  updateMasks,
+  drawDragArea
+} from "./gp-ui-utils";
 
 import * as d3 from "./d3";
 
@@ -101,7 +107,7 @@ export default class GenomePropertiesViewer {
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     this.svg.x = 0;
     this.svg.y = 0;
-    this.create_gradient();
+    createGradient(this);
 
     this.gp_taxonomy = new GenomePropertiesTaxonomy({
       path: server_tax,
@@ -199,14 +205,14 @@ export default class GenomePropertiesViewer {
 
     this.current_scroll = { x: 0, y: 0 };
     this.draw_rows_panel();
-    this.draw_masks();
+    drawMasks(this);
     this.draw_columns_panel();
     this.gp_taxonomy.draw_tree_panel(this.svg);
     this.zoomer.draw_panel();
     this.draw_total_per_organism_panel();
     drawScrollXBar(this);
     drawScrollYBar(this);
-    this.draw_drag_area();
+    drawDragArea(this);
     window.addEventListener("resize", () => this.refresh_size());
   }
   refresh_size() {
@@ -238,173 +244,6 @@ export default class GenomePropertiesViewer {
       this.y.range([0, this.options.cell_side]);
       transformByScroll(this);
     }
-  }
-
-  create_gradient() {
-    const defs = this.svg.append("defs");
-    const gradient_d = defs
-      .append("linearGradient")
-      .attr("id", "gradientdown")
-      .attr("x1", "0%")
-      .attr("y1", "0%")
-      .attr("x2", "0%")
-      .attr("y2", "100%");
-    gradient_d
-      .append("stop")
-      .attr("offset", "85%")
-      .attr("stop-color", "#fff")
-      .attr("stop-opacity", 1);
-    gradient_d
-      .append("stop")
-      .attr("offset", "100%")
-      .attr("stop-color", "#fff")
-      .attr("stop-opacity", 0.5);
-    const gradient_u = defs
-      .append("linearGradient")
-      .attr("id", "gradientup")
-      .attr("x1", "0%")
-      .attr("y1", "0%")
-      .attr("x2", "0%")
-      .attr("y2", "100%");
-    gradient_u
-      .append("stop")
-      .attr("offset", "0%")
-      .attr("stop-color", "#fff")
-      .attr("stop-opacity", 0.7);
-    gradient_u
-      .append("stop")
-      .attr("offset", "35%")
-      .attr("stop-color", "#fff")
-      .attr("stop-opacity", 1);
-  }
-  draw_masks() {
-    const ph = this.options.total_panel_height;
-    this.masks = this.svg.append("g").attr("class", "masks");
-    this.masks
-      .append("rect")
-      .attr("class", "tree-background background")
-      .style("fill", "url(#gradientdown)")
-      .attr("x", -this.options.margin.left)
-      .attr("y", -this.options.margin.top)
-      .attr(
-        "width",
-        this.options.width +
-          this.options.margin.left +
-          this.options.margin.right
-      )
-      .attr("height", this.options.margin.top);
-    this.svg
-      .insert("rect", ":first-child")
-      .attr("class", "event-mask background")
-      .style("opacity", 0)
-      .attr("x", -this.options.margin.left)
-      .attr("y", 0)
-      .attr(
-        "width",
-        this.options.width +
-          this.options.margin.left +
-          this.options.margin.right
-      )
-      .attr("height", this.options.height - this.options.margin.bottom - ph);
-    this.masks
-      .append("rect")
-      .attr("class", "total-background background")
-      .style("fill", "url(#gradientup)")
-      .attr("x", -this.options.margin.left)
-      .attr("y", this.options.height - this.options.margin.bottom - ph)
-      .attr(
-        "width",
-        this.options.width +
-          this.options.margin.left +
-          this.options.margin.right
-      )
-      .attr("height", ph * 2);
-  }
-  draw_drag_area() {
-    const offset = 35;
-    const zoom_height = 90;
-    const g = this.svg
-      .append("g")
-      .attr("class", "height-dragger")
-      .attr("transform", `translate(${-offset}, 0)`)
-      .call(
-        d3
-          .drag()
-          .on("drag", () => {
-            this.options.margin.dy = Math.min(
-              Math.max(d3.event.y, zoom_height - this.options.margin.top),
-              this.options.height - this.options.margin.bottom
-            );
-            // if (this.height-offset < 70)
-            //     this.height=70+offset;
-            g.attr(
-              "transform",
-              `translate(${-offset}, ${this.options.margin.dy})`
-            );
-          })
-          .on("end", () => {
-            const new_height = this.options.margin.top + this.options.margin.dy;
-            if (isNaN(new_height)) return;
-            this.gp_taxonomy.dipatcher.call(
-              "changeHeight",
-              this.gp_taxonomy,
-              new_height
-            );
-            g.attr("transform", `translate(${-offset}, 0)`);
-            this.gp_taxonomy.height = this.options.margin.top;
-            this.gp_taxonomy.y = -this.gp_taxonomy.height;
-            this.gp_taxonomy.update_tree();
-          })
-      );
-    const side = this.options.cell_side / 2;
-    g.append("rect")
-      .attr("y", -side / 2)
-      .attr("width", side * 2)
-      .attr("height", side)
-      .style("fill", "transparent");
-    for (let index = -1; index < 2; index++) {
-      g.append("line")
-        .attr("x1", side * 2)
-        .attr("y1", (index * side) / 2)
-        .attr("y2", (index * side) / 2)
-        .style("stroke", "#333");
-    }
-    g.append("line")
-      .attr("class", "height-sizer")
-      .attr("x1", this.options.width);
-  }
-
-  update_masks() {
-    const ph = this.options.total_panel_height;
-    this.masks
-      .select(".total-background")
-      .attr("y", this.options.height - this.options.margin.bottom - ph)
-      .attr(
-        "width",
-        this.options.width +
-          this.options.margin.left +
-          this.options.margin.right
-      )
-      .attr("height", ph * 2);
-    this.svg
-      .select(".event-mask background")
-      .attr(
-        "width",
-        this.options.width +
-          this.options.margin.left +
-          this.options.margin.right
-      )
-      .attr("height", this.options.height - this.options.margin.bottom - ph);
-    this.masks
-      .select(".tree-background")
-      .attr("y", -this.options.margin.top)
-      .attr(
-        "width",
-        this.options.width +
-          this.options.margin.left +
-          this.options.margin.right
-      )
-      .attr("height", this.options.margin.top);
   }
 
   load_genome_properties_file(tax_id) {
@@ -878,13 +717,12 @@ export default class GenomePropertiesViewer {
     column.append("line").attr("x1", -this.options.height);
 
     this.update_total_per_organism_panel();
-    this.update_masks();
+    updateMasks(this);
     this.zoomer.zoom_panel.attr(
       "transform",
       "translate(-20," + -this.options.margin.top + ")"
     );
-    if (!this.skip_scroll_refreshing)
-      updateScrollBar(this, visible_rows, dy);
+    if (!this.skip_scroll_refreshing) updateScrollBar(this, visible_rows, dy);
   }
   update_row(gp, i, c) {
     const cell_height =
