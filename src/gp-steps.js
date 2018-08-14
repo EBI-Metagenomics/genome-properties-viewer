@@ -90,7 +90,7 @@ export const updateSteps = (viewer, gp, element, cellSide) => {
         })),
       d => d.key
     );
-
+  stepPerSpecie.exit().remove();
   stepPerSpecie
     .enter()
     .append("rect")
