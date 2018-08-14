@@ -18,6 +18,11 @@ import {
   drawDragArea
 } from "./gp-ui-utils";
 
+import {
+  loadGenomePropertiesFile,
+  removeGenomePropertiesFile
+} from "./gp-uploader";
+
 import * as d3 from "./d3";
 
 export default class GenomePropertiesViewer {
@@ -122,11 +127,11 @@ export default class GenomePropertiesViewer {
         this.order_organisms_current_order();
       })
       .on("spaciesRequested", taxId => {
-        this.load_genome_properties_file(taxId);
+        loadGenomePropertiesFile(this, taxId);
       })
       .on("removeSpacies", taxId => {
         d3.event.stopPropagation();
-        this.remove_genome_properties_file(taxId);
+        removeGenomePropertiesFile(this, taxId);
       })
       .on("changeHeight", h => {
         const dh = this.options.margin.top - h;
@@ -246,36 +251,6 @@ export default class GenomePropertiesViewer {
     }
   }
 
-  load_genome_properties_file(tax_id) {
-    if (this.organisms.indexOf(Number(tax_id)) !== -1) return;
-    d3.text(this.options.server.replace("{}", tax_id)).get((error, text) => {
-      if (error) throw error;
-      this.load_genome_properties_text(tax_id, text);
-      this.update_viewer(false, 500);
-    });
-  }
-  remove_genome_properties_file(id) {
-    let tax_id = Number(id);
-    const isFromFile = Number.isNaN(tax_id);
-    if (isFromFile) tax_id = id;
-    delete this.organism_totals[tax_id];
-    const i = this.organisms.indexOf(tax_id);
-    this.organisms.splice(i, 1);
-    this.gp_taxonomy.remove_organism_loaded(tax_id, isFromFile);
-    if (this.organisms.length === 0) {
-      this.data = {};
-    }
-    for (const gp of Object.keys(this.data)) {
-      this.data[gp].values["TOTAL"][this.data[gp].values[tax_id]]--;
-      if (this.data[gp].values[tax_id]) delete this.data[gp].values[tax_id];
-    }
-    this.update_viewer(false, 500);
-  }
-
-  static checkLineisOK(line) {
-    return line.length === 3;
-  }
-
   _adjustYScaleBasedOnSteps() {
     if (!this.props) return this.y;
     const side = this.options.cell_side;
@@ -303,63 +278,6 @@ export default class GenomePropertiesViewer {
       }
     });
     this.y = newY;
-  }
-  load_genome_properties_text(label, text) {
-    const wl = this.whitelist;
-    let tax_id = Number(label);
-    const isFromFile = Number.isNaN(tax_id);
-    if (isFromFile) tax_id = label;
-    this.organisms.push(tax_id);
-    this.organism_totals[tax_id] = { YES: 0, NO: 0, PARTIAL: 0 };
-    let allLinesAreOK = true;
-    const errorLines = [];
-    d3.tsvParseRows(text, (d, i) => {
-      if (!GenomePropertiesViewer.checkLineisOK(d)) {
-        allLinesAreOK = false;
-        errorLines.push([i, d]);
-      }
-      if (wl && wl.indexOf(d[0]) === -1) return;
-      if (!(d[0] in this.data))
-        this.data[d[0]] = {
-          property: d[0],
-          name: d[1],
-          values: { TOTAL: { YES: 0, NO: 0, PARTIAL: 0 } },
-          parent_top_properties: this.gp_hierarchy.get_top_level_gp_by_id(d[0]),
-          // TODO: Replace for actual steps information
-          steps: d[0]
-            .slice(7)
-            .split("")
-            .filter(x => x !== "0")
-            .reduce(agg => {
-              agg.push({
-                step: agg.length + 1,
-                values: {}
-              });
-              return agg;
-            }, []),
-          isShowingSteps: false
-        };
-      if (tax_id in this.data[d[0]]["values"]) return;
-      this.data[d[0]]["values"][tax_id] = d[2];
-      this.data[d[0]]["values"]["TOTAL"][d[2]]++;
-      this.organism_totals[tax_id][d[2]]++;
-      // TODO: Replace for actual steps information
-      this.data[d[0]].steps.forEach(
-        step => (step.values[tax_id] = Math.random() > 0.5)
-      );
-    });
-    if (allLinesAreOK) {
-      this.gp_taxonomy.set_organisms_loaded(tax_id, isFromFile);
-      if (!this.propsOrder) this.propsOrder = Object.keys(this.data).sort();
-      this.update_viewer(false, 500);
-    } else {
-      delete this.organisms[tax_id];
-      delete this.organism_totals[tax_id];
-      throw new Error(
-        "File didn't load. The following lines have errors:" +
-          errorLines.map(l => l.join(": ")).join("\n")
-      );
-    }
   }
 
   draw_rows_panel() {
