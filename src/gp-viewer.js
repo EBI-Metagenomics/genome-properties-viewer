@@ -25,6 +25,11 @@ import {
 
 import { filterByLegend, filterByHierarchy, filterByText } from "./gp-filters";
 
+import {
+  drawTotalPerOrganismPanel,
+  updateTotalPerOrganismPanel
+} from "./gp-totals";
+
 import * as d3 from "./d3";
 
 export default class GenomePropertiesViewer {
@@ -172,7 +177,7 @@ export default class GenomePropertiesViewer {
           "translate(" + this.svg.x + "," + this.svg.y + ")"
         );
         this.update_viewer(false, 500);
-        this.update_total_per_organism_panel();
+        updateTotalPerOrganismPanel(this);
       });
     this.zoomer = new ZoomPanel({
       x: -20,
@@ -217,7 +222,7 @@ export default class GenomePropertiesViewer {
     this.draw_columns_panel();
     this.gp_taxonomy.draw_tree_panel(this.svg);
     this.zoomer.draw_panel();
-    this.draw_total_per_organism_panel();
+    drawTotalPerOrganismPanel(this);
     drawScrollXBar(this);
     drawScrollYBar(this);
     drawDragArea(this);
@@ -318,123 +323,6 @@ export default class GenomePropertiesViewer {
       )
       .attr("opacity", 0)
       .text("TOTAL");
-  }
-  draw_total_per_organism_panel() {
-    const ph = this.options.total_panel_height;
-    this.total_g = this.svg
-      .append("g")
-      .attr("class", "total-group")
-      .attr(
-        "transform",
-        "translate(" +
-          (this.current_scroll.x - this.options.margin.left) +
-          ", " +
-          (this.options.height - this.options.margin.bottom - ph) +
-          ")"
-      );
-  }
-
-  refresh_organism_totals() {
-    for (let o of Object.keys(this.organism_totals))
-      this.organism_totals[o] = { YES: 0, NO: 0, PARTIAL: 0 };
-    this.props.forEach(e => {
-      for (let v of Object.keys(this.organism_totals))
-        this.organism_totals[v][e.values[v]]++;
-    });
-  }
-
-  update_total_per_organism_panel(time = 0) {
-    const ph = (this.options.total_panel_height = this.options.cell_side),
-      t = d3.transition().duration(time);
-    this.total_g.attr(
-      "transform",
-      "translate(" +
-        (this.current_scroll.x - this.options.margin.left) +
-        ", " +
-        (this.options.height - this.options.margin.bottom - ph) +
-        ")"
-    );
-
-    const arc_f = d3
-      .arc()
-      .outerRadius(ph * 0.4)
-      .innerRadius(0);
-
-    const pie_f = d3.pie().value(d => d.value);
-
-    this.refresh_organism_totals();
-
-    const cells_t = this.total_g
-      .selectAll(".total_cell_org")
-      .data(
-        d3
-          .entries(this.organism_totals)
-          .sort(
-            (a, b) =>
-              this.organisms.indexOf(a.key) - this.organisms.indexOf(b.key)
-          ),
-        d => d.key
-      );
-
-    cells_t
-      .transition(t)
-      .attr(
-        "transform",
-        d =>
-          "translate(" +
-          (this.x(this.organisms.indexOf(d.key.toString())) +
-            ph / 2 +
-            this.options.margin.left) +
-          ", " +
-          ph * 0.5 +
-          ")"
-      );
-    cells_t.exit().remove();
-
-    const g_e = cells_t
-      .enter()
-      .append("g")
-      .attr("class", "total_cell_org")
-      .attr(
-        "transform",
-        d =>
-          "translate(" +
-          (this.x(this.organisms.indexOf(d.key.toString())) +
-            ph / 2 +
-            this.options.margin.left) +
-          ", " +
-          ph * 0.5 +
-          ")"
-      )
-      .on("mouseover", p => {
-        d3.selectAll(".node--leaf text").classed("active", function() {
-          return this.textContent === p.key;
-        });
-        this.controller.draw_tooltip({
-          Organism: p.key
-        });
-        this.controller.draw_legends(p.value);
-      })
-      .on("mouseout", () => {
-        this.controller.draw_legends();
-        this.controller.draw_tooltip();
-        d3.selectAll(".node--leaf text").classed("active", false);
-      });
-
-    const group = g_e.size() ? g_e : cells_t,
-      arcs = group.selectAll(".arc").data(d => pie_f(d3.entries(d.value)));
-
-    arcs
-      .transition(t)
-      .attr("d", arc_f)
-      .attr("transform", "scale(1)");
-
-    arcs
-      .enter()
-      .append("path")
-      .attr("class", "arc")
-      .attr("d", arc_f)
-      .style("fill", d => this.c[d.data.key]);
   }
 
   move_row(prop, delta) {
@@ -597,7 +485,7 @@ export default class GenomePropertiesViewer {
 
     column.append("line").attr("x1", -this.options.height);
 
-    this.update_total_per_organism_panel();
+    updateTotalPerOrganismPanel(this);
     updateMasks(this);
     this.zoomer.zoom_panel.attr(
       "transform",
@@ -763,7 +651,7 @@ export default class GenomePropertiesViewer {
   }
   order_organisms_current_order() {
     this.x.domain(this.current_order);
-    this.update_total_per_organism_panel(1000);
+    updateTotalPerOrganismPanel(this, 1000);
     this.update_viewer();
   }
 
