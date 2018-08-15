@@ -47,7 +47,15 @@ export default class GenomePropertiesController {
     if (gp_text_filter_selector) {
       d3.select(gp_text_filter_selector).on("keyup", (d, i, c) => {
         this.text_filter = c[i].value.length > 2 ? c[i].value : "";
-        this.gp_viewer.filter_gp(this.text_filter);
+        if (this.text_filter !== this.gp_viewer.filter_text) {
+          this.gp_viewer.filter_text = this.text_filter;
+          this.gp_viewer.svg.y = 0;
+          d3.select(".gpv-rows-group").attr(
+            "transform",
+            "translate(" + this.gp_viewer.svg.x + "," + this.gp_viewer.svg.y + ")"
+          );
+          this.gp_viewer.update_viewer();
+        }
       });
     }
     if (gp_label_selector) {
