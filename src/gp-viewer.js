@@ -30,6 +30,8 @@ import {
   updateTotalPerOrganismPanel
 } from "./gp-totals";
 
+import GPModal from "./modal";
+
 import * as d3 from "./d3";
 
 export default class GenomePropertiesViewer {
@@ -227,6 +229,8 @@ export default class GenomePropertiesViewer {
     drawScrollYBar(this);
     drawDragArea(this);
     window.addEventListener("resize", () => this.refresh_size());
+
+    this.modal = new GPModal(element_selector);
   }
   refresh_size() {
     const margin = this.options.margin;

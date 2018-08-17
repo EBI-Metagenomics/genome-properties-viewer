@@ -182,6 +182,53 @@ input[type='file'] {
     padding: 2px;
 }
 
+.step-details-button,.step-details-button path, .step-details-button circle {
+    cursor: pointer;
+}
+.step-details-button circle {
+    fill: rgba(30,60,90,0.2);
+}
+.step-details-button:hover circle{
+    fill: rgba(30,60,90,0.7);
+}
+.gp-modal{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background: #96afc1;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+div.gp-modal.gp-modal-active{
+    pointer-events: auto;
+    opacity: 0.5;
+}
+div.gp-modal-content.gp-modal-active{
+    pointer-events: auto;
+    opacity: 1;
+}
+.gp-modal-popup {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    pointer-events: none;
+}
+.gp-modal-content{
+    position: relative;
+    width: 80vw;
+    min-height: 100px;
+    height: 100%;
+    max-height: 80vh;
+    background: white;
+    top: -40vh;
+    left: -50%;
+    opacity: 0;
+    pointer-events: none;
+    overflow: scroll;
+}
+
 div.info-tooltip{
     position: absolute;
     border: 1px solid rgb(173, 73, 74);
