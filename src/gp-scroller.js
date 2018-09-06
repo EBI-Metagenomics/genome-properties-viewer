@@ -154,4 +154,4 @@ export const updateScrollBar = (viewer, visible_rows, current_row) => {
     viewer.scrollbar_x.transition().attr("width", w2 * factor);
     viewer.scrollbar_x.attr("x", w2 * (1 - factor));
   }
-}
+};

@@ -280,7 +280,7 @@ export default class GenomePropertiesViewer {
         const prevY = newY(i);
 
         if (!marks[i]) marks[i] = prevY;
-        marks[i + 1] = marks[i] + prop.steps.length * side;
+        marks[i + 1] = marks[i] + Math.max(2, prop.steps.length) * side;
         marks[i + 2] = marks[i + 1] + side;
         const domain = Object.keys(marks)
           .map(Number)
@@ -500,7 +500,7 @@ export default class GenomePropertiesViewer {
 
   update_row(gp, i, c) {
     const cell_height =
-      this.options.cell_side * (gp.isShowingSteps ? gp.steps.length : 1);
+      this.options.cell_side * (gp.isShowingSteps ? Math.max(2, gp.steps.length) : 1);
     const side = this.options.cell_side;
 
     const gps = d3

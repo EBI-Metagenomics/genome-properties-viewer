@@ -2,6 +2,7 @@
 
 import * as d3 from "./d3";
 import "js-autocomplete-tremby";
+import { transformByScroll } from "./gp-scroller";
 
 export default class GenomePropertiesController {
   constructor({
@@ -49,12 +50,7 @@ export default class GenomePropertiesController {
         this.text_filter = c[i].value.length > 2 ? c[i].value : "";
         if (this.text_filter !== this.gp_viewer.filter_text) {
           this.gp_viewer.filter_text = this.text_filter;
-          this.gp_viewer.svg.y = 0;
-          d3.select(".gpv-rows-group").attr(
-            "transform",
-            "translate(" + this.gp_viewer.svg.x + "," + this.gp_viewer.svg.y + ")"
-          );
-          this.gp_viewer.update_viewer();
+          this.moveScrollUp();
         }
       });
     }
@@ -81,7 +77,7 @@ export default class GenomePropertiesController {
             )
           );
         },
-        onSelect: (event, term, item) => {
+        onSelect: (event, term) => {
           const tax = term.substr(0, term.indexOf(":"));
           this.gp_taxonomy.dipatcher.call(
             "spaciesRequested",
@@ -92,6 +88,10 @@ export default class GenomePropertiesController {
         }
       });
     }
+  }
+  moveScrollUp(){
+    this.gp_viewer.current_scroll.y = 0;
+    transformByScroll(this.gp_viewer);
   }
 
   loadSearchOptions() {
@@ -172,7 +172,7 @@ export default class GenomePropertiesController {
       .style("background", d => this.gp_viewer.c[d.key])
       .style(
         "color",
-        d => (d.key == "NO" ? "rgb(49, 130, 189)" : "rgb(230,230,230)")
+        d => (d.key === "NO" ? "rgb(49, 130, 189)" : "rgb(230,230,230)")
       )
       .style("cursor", "pointer")
       .attr("type", "")
@@ -181,11 +181,12 @@ export default class GenomePropertiesController {
           cu = filter_symbols.indexOf(e.attr("type")), //Current
           n = (cu + 1) % filter_symbols.length; //Next
 
-        e.classed("filter", filter_symbols[n] != "").attr(
+        e.classed("filter", filter_symbols[n] !== "").attr(
           "type",
           filter_symbols[n]
         );
         legends_filter[d.key] = filter_symbols[n];
+        this.moveScrollUp();
         this.dipatcher.call("legendFilterChanged", this, legends_filter);
       })
       .on("mouseover", d =>
@@ -203,7 +204,7 @@ export default class GenomePropertiesController {
           "Click in this area to apply one of the following filters"
         )
       )
-      .on("mouseout", d => this.draw_tooltip())
+      .on("mouseout", () => this.draw_tooltip())
       .append("div")
       .style("margin", "0 auto")
       .style("padding", "2px");
@@ -212,7 +213,9 @@ export default class GenomePropertiesController {
     this.gp_component.html(`
             <div class='current_status'>All</div>
             <div class='options'>
-                <a class="all">All</a> | <a class="none">None</a><br/><ul></ul>
+                <a class="all">All</a> | <a class="none">None</a><br/>
+                <ul>
+                </ul>
             </div>`);
 
     this.gp_component
@@ -251,11 +254,11 @@ export default class GenomePropertiesController {
 
   update(d) {
     let selected = [];
-    if (d == "ALL" || d == "NONE") {
+    this.moveScrollUp();
+    if (d === "ALL" || d === "NONE") {
       this.hierarchy_contorller.hierarchy_switch.forEach(
-        e => (e.enable = d == "ALL")
+        e => (e.enable = d === "ALL")
       );
-      // this.hierarchy_contorller.update_top_level_legend();
       this.hierarchy_contorller.dipatcher.call(
         "siwtchChanged",
         this,
@@ -268,10 +271,10 @@ export default class GenomePropertiesController {
       selected = this.hierarchy_contorller.hierarchy_switch.filter(
         e => e.enable
       );
-      if (selected.length == 0)
+      if (selected.length === 0)
         this.gp_component.select(".current_status").text("none");
       else if (
-        selected.length == this.hierarchy_contorller.hierarchy_switch.length
+        selected.length === this.hierarchy_contorller.hierarchy_switch.length
       )
         this.gp_component.select(".current_status").text("all");
       else {
