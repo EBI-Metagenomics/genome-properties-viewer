@@ -1,5 +1,5 @@
 import * as d3 from "./d3";
-import {symbol, symbolCross} from "d3-shape";
+import { symbol, symbolCross } from "d3-shape";
 
 export const updateStepToggler = (viewer, gp, element, cellSide) => {
   const onClick = id => {
@@ -75,10 +75,10 @@ const updateStepDetailsButton = (viewer, gp, element, cellSide) => {
     .selectAll(".step-details-button")
     .data(gp.isShowingSteps ? [gp] : [], d => d.property);
 
-  buttonG.exit()
-    .remove();
+  buttonG.exit().remove();
 
-  const button = buttonG.enter()
+  const button = buttonG
+    .enter()
     .append("g")
     .attr("class", "step-details-button")
     .attr("transform", `translate(0, ${cellSide})`)
@@ -86,11 +86,10 @@ const updateStepDetailsButton = (viewer, gp, element, cellSide) => {
 
   button.append("circle");
 
-  button
-    .append("path")
-    .attr("fill", "white");
+  button.append("path").attr("fill", "white");
 
-  buttonG.merge(button)
+  buttonG
+    .merge(button)
     .attr("transform", `translate(0, ${cellSide})`)
     .selectAll("circle")
     .transition()
@@ -100,8 +99,9 @@ const updateStepDetailsButton = (viewer, gp, element, cellSide) => {
 
   const symbol1 = symbol()
     .type(symbolCross)
-    .size(Math.pow(cellSide/2, 2));
-  buttonG.merge(button)
+    .size(Math.pow(cellSide / 2, 2));
+  buttonG
+    .merge(button)
     .selectAll("path")
     .transition()
     .attr("d", symbol1())
@@ -110,27 +110,41 @@ const updateStepDetailsButton = (viewer, gp, element, cellSide) => {
 
 const displayStepsModal = (viewer, gp) => {
   // let html = `<pre>${JSON.stringify(gp, null, 2)}</pre>`;
-  const organisms = Object.keys(gp.steps && gp.steps.length && gp.steps[0].values || {});
-  const html = `<h5>Steps for ${gp.property}</h5>
+  const organisms = Object.keys(
+    (gp.steps && gp.steps.length && gp.steps[0].values) || {}
+  );
+  const html = `<h3>Steps for ${gp.property}</h3>
         <table>
             <tr>
                 <th>Step</th>
                 <th>Evidence</th>
                 <th>GO Terms</th>
-                ${organisms.map(o => `<th>${o}</th>`).join('')}
+                ${organisms.map(o => `<th>${o}</th>`).join("")}
             </tr>
-            ${gp.steps.map(step => `
+            ${gp.steps
+              .map(
+                step => `
             <tr>
                 <td>${step.step}</td>
                 <td>evidenceValue</td>
                 <td>terms</td>
-                ${organisms.map(o => `<td>${step.values[o] ? 'Passed' : 'Failed'}</td>`).join('')}
+                ${organisms
+                  .map(
+                    o => `
+                    <td>
+                        <div class="step-popup ${
+                          step.values[o] ? "passed" : "failed"
+                        }" />
+                     </td>`
+                  )
+                  .join("")}
             </tr>
-            `).join('')}
+            `
+              )
+              .join("")}
         </table>
     `;
   viewer.modal.showContent(html);
-
 };
 
 export const updateSteps = (viewer, gp, element, cellSide) => {
@@ -152,7 +166,7 @@ export const updateSteps = (viewer, gp, element, cellSide) => {
     .merge(steps)
     .attr("transform", (d, i) => `translate(0, ${i * cellSide + p})`);
 
-  const onMouseOver = (p) => {
+  const onMouseOver = p => {
     viewer.controller.draw_tooltip({
       Property: gp.property,
       Name: gp.name,

@@ -208,6 +208,7 @@ div.gp-modal.gp-modal-active{
 div.gp-modal-content.gp-modal-active{
     pointer-events: auto;
     opacity: 1;
+    padding: 1em;
 }
 .gp-modal-popup {
     position: fixed;
@@ -227,6 +228,18 @@ div.gp-modal-content.gp-modal-active{
     opacity: 0;
     pointer-events: none;
     overflow: scroll;
+}
+
+.step-popup{
+    width: 20px;
+    height: 20px;
+    border: 1px solid #444444;
+}
+.step-popup.passed{
+    background: rgba(100,250,100,0.7);
+}
+.step-popup.failed{
+    background: rgba(200,200,200,0.3);
 }
 
 div.info-tooltip{
