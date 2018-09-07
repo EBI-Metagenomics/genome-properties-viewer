@@ -117,8 +117,7 @@ const displayStepsModal = (viewer, gp) => {
         <table>
             <tr>
                 <th>Step</th>
-                <th>Evidence</th>
-                <th>GO Terms</th>
+                <th>Name</th>
                 ${organisms.map(o => `<th>${o}</th>`).join("")}
             </tr>
             ${gp.steps
@@ -126,8 +125,7 @@ const displayStepsModal = (viewer, gp) => {
                 step => `
             <tr>
                 <td>${step.step}</td>
-                <td>evidenceValue</td>
-                <td>terms</td>
+                <td>${step.step_name}</td>
                 ${organisms
                   .map(
                     o => `

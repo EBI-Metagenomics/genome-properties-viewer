@@ -20,6 +20,7 @@ import {
 
 import {
   loadGenomePropertiesFile,
+  loadGenomePropertiesText,
   removeGenomePropertiesFile
 } from "./gp-uploader";
 
@@ -662,5 +663,11 @@ export default class GenomePropertiesViewer {
   change_gp_label(type) {
     this.gp_label_type = type;
     this.update_viewer();
+  }
+  loadGenomePropertiesText(name, text) {
+    loadGenomePropertiesText(this, name, text);
+  }
+  loadGenomePropertiesFile() {
+    loadGenomePropertiesFile(this);
   }
 }

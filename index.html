@@ -85,7 +85,7 @@
                 .filter(function(e) { return e.trim().length>0;});
         for (var i =0;i<ids.length;i++){
             var id = ids[i];
-            viewer.load_genome_properties_file(id.trim());
+            viewer.loadGenomePropertiesFile(id.trim());
         }
     });
     d3.select("#order").on("change", function() {
@@ -142,7 +142,7 @@
                             }
                         )
                     } else {
-                        viewer.load_genome_properties_text(evt.target.fileToRead.name, evt.target.result);
+                        viewer.loadGenomePropertiesText(evt.target.fileToRead.name, evt.target.result);
 
                     }
                 }catch(e){
