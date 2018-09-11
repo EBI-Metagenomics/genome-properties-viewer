@@ -110,9 +110,10 @@ const updateStepDetailsButton = (viewer, gp, element, cellSide) => {
 
 const displayStepsModal = (viewer, gp) => {
   // let html = `<pre>${JSON.stringify(gp, null, 2)}</pre>`;
-  const organisms = Object.keys(
-    (gp.steps && gp.steps.length && gp.steps[0].values) || {}
-  );
+  const organisms = viewer.organisms;
+  //   Object.keys(
+  //   (gp.steps && gp.steps.length && gp.steps[0].values) || {}
+  // );
   const html = `<h3>Steps for ${gp.property}</h3>
         <table>
             <tr>
