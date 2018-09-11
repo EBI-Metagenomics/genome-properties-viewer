@@ -230,6 +230,42 @@ div.gp-modal-content.gp-modal-active{
     overflow: scroll;
 }
 
+.progress-panel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.progress-panel .gauges-panel {
+    text-align: center;
+}
+.progress-panel .requests-list{
+    background: #5d5d5d;
+    color: #b8ff72;
+    font-family: monospace;
+    min-height: 100px;
+    margin: 5px;
+}
+.progress-panel .percentage{
+    text-anchor: middle;
+    font-size: 1.5em;
+    fill: cornflowerblue;
+    stroke: none;
+}
+.progress-panel .label{
+    text-anchor: middle;
+    font-size: 0.8em;
+    stroke-width: 0;
+}
+circle.gauge-bg {
+    fill: transparent;
+    stroke: #cccccc;
+    stroke-width: 1px;
+}
+circle.gauge-val {
+    fill: transparent;
+    stroke: cornflowerblue;
+    stroke-width: 3px;
+}
 .step-popup{
     width: 20px;
     height: 20px;

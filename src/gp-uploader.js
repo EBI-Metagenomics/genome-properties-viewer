@@ -83,6 +83,24 @@ export const loadGenomePropertiesText = (viewer, label, text) => {
     }
   }
 };
+
+export const enableSpeciesFromPreLoaded = (viewer, taxId) => {
+  let tax_id = Number(taxId);
+  viewer.gp_taxonomy.set_organisms_loaded(tax_id)
+  viewer.organisms.push(tax_id);
+  viewer.update_viewer(false, 500);
+
+};
+
+export const preloadSpecies = (viewer, data) => {
+  viewer.data = data;
+  Object.values(viewer.data).forEach(gp => {
+    gp.parent_top_properties = viewer.gp_hierarchy.get_top_level_gp_by_id(gp.property);
+    gp.isShowingSteps = false;
+  });
+
+};
+
 export const removeGenomePropertiesFile = (viewer, id) => {
   let tax_id = Number(id);
   const isFromFile = Number.isNaN(tax_id);
@@ -91,13 +109,151 @@ export const removeGenomePropertiesFile = (viewer, id) => {
   const i = viewer.organisms.indexOf(tax_id);
   viewer.organisms.splice(i, 1);
   viewer.gp_taxonomy.remove_organism_loaded(tax_id, isFromFile);
-  if (viewer.organisms.length === 0) {
-    viewer.data = {};
-  }
-  for (const gp of Object.keys(viewer.data)) {
-    viewer.data[gp].values["TOTAL"][viewer.data[gp].values[tax_id]]--;
-    if (viewer.data[gp].values[tax_id]) delete viewer.data[gp].values[tax_id];
-  }
+  // if (viewer.organisms.length === 0) {
+  //   viewer.data = {};
+  // }
+  // for (const gp of Object.keys(viewer.data)) {
+  //   viewer.data[gp].values["TOTAL"][viewer.data[gp].values[tax_id]]--;
+  //   if (viewer.data[gp].values[tax_id]) delete viewer.data[gp].values[tax_id];
+  // }
   viewer.update_viewer(false, 500);
 };
+
+export class FileGetter {
+  constructor({
+    element="body",
+    viewer,
+  }){
+    this.base = d3.select(element);
+    this.files = {};
+    this.isActive = false;
+    this.viewer =viewer;
+    this.activeGauge=0;
+    setInterval((_this)=>{
+      _this.activeGauge = (_this.activeGauge +1) % (Object.values(_this.activeGauges).length);
+    },3000, this)
+  }
+
+  getJSON(path){
+    if (this.files[path]) return this.files[path].request;
+    this.files[path] = {
+      loading: true,
+      path,
+    };
+    const modal = this.viewer.modal;
+    if (!this.isActive)
+      this.createProgressContent(modal);
+    // this.activeGauge = path;
+    return this.files[path].request = d3.json(path)
+      .on("progress", evt => this.updateProgress(path, evt))
+      .on("load.inner", (error, data)=>{
+        this.files[path].loading = false;
+        this.files[path].data = data;
+        if (Object.values(this.files).every(file => !file.loading)){
+          modal.setVisibility(false);
+          this.isActive = false;
+        }
+
+      });
+  }
+
+  createProgressContent(modal){
+    modal.showContent('', true);
+    this.progressContent= modal.getContentElement();
+    this.progressContent.append('h1').text("Loading Assets");
+    const pp = this.progressContent.append('div')
+      .attr("class", "progress-panel");
+    this.gaugeDiv = pp
+      .append("div")
+      .attr("class", "gauges-panel");
+    this.gaugeSVG = this.gaugeDiv
+      .append("svg")
+      .attr("width", "10vw")
+      .attr("height", "10vw")
+      .attr("class", "gauges");
+    this.gaugeLabel = this.gaugeDiv
+      .append("div")
+      .attr("class", "gauge-label")
+      .text("...");
+    this.requestsList = pp
+      .append("div")
+      .attr("class", "requests-list");
+    this.isActive = true;
+  }
+
+  updateProgress(path, event){
+    if (!this.isActive) return;
+    this.files[path].progress = event.loaded/event.total;
+    const files = Object.values(this.files);
+    const total = {
+      path: "TOTAL",
+      progress: files.reduce((agg, v)=>agg+v.progress,0)/files.length,
+    };
+    this.activeGauges = files.concat(total).filter(f => f.progress < 1);
+    this.gaugeLabel.text(
+      this.activeGauges[this.activeGauge] ? this.activeGauges[this.activeGauge].path : ''
+    );
+
+    const requestDiv = this.requestsList
+      .selectAll("div.request")
+      .data(files, d=>d.path);
+    requestDiv
+      .enter()
+      .append("div")
+      .attr("class", "request")
+      .merge(requestDiv)
+      .text(d=>`${d.path}: ${(d.progress*100).toFixed(1)}%`);
+
+    const w = this.gaugeSVG.node().getBoundingClientRect().width;
+
+    const gauges = this.gaugeSVG
+      .selectAll("g.gauge")
+      .data(this.activeGauges);
+    const current = this.activeGauge;
+
+    const gauge = gauges.enter()
+      .append("g")
+      .attr("class", "gauge")
+      .attr("transform", (d,i) => `translate(0,${w*(i-current)})`);
+
+    const r = w/2 -10;
+
+    const circunferencia =  2 * Math.PI * r;
+    gauge.append("circle")
+      .attr("class", "gauge-bg")
+      .attr("r", r)
+      .attr("cx", w/2)
+      .attr("cy", w/2);
+    gauge.append("circle")
+      .attr("class", "gauge-val")
+      .attr("stroke-linecap", "round")
+      .attr("stroke-dasharray", circunferencia)
+      .attr("stroke-dashoffset", circunferencia)
+      .attr("r", r)
+      .attr("transform", `rotate(90,${w/2},${w/2})`)
+      .attr("cx", w/2)
+      .attr("cy", w/2);
+
+    gauge.append("text")
+      .attr("class", "percentage")
+      .attr("x", w/2)
+      .attr("y", w/2);
+
+    // gauge.append("text")
+    //   .attr("class", "label")
+    //   .attr("x", w/2)
+    //   .attr("y", w - 8)
+    //   .text(d=>d.path);
+
+    gauges
+      .transition()
+      .attr("transform", (d,i) => `translate(0,${w*(i-current)})`);
+    gauges.select(".percentage")
+      .text(d=>`${(d.progress*100).toFixed(1)}%`);
+    gauges.select(".gauge-val")
+      .attr("stroke-dashoffset", d => circunferencia * (1 - d.progress));
+
+
+  }
+}
 

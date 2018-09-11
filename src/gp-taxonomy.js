@@ -49,15 +49,17 @@ export default class GenomePropertiesTaxonomy {
   load_taxonomy() {
     d3.json(this.path, (error, data) => {
       if (error) throw error;
-      this.root = data;
-      this.root.parent = null;
-      // this.redifine_parents(this.root);
-      this.nodes = this.load_nodes(this.root);
-      this.root.expanded = true;
-      this.dipatcher.call("taxonomyLoaded", this, this.root);
-      this.update_tree(500);
+      this.load_taxonomy_obj(data);
     });
     return this;
+  }
+  load_taxonomy_obj(data) {
+    this.root = data;
+    this.root.parent = null;
+    this.nodes = this.load_nodes(this.root);
+    this.root.expanded = true;
+    this.dipatcher.call("taxonomyLoaded", this, this.root);
+    this.update_tree(500);
   }
 
   load_nodes(node) {

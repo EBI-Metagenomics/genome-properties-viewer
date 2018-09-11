@@ -35,20 +35,24 @@ export default class GenomePropertiesHierarchy {
     //     this.dipatcher.call("hierarchyLoaded", this, this.root);
     // });
     d3.json(path, data => {
-      this.root = data;
-      this.nodes = {};
-      this.add_node_recursively(this.root);
-      this.color = d3
-        .scaleOrdinal()
-        .domain(this.root.children.map(d => d.id))
-        .range(d3.schemeCategory20b);
-      this.hierarchy_switch = this.root.children.map(d => {
-        return { id: d.id, enable: true };
-      });
-      this.dipatcher.call("hierarchyLoaded", this, this.root);
+      this.load_hierarchy_from_data(data)
     });
 
     return this;
+  }
+  load_hierarchy_from_data(data) {
+    this.root = data;
+    this.nodes = {};
+    this.add_node_recursively(this.root);
+    this.color = d3
+      .scaleOrdinal()
+      .domain(this.root.children.map(d => d.id))
+      .range(d3.schemeCategory20b);
+    this.hierarchy_switch = this.root.children.map(d => {
+      return { id: d.id, enable: true };
+    });
+    this.dipatcher.call("hierarchyLoaded", this, this.root);
+
   }
   add_node_recursively(node, parent = null) {
     if (!node.parents) node.parents = [];

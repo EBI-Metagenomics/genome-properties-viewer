@@ -19,6 +19,9 @@ import {
 } from "./gp-ui-utils";
 
 import {
+  FileGetter,
+  preloadSpecies,
+  enableSpeciesFromPreLoaded,
   loadGenomePropertiesFile,
   loadGenomePropertiesText,
   removeGenomePropertiesFile
@@ -46,6 +49,7 @@ export default class GenomePropertiesViewer {
     server = "https://raw.githubusercontent.com/rdfinn/genome-properties/master/flatfiles/gp_assignments/SUMMARY_FILE_{}.gp",
     server_tax = "https://raw.githubusercontent.com/rdfinn/genome-properties/master/flatfiles/taxonomy.json",
     hierarchy_path = "../test-files/hierarchy.json",
+    model_species_path = "../test-files/JSON_MERGED",
     whitelist_path = null,
     controller_element_selector = "#gp-selector",
     legends_element_selector = ".gp-legends",
@@ -56,6 +60,7 @@ export default class GenomePropertiesViewer {
     template_link_to_GP_page = "https://www.ebi.ac.uk/interpro/genomeproperties/#{}"
   }) {
     this.data = {};
+    this.preloaded = {};
     this.organisms = [];
     this.organism_names = {};
     this.organism_totals = {};
@@ -64,6 +69,16 @@ export default class GenomePropertiesViewer {
     this.fixedHeight = height !== null;
     this.propsOrder = null;
 
+    this.modal = new GPModal(element_selector);
+
+    this.fileGetter = new FileGetter({
+      element: ".gp-modal-content",
+      viewer:this,
+    });
+    this.fileGetter.getJSON(model_species_path)
+      .get(data=>{
+        preloadSpecies(this, data);
+      });
     if (width === null) {
       const rect = d3
         .select(element_selector)
@@ -132,13 +147,13 @@ export default class GenomePropertiesViewer {
       width: this.options.width,
       height: this.options.margin.top
     })
-      .load_taxonomy()
       .on("changeOrder", order => {
         this.current_order = order;
         this.order_organisms_current_order();
       })
       .on("spaciesRequested", taxId => {
-        loadGenomePropertiesFile(this, taxId);
+        // loadGenomePropertiesFile(this, taxId);
+        enableSpeciesFromPreLoaded(this, taxId);
       })
       .on("removeSpacies", taxId => {
         d3.event.stopPropagation();
@@ -170,9 +185,13 @@ export default class GenomePropertiesViewer {
 
         this.update_viewer();
       });
+    this.fileGetter.getJSON(server_tax)
+      .get((error, data)=>{
+        this.gp_taxonomy.load_taxonomy_obj(data);
+      });
 
     this.gp_hierarchy = new GenomePropertiesHierarchy()
-      .load_hierarchy_from_path(this.options.hierarchy_path)
+      // .load_hierarchy_from_path(this.options.hierarchy_path)
       .on("siwtchChanged", () => {
         this.svg.y = 0;
         d3.select(".gpv-rows-group").attr(
@@ -182,6 +201,11 @@ export default class GenomePropertiesViewer {
         this.update_viewer(false, 500);
         updateTotalPerOrganismPanel(this);
       });
+    this.fileGetter.getJSON(hierarchy_path)
+      .get((error, data)=>{
+        this.gp_hierarchy.load_hierarchy_from_data(data);
+      });
+
     this.zoomer = new ZoomPanel({
       x: -20,
       y: -this.options.margin.top,
@@ -352,7 +376,7 @@ export default class GenomePropertiesViewer {
     }
   }
   update_viewer(zoom = false, time = 0) {
-    this.props = d3.values(this.data);
+    this.props = this.organisms.length ? d3.values(this.data) : [];
     filterByHierarchy(this);
     filterByText(this);
     filterByLegend(this);
