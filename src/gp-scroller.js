@@ -74,6 +74,8 @@ export const drawScrollYBar = viewer => {
         .drag()
         .on("end", () => (viewer.skip_scroll_refreshing = false))
         .on("drag", function() {
+          if (viewer.props.length === 0)
+            return;
           viewer.skip_scroll_refreshing = true;
           d3.event.sourceEvent.stopPropagation();
           const th = viewer.y(viewer.props.length);
