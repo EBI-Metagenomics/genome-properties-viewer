@@ -5,17 +5,23 @@ export const filterByLegend = viewer => {
     for (let x of Object.keys(viewer.legend_filters)) {
       if (viewer.legend_filters[x] === "∀")
         viewer.props = viewer.props.filter(e => {
-          const values = d3.entries(e.values).filter(e => e.key !== "TOTAL");
+          const values = d3.entries(e.values).filter(
+            e => viewer.organisms.indexOf(e.key) !== -1
+          );
           return values.filter(e => e.value === x).length === values.length;
         });
       else if (viewer.legend_filters[x] === "∃")
         viewer.props = viewer.props.filter(e => {
-          const values = d3.entries(e.values).filter(e => e.key !== "TOTAL");
+          const values = d3.entries(e.values).filter(
+            e => viewer.organisms.indexOf(e.key) !== -1
+          );
           return values.filter(e => e.value === x).length > 0;
         });
       else if (viewer.legend_filters[x] === "∄")
         viewer.props = viewer.props.filter(e => {
-          const values = d3.entries(e.values).filter(e => e.key !== "TOTAL");
+          const values = d3.entries(e.values).filter(
+            e => viewer.organisms.indexOf(e.key) !== -1
+          );
           return values.filter(e => e.value === x).length === 0;
         });
     }

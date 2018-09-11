@@ -15,6 +15,20 @@ export const drawTotalPerOrganismPanel = viewer => {
     );
 };
 
+export const refreshGPTotals = viewer => {
+  for (const prop of viewer.props){
+    const total = {
+      NO: 0,
+      YES: 0,
+      PARTIAL: 0,
+    };
+    for (const org of viewer.organisms) {
+      total[prop.values[org]]++;
+    }
+    prop.values.TOTAL = total;
+  }
+};
+
 const refreshOrganismTotals = viewer => {
   for (let o of Object.keys(viewer.organism_totals))
     viewer.organism_totals[o] = { YES: 0, NO: 0, PARTIAL: 0 };

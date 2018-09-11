@@ -86,10 +86,10 @@ export const loadGenomePropertiesText = (viewer, label, text) => {
 
 export const enableSpeciesFromPreLoaded = (viewer, taxId) => {
   let tax_id = Number(taxId);
-  viewer.gp_taxonomy.set_organisms_loaded(tax_id)
+  viewer.gp_taxonomy.set_organisms_loaded(tax_id);
   viewer.organisms.push(tax_id);
+  viewer.organism_totals[tax_id] = {YES: 0, NO: 0, PARTIAL: 0};
   viewer.update_viewer(false, 500);
-
 };
 
 export const preloadSpecies = (viewer, data) => {

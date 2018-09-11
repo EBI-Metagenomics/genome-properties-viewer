@@ -31,7 +31,8 @@ import { filterByLegend, filterByHierarchy, filterByText } from "./gp-filters";
 
 import {
   drawTotalPerOrganismPanel,
-  updateTotalPerOrganismPanel
+  updateTotalPerOrganismPanel,
+  refreshGPTotals,
 } from "./gp-totals";
 
 import GPModal from "./modal";
@@ -377,6 +378,7 @@ export default class GenomePropertiesViewer {
   }
   update_viewer(zoom = false, time = 0) {
     this.props = this.organisms.length ? d3.values(this.data) : [];
+    refreshGPTotals(this);
     filterByHierarchy(this);
     filterByText(this);
     filterByLegend(this);
