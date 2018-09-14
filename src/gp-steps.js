@@ -109,17 +109,15 @@ const updateStepDetailsButton = (viewer, gp, element, cellSide) => {
 };
 
 const displayStepsModal = (viewer, gp) => {
-  // let html = `<pre>${JSON.stringify(gp, null, 2)}</pre>`;
   const organisms = viewer.organisms;
-  //   Object.keys(
-  //   (gp.steps && gp.steps.length && gp.steps[0].values) || {}
-  // );
   const html = `<h3>Steps for ${gp.property}</h3>
         <table>
             <tr>
                 <th>Step</th>
                 <th>Name</th>
-                ${organisms.map(o => `<th>${o}</th>`).join("")}
+                ${organisms.map(
+                  o => `<th>${viewer.getOrganismNameFromTaxId(o)}<br/>(${o})</th>`
+                ).join("")}
             </tr>
             ${gp.steps
               .map(
@@ -130,7 +128,7 @@ const displayStepsModal = (viewer, gp) => {
                 ${organisms
                   .map(
                     o => `
-                    <td>
+                    <td class="gp-${gp.values[o]}">
                         <div class="step-popup ${
                           step.values[o] ? "passed" : "failed"
                         }" />
@@ -169,7 +167,7 @@ export const updateSteps = (viewer, gp, element, cellSide) => {
     viewer.controller.draw_tooltip({
       Property: gp.property,
       Name: gp.name,
-      Step: p.step,
+      Step: `${p.step}. ${p.stepName}`,
       Passed: p.value ? "YES" : "NO",
       Organism: p.organism
     });
@@ -186,6 +184,7 @@ export const updateSteps = (viewer, gp, element, cellSide) => {
           organism,
           value: gp.steps[i].values[organism],
           step: gp.steps[i].step,
+          stepName: gp.steps[i].step_name,
           key: `${organism}__${i}`
         })),
       d => d.key

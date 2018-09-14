@@ -395,7 +395,7 @@ export default class GenomePropertiesViewer {
 
     this.current_props = this.props.filter(
       (gp, i) =>
-        this.y(i) + this.current_scroll.y >= 0 &&
+        this.y(i+1) + this.current_scroll.y >= 0 &&
         this.y(i) + this.current_scroll.y < this.options.height
     );
     const dy = this.props.indexOf(this.current_props[0]);
@@ -586,7 +586,7 @@ export default class GenomePropertiesViewer {
       const info = {
         Property: data[0].property,
         Name: data[0].name,
-        Organism: p,
+        Organism: `${this.getOrganismNameFromTaxId(p)} (${p})`,
         Value: data[0].values[p]
       };
       if ("TOTAL" === p) {
@@ -695,5 +695,11 @@ export default class GenomePropertiesViewer {
   }
   loadGenomePropertiesFile() {
     loadGenomePropertiesFile(this);
+  }
+  getOrganismNameFromTaxId(taxId) {
+    return this.gp_taxonomy
+      && this.gp_taxonomy.nodes
+      && this.gp_taxonomy.nodes[taxId]
+      && this.gp_taxonomy.nodes[taxId].name;
   }
 }

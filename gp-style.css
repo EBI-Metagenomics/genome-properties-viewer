@@ -270,12 +270,23 @@ circle.gauge-val {
     width: 20px;
     height: 20px;
     border: 1px solid #444444;
+    margin-left: calc(50% - 10px);
 }
 .step-popup.passed{
     background: rgba(100,250,100,0.7);
 }
 .step-popup.failed{
     background: rgba(200,200,200,0.3);
+}
+
+.gp-YES {
+    background: rgb(49, 130, 189);
+}
+.gp-NO {
+    background: rgb(210, 210, 210);
+}
+.gp-PARTIAL {
+    background: rgb(107, 174, 214);
 }
 
 div.info-tooltip{
