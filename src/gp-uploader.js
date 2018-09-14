@@ -11,24 +11,43 @@ export const loadGenomePropertiesFile = (viewer, tax_id) => {
 
 const isLineOK = line => line.length === 3;
 
-export const loadGenomePropertiesText = (viewer, label, text) => {
+const mergeObjectToData = (data, obj) => {
+  for (const gp of Object.keys(data)){
+    for (const newOrg of Object.keys(obj[gp] && obj[gp].values || {})){
+      if (newOrg!=="TOTAL")
+        data[gp].values[newOrg] = obj[gp].values[newOrg];
+    }
+    const stepsObj = (obj[gp] && obj[gp].steps || []).reduce((agg,v)=>{agg[v.step]=v; return agg;}, {})
+    for (const step of data[gp].steps){
+      for (const newOrg of Object.keys(stepsObj[step.step].values)){
+        step.values[newOrg] = stepsObj[step.step].values[newOrg];
+      }
+    }
+  }
+};
+export const loadGenomePropertiesText = (viewer, label, text, isFromFile=false) => {
   try {
-    viewer.data = JSON.parse(text);
-    Object.values(viewer.data).forEach(gp => {
-      gp.parent_top_properties = viewer.gp_hierarchy.get_top_level_gp_by_id(gp.property);
-      gp.isShowingSteps = false;
-    });
-    viewer.organisms = Object.keys(Object.values(viewer.data)[0].values)
+    const obj = JSON.parse(text);
+    mergeObjectToData(viewer.data, obj);
+    // Object.values(viewer.data).forEach(gp => {
+    //   gp.parent_top_properties = viewer.gp_hierarchy.get_top_level_gp_by_id(gp.property);
+    //   gp.isShowingSteps = false;
+    // });
+    const objOrgs = Object.keys(Object.values(obj)[0].values)
       .filter(x => x!=="TOTAL");
-    viewer.organisms
-      .forEach(tax_id => viewer.gp_taxonomy.set_organisms_loaded(tax_id));
-    if (!viewer.propsOrder) viewer.propsOrder = Object.keys(viewer.data).sort();
-    viewer.update_viewer(false, 500);
+    for (const org of objOrgs){
+      enableSpeciesFromPreLoaded(viewer, org, isFromFile);
+
+    }
+    // viewer.organisms
+    //   .forEach(tax_id => viewer.gp_taxonomy.set_organisms_loaded(tax_id));
+    // if (!viewer.propsOrder) viewer.propsOrder = Object.keys(viewer.data).sort();
+    // viewer.update_viewer(false, 500);
+    console.log(viewer.data);
   } catch (e) {
     console.log("File is not JSON. Trying to parse it as TSV now.")
     const wl = viewer.whitelist;
     let tax_id = Number(label);
-    const isFromFile = Number.isNaN(tax_id);
     if (isFromFile) tax_id = label;
     viewer.organisms.push(tax_id);
     viewer.organism_totals[tax_id] = {YES: 0, NO: 0, PARTIAL: 0};
@@ -84,9 +103,9 @@ export const loadGenomePropertiesText = (viewer, label, text) => {
   }
 };
 
-export const enableSpeciesFromPreLoaded = (viewer, taxId) => {
+export const enableSpeciesFromPreLoaded = (viewer, taxId, isFromFile=false) => {
   let tax_id = Number(taxId);
-  viewer.gp_taxonomy.set_organisms_loaded(tax_id);
+  viewer.gp_taxonomy.set_organisms_loaded(tax_id,  isFromFile);
   viewer.organisms.push(tax_id);
   viewer.organism_totals[tax_id] = {YES: 0, NO: 0, PARTIAL: 0};
   viewer.update_viewer(false, 500);

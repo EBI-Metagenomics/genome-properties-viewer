@@ -691,7 +691,7 @@ export default class GenomePropertiesViewer {
     this.update_viewer();
   }
   loadGenomePropertiesText(name, text) {
-    loadGenomePropertiesText(this, name, text);
+    loadGenomePropertiesText(this, name, text, true);
   }
   loadGenomePropertiesFile() {
     loadGenomePropertiesFile(this);
