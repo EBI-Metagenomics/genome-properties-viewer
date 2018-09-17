@@ -117,8 +117,9 @@
         viewer.update_viewer();
     });
 
-    const gp_server = 'http://localhost/cgi-bin/test.pl';
+    const gp_server = 'http://wwwdev.ebi.ac.uk/interpro/genomeproperties/cgi-bin/test.pl';
 
+    //TODO: Move this logic inside the component.
     function uploadFile() {
         const oFiles = document.getElementById("newfile").files;
         for (let i=0; i < oFiles.length; i++){
@@ -130,7 +131,7 @@
                     if (isIpproLine(firstline)){
                         fetch(gp_server, {
                             method: 'POST',
-                            body: 'ipprotsv='+evt.target.result,
+                            body: 'ipproname='+reader.fileToRead.name+'&ipprotsv='+evt.target.result,
                             headers: new Headers({
                                 "Content-Type": "application/x-www-form-urlencoded",
                                 "Access-Control-Request-Method": "POST",
@@ -138,11 +139,11 @@
                             })
                         }).then(response => response.text()).then(
                             x=> {
-                                viewer.loadGenomePropertiesText(evt.target.fileToRead.name, x)
+                                viewer.loadGenomePropertiesText(reader.fileToRead.name, x)
                             }
                         )
                     } else {
-                        viewer.loadGenomePropertiesText(evt.target.fileToRead.name, evt.target.result);
+                        viewer.loadGenomePropertiesText(reader.fileToRead.name, evt.target.result);
 
                     }
                 }catch(e){

@@ -35,9 +35,8 @@ export const loadGenomePropertiesText = (viewer, label, text, isFromFile=false) 
     // });
     const objOrgs = Object.keys(Object.values(obj)[0].values)
       .filter(x => x!=="TOTAL");
-    for (const org of objOrgs){
+    for (const org of objOrgs) {
       enableSpeciesFromPreLoaded(viewer, org, isFromFile);
-
     }
     // viewer.organisms
     //   .forEach(tax_id => viewer.gp_taxonomy.set_organisms_loaded(tax_id));
@@ -105,6 +104,8 @@ export const loadGenomePropertiesText = (viewer, label, text, isFromFile=false) 
 
 export const enableSpeciesFromPreLoaded = (viewer, taxId, isFromFile=false) => {
   let tax_id = Number(taxId);
+  if (isNaN(tax_id))
+    tax_id = taxId;
   viewer.gp_taxonomy.set_organisms_loaded(tax_id,  isFromFile);
   viewer.organisms.push(tax_id);
   viewer.organism_totals[tax_id] = {YES: 0, NO: 0, PARTIAL: 0};

@@ -174,6 +174,14 @@ export default class GenomePropertiesTaxonomy {
       tree.children.forEach(d => this.requestAll(d));
     }
   }
+  getLeaves(tree){
+    if (!tree.children || tree.children.length === 0) {
+      return [tree.taxid];
+    }
+    if (tree.children) {
+      tree.children.forEach(d => this.requestAll(d));
+    }
+  }
 
   set_organisms_loaded(tax_id, isFromFile) {
     if (tax_id in this.nodes) this.nodes[tax_id].loaded = true;
