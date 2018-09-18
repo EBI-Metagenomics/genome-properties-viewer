@@ -203,13 +203,15 @@ export class FileGetter {
 
   updateProgress(path, event){
     if (!this.isActive) return;
-    this.files[path].progress = event.loaded/event.total;
+    this.files[path].progress = event.total ? event.loaded/event.total : null;
+    this.files[path].event = event;
+
     const files = Object.values(this.files);
     const total = {
       path: "TOTAL",
-      progress: files.reduce((agg, v)=>agg+v.progress,0)/files.length,
+      progress: files.reduce((agg, v)=>agg + (v.progress || 0),0)/files.length,
     };
-    this.activeGauges = files.concat(total).filter(f => f.progress < 1);
+    this.activeGauges = files.concat(total).filter(f => f.progress === null || f.progress < 1);
     this.gaugeLabel.text(
       this.activeGauges[this.activeGauge] ? this.activeGauges[this.activeGauge].path : ''
     );
@@ -222,7 +224,10 @@ export class FileGetter {
       .append("div")
       .attr("class", "request")
       .merge(requestDiv)
-      .text(d=>`${d.path}: ${(d.progress*100).toFixed(1)}%`);
+      .text(d=>`${d.path}: 
+        ${d.progress ? (d.progress*100).toFixed(1) : ' ? '}% 
+        - ${d.event ? d.event.loaded: '_'}/${d.event && d.event.total || '?'}
+       `);
 
     const w = this.gaugeSVG.node().getBoundingClientRect().width;
 
@@ -269,9 +274,12 @@ export class FileGetter {
       .transition()
       .attr("transform", (d,i) => `translate(0,${w*(i-current)})`);
     gauges.select(".percentage")
-      .text(d=>`${(d.progress*100).toFixed(1)}%`);
+      .text(d=> d.progress ? `${(d.progress*100).toFixed(1)}%` : '?');
     gauges.select(".gauge-val")
-      .attr("stroke-dashoffset", d => circunferencia * (1 - d.progress));
+      .classed("uncertain", d=> d.progress === null)
+      .attr("stroke-dashoffset",
+          d => d.progress === null ? circunferencia/2 :circunferencia * (1 - d.progress)
+      );
 
 
   }
