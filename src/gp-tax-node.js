@@ -84,7 +84,7 @@ export default class TaxonomyNodeManager {
           this.main.dipatcher.call("spaciesRequested", this.main, d.data.taxid);
         }
         if (d.parent) {
-          this.main.requestAll(d.data);
+          this.main.dipatcher.call("multipleSpaciesRequested", this.main, this.main.getLeaves(d.data));
         }
       })
       .call(

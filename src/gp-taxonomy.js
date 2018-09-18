@@ -28,6 +28,7 @@ export default class GenomePropertiesTaxonomy {
     this.dipatcher = d3.dispatch(
       "changeOrder",
       "spaciesRequested",
+      "multipleSpaciesRequested",
       "changeHeight",
       "taxonomyLoaded",
       "removeSpacies"
@@ -179,7 +180,11 @@ export default class GenomePropertiesTaxonomy {
       return [tree.taxid];
     }
     if (tree.children) {
-      tree.children.forEach(d => this.requestAll(d));
+      const leaves = [];
+      for (const child of tree.children){
+        leaves.splice(0, 0,...this.getLeaves(child));
+      }
+      return leaves;
     }
   }
 

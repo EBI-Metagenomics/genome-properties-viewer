@@ -102,14 +102,15 @@ export const loadGenomePropertiesText = (viewer, label, text, isFromFile=false) 
   }
 };
 
-export const enableSpeciesFromPreLoaded = (viewer, taxId, isFromFile=false) => {
+export const enableSpeciesFromPreLoaded = (viewer, taxId, isFromFile=false, shouldUpdate=true) => {
   let tax_id = Number(taxId);
   if (isNaN(tax_id))
     tax_id = taxId;
   viewer.gp_taxonomy.set_organisms_loaded(tax_id,  isFromFile);
   viewer.organisms.push(tax_id);
   viewer.organism_totals[tax_id] = {YES: 0, NO: 0, PARTIAL: 0};
-  viewer.update_viewer(false, 500);
+  if(shouldUpdate)
+    viewer.update_viewer(false, 500);
 };
 
 export const preloadSpecies = (viewer, data) => {
@@ -263,12 +264,6 @@ export class FileGetter {
       .attr("class", "percentage")
       .attr("x", w/2)
       .attr("y", w/2);
-
-    // gauge.append("text")
-    //   .attr("class", "label")
-    //   .attr("x", w/2)
-    //   .attr("y", w - 8)
-    //   .text(d=>d.path);
 
     gauges
       .transition()

@@ -57,7 +57,10 @@ export default class GenomePropertiesHierarchy {
   add_node_recursively(node, parent = null) {
     if (!node.parents) node.parents = [];
     if (parent) node.parents.push(parent);
-    this.nodes[node.id] = node;
+    if (!this.nodes[node.id])
+      this.nodes[node.id] = node;
+    else
+      this.nodes[node.id].parents.splice(0,0,...node.parents)
     if (node.children && node.children.length > 0)
       for (let child of node.children) this.add_node_recursively(child, node);
   }

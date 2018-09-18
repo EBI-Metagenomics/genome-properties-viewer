@@ -156,6 +156,12 @@ export default class GenomePropertiesViewer {
         // loadGenomePropertiesFile(this, taxId);
         enableSpeciesFromPreLoaded(this, taxId);
       })
+      .on("multipleSpaciesRequested", taxa => {
+        for (const taxId of taxa) {
+          enableSpeciesFromPreLoaded(this, taxId, false, false);
+        }
+        this.update_viewer(false, 500);
+      })
       .on("removeSpacies", taxId => {
         d3.event.stopPropagation();
         removeGenomePropertiesFile(this, taxId);
@@ -456,7 +462,7 @@ export default class GenomePropertiesViewer {
     row_p
       .selectAll(".row_title")
       .attr("x", this.x.range()[0] - 6 - this.options.cell_side)
-      .attr("y", this.column_total_width / 2)
+      .attr("y", this.column_total_width * 0.8)
       .text(
         d =>
           this.gp_label_type === "name"
@@ -491,7 +497,7 @@ export default class GenomePropertiesViewer {
       .append("text")
       .attr("class", "row_title")
       .attr("x", this.x.range()[0] - 6 - this.options.cell_side)
-      .attr("y", this.column_total_width / 2)
+      .attr("y", this.column_total_width * 0.8)
       .attr("text-anchor", "end")
       .text(
         d =>
