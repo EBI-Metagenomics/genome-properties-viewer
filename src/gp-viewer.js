@@ -76,10 +76,6 @@ export default class GenomePropertiesViewer {
       element: ".gp-modal-content",
       viewer:this,
     });
-    this.fileGetter.getJSON(model_species_path)
-      .get(data=>{
-        preloadSpecies(this, data);
-      });
     if (width === null) {
       const rect = d3
         .select(element_selector)
@@ -211,6 +207,10 @@ export default class GenomePropertiesViewer {
     this.fileGetter.getJSON(hierarchy_path)
       .get((error, data)=>{
         this.gp_hierarchy.load_hierarchy_from_data(data);
+        this.fileGetter.getJSON(model_species_path)
+          .get(data=>{
+            preloadSpecies(this, data);
+          });
       });
 
     this.zoomer = new ZoomPanel({
@@ -262,7 +262,6 @@ export default class GenomePropertiesViewer {
     drawDragArea(this);
     window.addEventListener("resize", () => this.refresh_size());
 
-    this.modal = new GPModal(element_selector);
   }
   refresh_size() {
     const margin = this.options.margin;
