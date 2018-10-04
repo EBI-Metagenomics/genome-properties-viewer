@@ -74,6 +74,13 @@ export default class ZoomPanel {
       this.r
     ).on("click", this.function_less);
   }
+
+  refresh() {
+    this.zoom_panel.attr(
+      "transform",
+      `translate(${this.x}, ${this.y})`
+    );
+  }
   static add_button(panel, text, x, y, r) {
     const c = panel
       .append("circle")

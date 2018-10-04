@@ -276,13 +276,16 @@ export default class GenomePropertiesTaxonomy {
         .sort((a, b) => leaves[a].data.taxid - leaves[b].data.taxid),
       org_name: d3
         .range(ol)
-        .sort((a, b) => leaves[a].data.name - leaves[b].data.name),
-      tree: d3
+        .sort((a, b) => leaves[a].data.name > leaves[b].data.name ? 1 : -1),
+      tree1: d3
         .range(ol)
-        .sort((a, b) => leaves[a].data.lineage - leaves[b].data.lineage)
+        .sort((a, b) => leaves[a].data.lineage > leaves[b].data.lineage ? 1 : -1),
+      tree2: d3
+        .range(ol)
+        .sort((a, b) => leaves[a].data.lineage > leaves[b].data.lineage ? -1 : 1),
     };
     if (!this.current_order || this.current_order.length !== leaves.length)
-      this.current_order = this.orders.tree;
+      this.current_order = this.orders.tree1;
 
     const tree_f = d3
       .tree()
@@ -397,5 +400,14 @@ export default class GenomePropertiesTaxonomy {
       this.root.children.splice(i, 1);
       delete this.nodes[tax_id];
     }
+  }
+  sortBy(method) {
+    this.current_order = this.orders[method];
+    this.dipatcher.call(
+      "changeOrder",
+      this,
+      this.current_order
+    );
+
   }
 }

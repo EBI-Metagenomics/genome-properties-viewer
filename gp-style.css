@@ -419,14 +419,14 @@ div.container .top-block .minimise.on::after {
 .gpv-scrollbar rect.gpv-scrollbar-handle:hover{
     fill: rgba(180,180,180,0.7);
 }
-.gpv-zoomer circle {
+.gpv-zoomer circle, .gpv-sorter circle {
     fill: white;
     stroke: #333;
     stroke-width: 2;
     opacity: 0.7;
     cursor: pointer;
 }
-.gpv-zoomer text {
+.gpv-zoomer text, .gpv-sorter text {
     text-anchor: middle;
     alignment-baseline: central;
     opacity: 0.7;
@@ -436,6 +436,13 @@ div.container .top-block .minimise.on::after {
 }
 .gpv-zoomer circle:hover,.gpv-zoomer text:hover {
     opacity: 1;
+}
+
+.gpv-sorter line.bar {
+    pointer-events: none;
+    stroke: #333;
+    stroke-width: 2;
+    cursor: pointer;
 }
 .total_title{
     pointer-events: none;

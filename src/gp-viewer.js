@@ -3,6 +3,7 @@
 import GenomePropertiesHierarchy from "./gp-hierarchy";
 import GenomePropertiesTaxonomy from "./gp-taxonomy";
 import ZoomPanel from "./zoomer";
+import TaxonomySortButton from "./gp-taxonomy-sorter";
 import GenomePropertiesController from "./gp-controller";
 import { updateStepToggler, updateSteps } from "./gp-steps";
 import {
@@ -213,9 +214,16 @@ export default class GenomePropertiesViewer {
           });
       });
 
-    this.zoomer = new ZoomPanel({
+    this.sorter = new TaxonomySortButton({
+      container: this.svg,
       x: -20,
       y: -this.options.margin.top,
+      function_sort: mode => this.gp_taxonomy.sortBy(mode),
+    });
+    this.buttonHeight = 25;
+    this.zoomer = new ZoomPanel({
+      x: -20,
+      y: -this.options.margin.top + this.buttonHeight,
       domain: [20, 200],
       container: this.svg,
       function_plus: () => (this.cell_side = this.options.cell_side + 10),
@@ -256,6 +264,7 @@ export default class GenomePropertiesViewer {
     this.draw_columns_panel();
     this.gp_taxonomy.draw_tree_panel(this.svg);
     this.zoomer.draw_panel();
+    this.sorter.draw();
     drawTotalPerOrganismPanel(this);
     drawScrollXBar(this);
     drawScrollYBar(this);
@@ -523,10 +532,10 @@ export default class GenomePropertiesViewer {
 
     updateTotalPerOrganismPanel(this);
     updateMasks(this);
-    this.zoomer.zoom_panel.attr(
-      "transform",
-      "translate(-20," + -this.options.margin.top + ")"
-    );
+    this.sorter.y = -this.options.margin.top;
+    this.zoomer.y = -this.options.margin.top + this.buttonHeight;
+    this.sorter.refresh();
+    this.zoomer.refresh();
     if (!this.skip_scroll_refreshing) updateScrollBar(this, visible_rows, dy);
   }
 
