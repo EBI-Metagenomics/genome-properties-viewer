@@ -109,7 +109,8 @@ const updateStepDetailsButton = (viewer, gp, element, cellSide) => {
 };
 
 const displayStepsModal = (viewer, gp) => {
-  const organisms = viewer.organisms;
+  const organisms = viewer.gp_taxonomy.current_order.map(i=>viewer.organisms[i]);
+
   const html = `<h3>Steps for ${gp.property}</h3>
         <table>
             <tr>

@@ -147,13 +147,18 @@ export const updateScrollBar = (viewer, visible_rows, current_row) => {
   viewer.scrollbar_x_bg.attr("width", viewer.options.width);
   viewer.scrollbar_bg.attr("height", viewer.options.height);
 
+  const sw = Number(viewer.scrollbar_x.node().getBBox().width);
   const w1 = viewer.rows.node().getBBox().width;
-  const w2 = viewer.options.width;
-  const factor = w1 > w2 ? w2 / w1 : 1;
+  const w = viewer.options.width;
+  const factor = w1 > w ? w / w1 : 1;
   const pw = Number(viewer.scrollbar_x.attr("width"));
-  if (Math.abs(pw - w2 * factor) > 0.2) {
+
+  viewer.scrollbar_x
+    .transition().attr("x", w -sw - viewer.current_scroll.x*w/w1);
+
+  if (Math.abs(pw - w * factor) > 0.2) {
     viewer.current_scroll.x = 0;
-    viewer.scrollbar_x.transition().attr("width", w2 * factor);
-    viewer.scrollbar_x.attr("x", w2 * (1 - factor));
+    viewer.scrollbar_x.transition().attr("width", w * factor);
+    viewer.scrollbar_x.attr("x", w * (1 - factor));
   }
 };
