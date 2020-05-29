@@ -51,6 +51,7 @@ export default class GenomePropertiesViewer {
     server = "https://raw.githubusercontent.com/rdfinn/genome-properties/master/flatfiles/gp_assignments/SUMMARY_FILE_{}.gp",
     server_tax = "https://raw.githubusercontent.com/rdfinn/genome-properties/master/flatfiles/taxonomy.json",
     hierarchy_path = "../test-files/hierarchy.json",
+    // hierarchy_path,
     model_species_path = "../test-files/JSON_MERGED",
     whitelist_path = null,
     controller_element_selector = "#gp-selector",
@@ -60,6 +61,7 @@ export default class GenomePropertiesViewer {
     tax_label_selector = "#tax_label",
     tax_search_selector = "#tax-search",
     template_link_to_GP_page = "https://www.ebi.ac.uk/interpro/genomeproperties/#{}"
+    // template_link_to_GP_page = "http://localhost:3000/genome-property/{}"
   }) {
     this.data = {};
     this.preloaded = {};
@@ -235,7 +237,12 @@ export default class GenomePropertiesViewer {
         preloadSpecies(this, data);
       });
     });
-
+    // if (hierarchy_path) {
+    //   this.gp_hierarchy.load_hierarchy_from_data(hierarchy_path);
+    //   this.fileGetter.getJSON(model_species_path).get(data => {
+    //     preloadSpecies(this, data);
+    //   });
+    // }
     this.sorter = new TaxonomySortButton({
       container: this.svg,
       x: -20,

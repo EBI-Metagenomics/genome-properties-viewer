@@ -25,7 +25,7 @@ export default class TaxonomyNodeManager {
       )
       .style("fill-opacity", d => (d.data.id === "fake-root" ? 0 : null))
       .transition(t)
-      .attr("transform", d => "translate(" + d.x + "," + d.y + ")")
+      .attr("transform", d => "translate(" + d.y + "," + d.x + ")")
       .each((d, i, c) => this.update_node(d, i, c));
     node.exit().remove();
     const node_e = node
@@ -89,6 +89,7 @@ export default class TaxonomyNodeManager {
       })
       .call(
         d3
+            // TODO take care of the axis flipping on events
           .drag()
           .subject((d, i, c) => {
             const g = d3.select(c[i]),
@@ -148,10 +149,11 @@ export default class TaxonomyNodeManager {
   draw_node(node, i, context) {
     const g = d3.select(context[i]);
     g.append("circle");
-    g.attr("transform", d => "translate(" + d.x + "," + d.y + ")scale(0)")
+    // g.attr("transform", d => "translate(" + d.x + "," + d.y + ")scale(0)")
+    g.attr("transform", d => "translate(" + d.y + "," + d.x + ")scale(0)")
       .transition(this.t)
       .delay(300)
-      .attr("transform", d => "translate(" + d.x + "," + d.y + ")scale(1)");
+      .attr("transform", d => "translate(" + d.y + "," + d.x + ")scale(1)");
 
     g.append("text")
       .attr("class", "label-leaves")

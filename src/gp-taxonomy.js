@@ -290,8 +290,10 @@ export default class GenomePropertiesTaxonomy {
     const tree_f = d3
       .tree()
       .size([
-        this.width - this.cell_side * leaves.length,
-        this.height - this.cell_side
+        // this.width - this.cell_side * leaves.length,
+        this.width - this.cell_side,
+        // this.height - this.cell_side
+        this.height - this.cell_side * leaves.length,
       ]);
     tree_f(root);
     this.tree(root);
@@ -312,6 +314,7 @@ export default class GenomePropertiesTaxonomy {
     //     "translate(0 ,"
     //     +(-this.height+20)
     //     +")");
+
     const link = this.tree_g
       .selectAll(".link")
       .data(
@@ -329,15 +332,15 @@ export default class GenomePropertiesTaxonomy {
         "d",
         d =>
           "M" +
-          d.target.x +
+          d.source.y +
           "," +
-          d.target.y +
-          "V" +
-          (d.source.y + 10) +
-          "H" +
           d.source.x +
+          "H" +
+            (d.source.y + 10) +
           "V" +
-          (d.source.y + this.node_r)
+          (d.target.x) +
+            "H" +
+            (d.target.y)
       );
 
     link
@@ -352,16 +355,16 @@ export default class GenomePropertiesTaxonomy {
       .attr(
         "d",
         d =>
-          "M" +
-          d.target.x +
-          "," +
-          d.target.y +
-          "V" +
-          (d.source.y + 10) +
-          "H" +
-          d.source.x +
-          "V" +
-          (d.source.y + this.node_r)
+            "M" +
+            d.source.y +
+            "," +
+            d.source.x +
+            "H" +
+            (d.source.y + 10) +
+            "V" +
+            (d.target.x) +
+            "H" +
+            (d.target.y)
       )
       .style(
         "stroke",

@@ -2,6 +2,7 @@
 
 import * as d3 from "./d3";
 import "js-autocomplete-tremby";
+// import AutoComplete from "js-autocomplete-tremby";
 import { transformByScroll } from "./gp-scroller";
 
 export default class GenomePropertiesController {
@@ -66,6 +67,7 @@ export default class GenomePropertiesController {
     }
     if (tax_search_selector && gp_taxonomy) {
       this.search_options = [];
+      // this.ac = new AutoComplete({
       this.ac = new autoComplete({
         selector: tax_search_selector,
         minChars: 2,
