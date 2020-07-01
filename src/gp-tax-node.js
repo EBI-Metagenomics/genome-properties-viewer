@@ -89,7 +89,6 @@ export default class TaxonomyNodeManager {
       })
       .call(
         d3
-            // TODO take care of the axis flipping on events
           .drag()
           .subject((d, i, c) => {
             const g = d3.select(c[i]),
@@ -104,19 +103,21 @@ export default class TaxonomyNodeManager {
             if (d.has_loaded_leaves)
               d3.select(c[i]).attr(
                 "transform",
-                d => "translate(" + d3.event.x + "," + d.y + ")"
+                d => "translate(" + d.y + "," + d3.event.y + ")"
               );
           })
           .on("end", (d, i, c) => {
             if (d.has_loaded_leaves) {
               const w = this.main.cell_side,
-                dx = d3.event.x - d.x; // - w/2,
-              let d_col = Math.round(dx / w);
-              move_tree(d, d_col);
+                // dx = d3.event.x - d.x; // - w/2,
+                dy = d3.event.y - d.y; // - w/2,
+              // let d_col = Math.round(dx / w);
+              let d_row = Math.round(dy / w);
+              move_tree(d, d_row);
               var t = d3.transition().duration(500);
               d3.select(c[i])
                 .transition(t)
-                .attr("transform", d => "translate(" + d.x + "," + d.y + ")");
+                .attr("transform", d => "translate(" + d.y + "," + d.x + ")");
             }
           })
       )
@@ -164,10 +165,10 @@ export default class TaxonomyNodeManager {
 
     g.append("text")
       .attr("class", "label-species")
-      .attr("y", this.r)
-      .attr("x", this.r + 3)
-      .style("text-anchor", "start")
-      .style("transform", "rotate(-70deg)")
+        .attr("x", this.r)
+      .attr("y", this.r + 10)
+      .style("text-anchor", "end")
+      // .style("transform", "rotate(-70deg)")
       .style("fill", d => (d.data.isFromFile ? "darkred" : null))
       .text(d => {
         let label = "";

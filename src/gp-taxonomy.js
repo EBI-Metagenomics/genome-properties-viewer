@@ -290,10 +290,8 @@ export default class GenomePropertiesTaxonomy {
     const tree_f = d3
       .tree()
       .size([
-        // this.width - this.cell_side * leaves.length,
-        this.width - this.cell_side,
-        // this.height - this.cell_side
-        this.height - this.cell_side * leaves.length,
+        this.width - this.cell_side * leaves.length,
+        this.height - this.cell_side
       ]);
     tree_f(root);
     this.tree(root);
