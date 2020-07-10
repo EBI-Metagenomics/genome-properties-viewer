@@ -49,7 +49,7 @@ export const drawMasks = viewer => {
     .attr("y", -viewer.options.margin.top)
     .attr(
       "width",
-      viewer.options.treeSpace + ph
+      viewer.options.treeSpace + viewer.options.margin.left
     )
     .attr("height", viewer.options.height + viewer.options.margin.top);
   viewer.svg
@@ -96,7 +96,7 @@ export const updateMasks = viewer => {
     .attr("y", -viewer.options.treeSpace)
     .attr(
       "width",
-        viewer.options.treeSpace + ph
+        viewer.options.treeSpace + viewer.options.margin.left
     )
     .attr("height", viewer.options.height + viewer.options.margin.top);
 };
@@ -107,7 +107,7 @@ export const drawDragArea = viewer => {
   const g = viewer.svg
     .append("g")
     .attr("class", "height-dragger")
-    .attr("transform", `translate(${viewer.options.treeSpace - viewer.options.cell_side}, -${viewer.options.margin.top})`)
+    .attr("transform", `translate(${viewer.options.treeSpace}, -${viewer.options.margin.top})`)
     .call(
       d3
         .drag()
@@ -125,11 +125,11 @@ export const drawDragArea = viewer => {
           const new_width = viewer.options.treeSpace + viewer.options.margin.dx;
           if (isNaN(new_width)) return;
           viewer.gp_taxonomy.dipatcher.call(
-            "changeHeight",
+            "changeWidth",
             viewer.gp_taxonomy,
             new_width
           );
-          g.attr("transform", `translate(${viewer.options.treeSpace - viewer.options.cell_side}, -${viewer.options.margin.top})`);
+          g.attr("transform", `translate(${viewer.options.treeSpace}, -${viewer.options.margin.top})`);
           viewer.gp_taxonomy.height = viewer.options.treeSpace;
           viewer.gp_taxonomy.y = -viewer.options.margin.top;
           viewer.gp_taxonomy.update_tree();

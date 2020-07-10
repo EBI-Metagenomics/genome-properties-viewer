@@ -173,7 +173,7 @@ export default class GenomePropertiesViewer {
     this.gp_taxonomy = new GenomePropertiesTaxonomy({
       path: server_tax,
       x: 0,
-      y: -this.options.treeSpace,
+      y: -this.options.margin.top,
       // y: 0,
       width: this.options.height,
       height: this.options.treeSpace
@@ -196,14 +196,15 @@ export default class GenomePropertiesViewer {
         d3.event.stopPropagation();
         removeGenomePropertiesFile(this, taxId);
       })
-      .on("changeHeight", w => {
+      .on("changeWidth", w => {
         // const dh = this.options.margin.top - h;
         // this.options.margin.top = h;
         // this.options.height += dh;
 
-        const dw = this.options.treeSpace - w;
+        // const dw = this.options.treeSpace - w;
+        debugger
         this.options.treeSpace = w;
-        this.options.width += dw;
+        // this.options.margin.top = w;
         // this.y.range([0, this.options.height]);
         this.x.range([0, this.options.cell_side]);
         this.svg.attr(
@@ -211,7 +212,7 @@ export default class GenomePropertiesViewer {
           "translate(" +
             this.options.margin.left +
             "," +
-            this.options.treeSpace +
+            this.options.margin.top +
             ")"
         );
 
@@ -311,7 +312,6 @@ export default class GenomePropertiesViewer {
     window.addEventListener("resize", () => this.refresh_size());
   }
   refresh_size() {
-    // TODO has to be checked
     const margin = this.options.margin;
     d3.select(this.options.element_selector).select("svg");
     const rect = d3
@@ -322,7 +322,7 @@ export default class GenomePropertiesViewer {
       rect.width - this.options.margin.left - this.options.margin.right;
     if (!this.fixedHeight)
       this.options.height = rect.height - margin.top - margin.bottom;
-    this.gp_taxonomy.width = rect.width - margin.left - margin.right;
+    this.gp_taxonomy.width = this.options.height;
     d3.select(this.options.element_selector)
       .select("svg")
       .attr("width", rect.width);
@@ -345,7 +345,7 @@ export default class GenomePropertiesViewer {
 
   moveScroll({ dx = 0, dy = 0 }) {
     const tw = this.x(this.props.length);
-    const limY = this.newCols.node().getBBox().height - viewer.options.height;
+    const limY = this.newCols.node().getBBox().height - this.options.height;
     this.current_scroll.y = Math.max(
       0,
       Math.min(limY, this.current_scroll.y + dy)
@@ -481,8 +481,9 @@ export default class GenomePropertiesViewer {
     this.y.range([
       this.options.height -
       this.options.margin.top -
-      this.options.cell_side * this.organisms.length,
-      this.options.height - this.options.margin.top,
+      this.options.cell_side * this.organisms.length +
+      this.options.cell_side,
+      this.options.height - this.options.margin.top + this.options.cell_side,
     ]);
 
     this.current_props = this.props.filter(
@@ -511,7 +512,8 @@ export default class GenomePropertiesViewer {
 
     new_column_p
         .transition(t)
-        .attr("transform", (d, i) => "translate(" + (this.x(i + dx) + this.options.treeSpace - this.options.cell_side) + ", " + (this.options.height-this.options.margin.top) +")" + "rotate(-90)")
+        .attr("transform", (d, i) => "translate(" + (this.x(i + dx) + this.options.treeSpace) + ", " +
+            (this.options.height - this.options.margin.top + this.options.cell_side) +")" + "rotate(-90)")
         .each((d, i, c) => this.update_col(d, i, c));
 
     new_column_p.exit().remove();
@@ -538,7 +540,8 @@ export default class GenomePropertiesViewer {
                 ",0)"
         )
         .transition(t)
-        .attr("transform", (d, i) => "translate(" + (this.x(i + dx) + this.options.treeSpace - this.options.cell_side) + ", " + (this.options.height-this.options.margin.top) + ")" + "rotate(-90)");
+        .attr("transform", (d, i) => "translate(" + (this.x(i + dx) + this.options.treeSpace) + ", " +
+            (this.options.height-this.options.margin.top + this.options.cell_side) + ")" + "rotate(-90)");
 
     d3.selectAll("g.column line")
         .transition()

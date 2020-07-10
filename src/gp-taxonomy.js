@@ -29,7 +29,7 @@ export default class GenomePropertiesTaxonomy {
       "changeOrder",
       "spaciesRequested",
       "multipleSpaciesRequested",
-      "changeHeight",
+      "changeWidth",
       "taxonomyLoaded",
       "removeSpacies"
     );
@@ -89,11 +89,11 @@ export default class GenomePropertiesTaxonomy {
   tree(node, deepness = 0) {
     const ol = this.organisms.length,
       w_leaves = this.cell_side * ol,
-      h = this.height - 20,
+      h = this.height,
       w_fr = w_leaves / ol;
     const heatmap_start =
       this.width -
-      this.cell_side * (ol + 1) + // 1 for the TOTAL column
+      this.cell_side * ol +
       this.svg.x;
 
     let avg = 0;
@@ -291,7 +291,7 @@ export default class GenomePropertiesTaxonomy {
       .tree()
       .size([
         this.width - this.cell_side * leaves.length,
-        this.height - this.cell_side
+        this.height
       ]);
     tree_f(root);
     this.tree(root);
