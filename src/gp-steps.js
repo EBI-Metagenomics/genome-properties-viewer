@@ -145,7 +145,7 @@ const displayStepsModal = (viewer, gp) => {
   viewer.modal.showContent(html);
 };
 
-export const updateSteps = (viewer, gp, element, cellSide) => {
+export const updateSteps = (viewer, gp, element, cellSide, yScale) => {
   const xScale = viewer.x;
   const side = cellSide * 0.6;
   const p = cellSide * 0.2;
@@ -199,7 +199,7 @@ export const updateSteps = (viewer, gp, element, cellSide) => {
     .on("mouseover", onMouseOver)
     .on("mouseout", onMouseOut)
     .merge(stepPerSpecie)
-    .attr("x", (d, i) => xScale(i) + p)
+    .attr("x", (d, i) => yScale(i) + p)
     .transition()
     .attr("width", side)
     .attr("height", side)

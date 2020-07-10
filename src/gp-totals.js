@@ -7,10 +7,7 @@ export const drawTotalPerOrganismPanel = viewer => {
     .attr("class", "total-group")
     .attr(
       "transform",
-      `translate(${viewer.current_scroll.x -
-        viewer.options.margin.left}, ${viewer.options.height -
-        viewer.options.margin.bottom -
-        ph}
+      `translate(${viewer.options.width - viewer.options.margin.right}, ${viewer.options.height - viewer.options.margin.top + viewer.current_scroll.y - 2 * ph}
       )`
     );
 };
@@ -43,11 +40,8 @@ export const updateTotalPerOrganismPanel = (viewer, time = 0) => {
     t = d3.transition().duration(time);
   viewer.total_g.attr(
     "transform",
-    "translate(" +
-      (viewer.current_scroll.x - viewer.options.margin.left) +
-      ", " +
-      (viewer.options.height - viewer.options.margin.bottom - ph) +
-      ")"
+      `translate(${viewer.options.width - viewer.options.margin.right}, ${viewer.options.height - viewer.options.margin.top + viewer.current_scroll.y - 2 * ph}
+      )`
   );
 
   const arc_f = d3
@@ -71,17 +65,16 @@ export const updateTotalPerOrganismPanel = (viewer, time = 0) => {
       d => d.key
     );
 
+  const newY = d3.scaleBand().range([viewer.organisms.length * viewer.options.cell_side, 0]).domain(viewer.current_order);
+
   cells_t
     .transition(t)
     .attr(
       "transform",
-      d =>
+        (d, i) =>
         "translate(" +
-        (viewer.x(viewer.organisms.indexOf(d.key.toString())) +
-          ph / 2 +
-          viewer.options.margin.left) +
-        ", " +
-        ph * 0.5 +
+          (viewer.options.margin.right) + ", " +
+          (-newY(i) + ph / 2 + viewer.options.cell_side) +
         ")"
     );
   cells_t.exit().remove();
@@ -92,13 +85,10 @@ export const updateTotalPerOrganismPanel = (viewer, time = 0) => {
     .attr("class", "total_cell_org")
     .attr(
       "transform",
-      d =>
+        (d, i) =>
         "translate(" +
-        (viewer.x(viewer.organisms.indexOf(d.key.toString())) +
-          ph / 2 +
-          viewer.options.margin.left) +
-        ", " +
-        ph * 0.5 +
+          (viewer.options.margin.right) + ", " +
+          (-newY(i) + ph / 2 + viewer.options.cell_side) +
         ")"
     )
     .on("mouseover", p => {

@@ -29,7 +29,7 @@ export default class GenomePropertiesTaxonomy {
       "changeOrder",
       "spaciesRequested",
       "multipleSpaciesRequested",
-      "changeHeight",
+      "changeWidth",
       "taxonomyLoaded",
       "removeSpacies"
     );
@@ -89,11 +89,11 @@ export default class GenomePropertiesTaxonomy {
   tree(node, deepness = 0) {
     const ol = this.organisms.length,
       w_leaves = this.cell_side * ol,
-      h = this.height - 20,
+      h = this.height,
       w_fr = w_leaves / ol;
     const heatmap_start =
       this.width -
-      this.cell_side * (ol + 1) + // 1 for the TOTAL column
+      this.cell_side * ol +
       this.svg.x;
 
     let avg = 0;
@@ -291,7 +291,7 @@ export default class GenomePropertiesTaxonomy {
       .tree()
       .size([
         this.width - this.cell_side * leaves.length,
-        this.height - this.cell_side
+        this.height
       ]);
     tree_f(root);
     this.tree(root);
@@ -312,6 +312,7 @@ export default class GenomePropertiesTaxonomy {
     //     "translate(0 ,"
     //     +(-this.height+20)
     //     +")");
+
     const link = this.tree_g
       .selectAll(".link")
       .data(
@@ -329,15 +330,15 @@ export default class GenomePropertiesTaxonomy {
         "d",
         d =>
           "M" +
-          d.target.x +
+          d.source.y +
           "," +
-          d.target.y +
-          "V" +
-          (d.source.y + 10) +
-          "H" +
           d.source.x +
+          "H" +
+            (d.source.y + 10) +
           "V" +
-          (d.source.y + this.node_r)
+          (d.target.x) +
+            "H" +
+            (d.target.y)
       );
 
     link
@@ -352,16 +353,16 @@ export default class GenomePropertiesTaxonomy {
       .attr(
         "d",
         d =>
-          "M" +
-          d.target.x +
-          "," +
-          d.target.y +
-          "V" +
-          (d.source.y + 10) +
-          "H" +
-          d.source.x +
-          "V" +
-          (d.source.y + this.node_r)
+            "M" +
+            d.source.y +
+            "," +
+            d.source.x +
+            "H" +
+            (d.source.y + 10) +
+            "V" +
+            (d.target.x) +
+            "H" +
+            (d.target.y)
       )
       .style(
         "stroke",
