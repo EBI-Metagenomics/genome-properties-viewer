@@ -121,11 +121,10 @@ export const drawScrollYBar = viewer => {
             return;
           viewer.skip_scroll_refreshing = true;
           d3.event.sourceEvent.stopPropagation();
-          const th = viewer.options.height + viewer.newCols.node().getBBox().height - viewer.options.margin.top + viewer.options.cell_side;
+          const th = viewer.newCols.node().getBBox().y + viewer.newCols.node().getBBox().height;
           const fh = viewer.options.height + viewer.options.margin.top;
           const prevY = parseInt(this.getAttribute("y"));
           const nextY = prevY + d3.event.dy;
-          debugger
           viewer.scrollbar.attr(
             "y",
             Math.max(
@@ -191,14 +190,9 @@ export const updateScrollBar = (viewer, visible_cols, current_col) => {
       total_cols ? (current_col * (viewer.options.width - viewer.options.treeSpace)) / total_cols : 0
     );
   viewer.scrollbar_x_bg.attr("width", viewer.options.width - viewer.options.treeSpace);
-  // viewer.scrollbar_bg.attr("height",
-  //     viewer.options.height + viewer.newCols.node().getBBox().height -
-  //     (viewer.organisms.length * viewer.options.cell_side) -
-  //     viewer.options.margin.top
-  // );
-    debugger
-    const th = viewer.options.height + viewer.newCols.node().getBBox().height - viewer.options.margin.top + viewer.options.cell_side;
-    const fh = viewer.options.height + viewer.options.margin.top + viewer.options.margin.bottom;
+
+    const th = viewer.newCols.node().getBBox().y + viewer.newCols.node().getBBox().height;
+    const fh = viewer.options.height + viewer.options.margin.top;
     viewer.scrollbar_bg.attr("height", th);
     viewer.scrollbar
         .transition()
@@ -211,24 +205,4 @@ export const updateScrollBar = (viewer, visible_cols, current_col) => {
             "y",
             Math.min(0, (viewer.current_scroll.y * fh) / th)
         );
-
-
-
-
-  // const sh = Number(viewer.scrollbar.node().getBBox().height);
-  // const h1 = viewer.newCols.node().getBBox().height;
-  // const h = viewer.options.height;
-  // // const h = viewer.options.height + viewer.options.margin.top;
-  // const factor = h1 > h ? h / h1 : 1;
-  // const ph = Number(viewer.scrollbar.attr("height"));
-  //
-  // viewer.scrollbar
-  //   .transition().attr("y", h - sh - viewer.current_scroll.y * h/h1);
-  //
-  // if (Math.abs(ph - h * factor) > 0.2) {
-  //   viewer.current_scroll.y = 0;
-  //   // viewer.current_scroll.y = -viewer.options.margin.top;
-  //   viewer.scrollbar.transition().attr("height", h * factor);
-  //   viewer.scrollbar.attr("y", h * (1 - factor));
-  // }
 };

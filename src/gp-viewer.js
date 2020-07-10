@@ -39,7 +39,6 @@ import {
 import GPModal from "./modal";
 
 import * as d3 from "./d3";
-import {range} from "./d3";
 
 export default class GenomePropertiesViewer {
   constructor({
@@ -62,8 +61,7 @@ export default class GenomePropertiesViewer {
     gp_label_selector = "#gp_label",
     tax_label_selector = "#tax_label",
     tax_search_selector = "#tax-search",
-    template_link_to_GP_page = "https://www.ebi.ac.uk/interpro/genomeproperties/#{}"
-    // template_link_to_GP_page = "http://localhost:3000/genome-property/{}"
+    template_link_to_GP_page = "https://wwwdev.ebi.ac.uk/interpro/genomeproperties/#{}"
   }) {
     this.data = {};
     this.preloaded = {};
@@ -175,7 +173,7 @@ export default class GenomePropertiesViewer {
       x: 0,
       y: -this.options.margin.top,
       // y: 0,
-      width: this.options.height,
+      width: this.options.height - this.options.cell_side,
       height: this.options.treeSpace
     })
       .on("changeOrder", order => {
@@ -202,7 +200,6 @@ export default class GenomePropertiesViewer {
         // this.options.height += dh;
 
         // const dw = this.options.treeSpace - w;
-        debugger
         this.options.treeSpace = w;
         // this.options.margin.top = w;
         // this.y.range([0, this.options.height]);
@@ -331,7 +328,6 @@ export default class GenomePropertiesViewer {
     this.update_viewer();
   }
   set cell_side(value) {
-    // TODO has to be changed
     const p = this.options.cell_side;
     this.options.cell_side = Math.max(20, Math.min(200, value));
     if (p !== this.options.cell_side) {
@@ -513,7 +509,7 @@ export default class GenomePropertiesViewer {
     new_column_p
         .transition(t)
         .attr("transform", (d, i) => "translate(" + (this.x(i + dx) + this.options.treeSpace) + ", " +
-            (this.options.height - this.options.margin.top + this.options.cell_side) +")" + "rotate(-90)")
+            (this.options.height - this.options.margin.top) +")" + "rotate(-90)")
         .each((d, i, c) => this.update_col(d, i, c));
 
     new_column_p.exit().remove();
@@ -541,7 +537,7 @@ export default class GenomePropertiesViewer {
         )
         .transition(t)
         .attr("transform", (d, i) => "translate(" + (this.x(i + dx) + this.options.treeSpace) + ", " +
-            (this.options.height-this.options.margin.top + this.options.cell_side) + ")" + "rotate(-90)");
+            (this.options.height-this.options.margin.top) + ")" + "rotate(-90)");
 
     d3.selectAll("g.column line")
         .transition()

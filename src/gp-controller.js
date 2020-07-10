@@ -67,6 +67,7 @@ export default class GenomePropertiesController {
     }
     if (tax_search_selector && gp_taxonomy) {
       this.search_options = [];
+      // TODO Has to be replaced with a library compatible with React
       // this.ac = new AutoComplete({
       // this.ac = new autoComplete({
       //   selector: tax_search_selector,

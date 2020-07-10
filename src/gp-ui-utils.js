@@ -79,6 +79,7 @@ export const updateMasks = viewer => {
   const ph = viewer.options.total_panel_height;
   viewer.masks
     .select(".total-background")
+      .attr("x", viewer.options.width - ph / 2)
     .attr("y", -viewer.options.margin.top)
     .attr(
       "width", viewer.options.margin.right + ph / 2

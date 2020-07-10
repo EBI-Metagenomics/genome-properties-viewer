@@ -7,7 +7,7 @@ export const drawTotalPerOrganismPanel = viewer => {
     .attr("class", "total-group")
     .attr(
       "transform",
-      `translate(${viewer.options.width - viewer.options.margin.right}, ${viewer.options.height - viewer.options.margin.top + viewer.current_scroll.y - ph}
+      `translate(${viewer.options.width - viewer.options.margin.right}, ${viewer.options.height - viewer.options.margin.top + viewer.current_scroll.y - 2 * ph}
       )`
     );
 };
@@ -40,7 +40,7 @@ export const updateTotalPerOrganismPanel = (viewer, time = 0) => {
     t = d3.transition().duration(time);
   viewer.total_g.attr(
     "transform",
-      `translate(${viewer.options.width - viewer.options.margin.right}, ${viewer.options.height - viewer.options.margin.top + viewer.current_scroll.y - ph}
+      `translate(${viewer.options.width - viewer.options.margin.right}, ${viewer.options.height - viewer.options.margin.top + viewer.current_scroll.y - 2 * ph}
       )`
   );
 
