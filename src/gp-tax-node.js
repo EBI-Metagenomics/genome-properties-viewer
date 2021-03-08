@@ -39,18 +39,18 @@ export default class TaxonomyNodeManager {
           (d.data.loaded ? " loaded" : "")
       )
       .style("fill-opacity", d => (d.data.id === "fake-root" ? 0 : null))
-      .on("mouseover", (d, i, c) => {
+      .on("mouseover", (event, d) => {
         d3.select("#info_organism").text(
           `${d.label}${d.data.taxid ? " - " + d.data.taxid : ""}`
         );
-        d3.select(c[i])
+        d3.select(event.currentTarget)
           .selectAll("circle")
           .transition(300)
           .attr("r", this.r + 2);
       })
-      .on("mouseout", (d, i, c) => {
+      .on("mouseout", (event) => {
         d3.select("#info_organism").text("");
-        d3.select(c[i])
+        d3.select(event.currentTarget)
           .selectAll("circle")
           .transition(300)
           .attr(
@@ -63,7 +63,7 @@ export default class TaxonomyNodeManager {
                   : this.r - 2
           );
       })
-      .on("click", d => {
+      .on("click", (event, d) => {
         if (
           !d.data.loaded &&
           (!d.data.children || d.data.children.length === 0)
@@ -78,7 +78,7 @@ export default class TaxonomyNodeManager {
           }, 200);
         }
       })
-      .on("dblclick", d => {
+      .on("dblclick", (event, d) => {
         if (!d.data.children || d.data.children.length === 0) {
           //Only leaves have taxId attached
           this.main.dipatcher.call("spaciesRequested", this.main, d.data.taxid);
@@ -90,32 +90,33 @@ export default class TaxonomyNodeManager {
       .call(
         d3
           .drag()
-          .subject((d, i, c) => {
-            const g = d3.select(c[i]),
-              t = g.attr("transform").match(/translate\((.*),(.*)\)/);
-            return {
-              x: Number(t[1]) + Number(g.attr("x")),
-              y: Number(t[2]) + Number(g.attr("y"))
-            };
-          })
-          .on("drag", (d, i, c) => {
+          // .subject(event => {
+          //   const g = d3.select(event.currentTarget);
+          //   console.log(g, event)
+          //   const t = g.attr("transform").match(/translate\((.*),(.*)\)/);
+          //   return {
+          //     x: Number(t[1]) + Number(g.attr("x")),
+          //     y: Number(t[2]) + Number(g.attr("y"))
+          //   };
+          // })
+          .on("drag", (event, d) => {
             // d3.event.sourceEvent.stopPropagation();
             if (d.has_loaded_leaves)
-              d3.select(c[i]).attr(
+              d3.select(event.currentTarget).attr(
                 "transform",
-                d => "translate(" + d.y + "," + d3.event.y + ")"
+                d => "translate(" + d.y + "," + event.y + ")"
               );
           })
-          .on("end", (d, i, c) => {
+          .on("end", (event, d) => {
             if (d.has_loaded_leaves) {
               const w = this.main.cell_side,
                 // dx = d3.event.x - d.x; // - w/2,
-                dy = d3.event.y - d.y; // - w/2,
+                dy = event.y - d.y; // - w/2,
               // let d_col = Math.round(dx / w);
               let d_row = Math.round(dy / w);
               move_tree(d, d_row);
               var t = d3.transition().duration(500);
-              d3.select(c[i])
+              d3.select(event.currentTarget)
                 .transition(t)
                 .attr("transform", d => "translate(" + d.y + "," + d.x + ")");
             }
@@ -191,7 +192,7 @@ export default class TaxonomyNodeManager {
     g.append("path")
       .attr("class", "node-type")
       .attr("fill", "white")
-      .on("click", d => {
+      .on("click", (event, d) => {
         if (d.data.loaded)
           this.main.dipatcher.call("removeSpacies", this.main, d.data.taxid);
       });

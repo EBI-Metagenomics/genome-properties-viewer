@@ -112,9 +112,9 @@ export const drawDragArea = viewer => {
     .call(
       d3
         .drag()
-        .on("drag", () => {
+        .on("drag", (event) => {
           viewer.options.margin.dx = Math.min(
-            Math.max(-viewer.options.treeSpace + d3.event.x, zoom_height - viewer.options.treeSpace),
+            Math.max(-viewer.options.treeSpace + event.x, zoom_height - viewer.options.treeSpace),
             viewer.options.width - viewer.options.treeSpace
           );
           g.attr(

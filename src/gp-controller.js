@@ -42,13 +42,13 @@ export default class GenomePropertiesController {
 
     if (tooltip_selector) {
       this.tooltip_selector = tooltip_selector;
-      this.draw_tooltip(null, true);
+      this.draw_tooltip(null,null, true);
     }
 
     this.text_filter = "";
     if (gp_text_filter_selector) {
-      d3.select(gp_text_filter_selector).on("keyup", (d, i, c) => {
-        this.text_filter = c[i].value.length > 2 ? c[i].value : "";
+      d3.select(gp_text_filter_selector).on("keyup", (event) => {
+        this.text_filter = event.currentTarget.value.length > 2 ? event.currentTarget.value : "";
         if (this.text_filter !== this.gp_viewer.filter_text) {
           this.gp_viewer.filter_text = this.text_filter;
           this.moveScrollUp();
@@ -56,13 +56,13 @@ export default class GenomePropertiesController {
       });
     }
     if (gp_label_selector) {
-      d3.select(gp_label_selector).on("change", (d, i, c) => {
-        this.gp_viewer.change_gp_label(c[i].value);
+      d3.select(gp_label_selector).on("change", (event) => {
+        this.gp_viewer.change_gp_label(event.currentTarget.value);
       });
     }
     if (tax_label_selector && gp_taxonomy) {
-      d3.select(tax_label_selector).on("change", (d, i, c) => {
-        this.gp_taxonomy.change_tax_label(c[i].value);
+      d3.select(tax_label_selector).on("change", (event) => {
+        this.gp_taxonomy.change_tax_label(event.currentTarget.value);
       });
     }
     if (tax_search_selector && gp_taxonomy) {
@@ -104,7 +104,7 @@ export default class GenomePropertiesController {
     // this.search_options.splice(0,0,...this.search_options.map(e=>this.gp_taxonomy.nodes[e].species))
     // this.search_options = this.search_options.map(String);
   }
-  draw_tooltip(items = null, first_time = false, header = null) {
+  draw_tooltip(event, items = null, first_time = false, header = null) {
     const parent = d3.select(this.tooltip_selector);
 
     if (header) parent.insert("header", ":first-child").text(header);
@@ -127,15 +127,15 @@ export default class GenomePropertiesController {
       .attr("class", "content")
       .text(d => d.value);
 
-    if (d3.event) {
+    if (event) {
       const h = parent.node().getBoundingClientRect().height;
-      let top = 10 + d3.event.pageY,
-        left = Math.max(d3.event.pageX - this.width / 2, 0);
+      let top = 10 + event.pageY,
+        left = Math.max(event.pageX - this.width / 2, 0);
       if (
         top + h >
         this.gp_viewer.options.height + this.gp_viewer.options.margin.top
       )
-        top = d3.event.pageY - h - 10;
+        top = event.pageY - h - 10;
       if (
         left + this.width >
         this.gp_viewer.options.width + this.gp_viewer.options.margin.left
@@ -179,8 +179,8 @@ export default class GenomePropertiesController {
       )
       .style("cursor", "pointer")
       .attr("type", "")
-      .on("click", (d, i, c) => {
-        const e = d3.select(c[i]), //Element
+      .on("click", (event, d) => {
+        const e = d3.select(event.currentTarget), //Element
           cu = filter_symbols.indexOf(e.attr("type")), //Current
           n = (cu + 1) % filter_symbols.length; //Next
 
@@ -192,8 +192,8 @@ export default class GenomePropertiesController {
         this.moveScrollUp();
         this.dipatcher.call("legendFilterChanged", this, legends_filter);
       })
-      .on("mouseover", d =>
-        this.draw_tooltip(
+      .on("mouseover", (event, d) =>
+        this.draw_tooltip(event,
           {
             "∀": `All the species in the row have the value (${d.key})`,
             "∃": `There is at least one species in each row with the value (${
@@ -248,11 +248,11 @@ export default class GenomePropertiesController {
         d => "2px solid " + this.hierarchy_contorller.color(d.id)
       )
       .style("border-radius", "50%")
-      .on("click", d => this.update(d));
+      .on("click", (event, d) => this.update(d));
 
     li.append("a")
-      .text(d => this.hierarchy_contorller.nodes[d.id].name)
-      .on("click", d => this.update(d));
+      .text((d) => this.hierarchy_contorller.nodes[d.id].name)
+      .on("click", (event, d) => this.update(d));
   }
 
   update(d) {

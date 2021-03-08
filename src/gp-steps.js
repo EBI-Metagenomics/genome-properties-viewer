@@ -2,7 +2,7 @@ import * as d3 from "./d3";
 import { symbol, symbolCross } from "d3-shape";
 
 export const updateStepToggler = (viewer, gp, element, cellSide) => {
-  const onClick = id => {
+  const onClick = (event, id) => {
     viewer.data[id].isShowingSteps = !viewer.data[id].isShowingSteps;
     viewer.update_viewer();
   };
@@ -164,8 +164,8 @@ export const updateSteps = (viewer, gp, element, cellSide, yScale) => {
     .merge(steps)
     .attr("transform", (d, i) => `translate(0, ${i * cellSide + p})`);
 
-  const onMouseOver = p => {
-    viewer.controller.draw_tooltip({
+  const onMouseOver = (event, p) => {
+    viewer.controller.draw_tooltip(event, {
       Property: gp.property,
       Name: gp.name,
       Step: `${p.step}. ${p.stepName}`,

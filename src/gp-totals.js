@@ -36,8 +36,8 @@ const refreshOrganismTotals = viewer => {
 };
 
 export const updateTotalPerOrganismPanel = (viewer, time = 0) => {
-  const ph = (viewer.options.total_panel_height = viewer.options.cell_side),
-    t = d3.transition().duration(time);
+  const ph = (viewer.options.total_panel_height = viewer.options.cell_side);
+    // t = d3.transition().duration(time);
   viewer.total_g.attr(
     "transform",
       `translate(${viewer.options.width - viewer.options.margin.right}, ${viewer.options.height - viewer.options.margin.top + viewer.current_scroll.y - 2 * ph}
@@ -68,7 +68,7 @@ export const updateTotalPerOrganismPanel = (viewer, time = 0) => {
   const newY = d3.scaleBand().range([viewer.organisms.length * viewer.options.cell_side, 0]).domain(viewer.current_order);
 
   cells_t
-    .transition(t)
+    // .transition(t)
     .attr(
       "transform",
         (d, i) =>
@@ -91,11 +91,11 @@ export const updateTotalPerOrganismPanel = (viewer, time = 0) => {
           (-newY(i) + ph / 2 + viewer.options.cell_side) +
         ")"
     )
-    .on("mouseover", p => {
+    .on("mouseover", (event, p) => {
       d3.selectAll(".node--leaf text").classed("active", function() {
         return viewer.textContent === p.key;
       });
-      viewer.controller.draw_tooltip({
+      viewer.controller.draw_tooltip(event, {
         Organism: p.key
       });
       viewer.controller.draw_legends(p.value);
@@ -110,7 +110,7 @@ export const updateTotalPerOrganismPanel = (viewer, time = 0) => {
     arcs = group.selectAll(".arc").data(d => pie_f(d3.entries(d.value)));
 
   arcs
-    .transition(t)
+    // .transition(t)
     .attr("d", arc_f)
     .attr("transform", "scale(1)");
 

@@ -42,7 +42,6 @@ export const loadGenomePropertiesText = (viewer, label, text, isFromFile=false) 
     //   .forEach(tax_id => viewer.gp_taxonomy.set_organisms_loaded(tax_id));
     // if (!viewer.propsOrder) viewer.propsOrder = Object.keys(viewer.data).sort();
     // viewer.update_viewer(false, 500);
-    console.log(viewer.data);
   } catch (e) {
     console.log("File is not JSON. Trying to parse it as TSV now.")
     const wl = viewer.whitelist;

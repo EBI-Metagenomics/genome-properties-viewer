@@ -31,7 +31,9 @@
                         <input type="file" id="newfile" onchange="uploadFile()"/>
                     </li>
                     <li><input type="checkbox" id="collapse_tree" checked="checked"/><label for="collapse_tree">Collapse tree</label></li>
-                    <li><label for="tax_label">Labels:</label>
+                </div>
+                <div>
+                        <li><label for="tax_label">Labels:</label>
                         <select id="tax_label">
                             <option value="name">Species</option>
                             <option value="id">Tax ID</option>
@@ -96,8 +98,8 @@
         viewer.gp_taxonomy.collapse_tree = d3.select(this).property('checked');
         viewer.update_viewer();
     });
-    d3.select(".minimise").on("click",(d,i,c)=>{
-        const on = d3.select(c[i]).classed("on");
+    d3.select(".minimise").on("click",(event, d)=>{
+        const on = d3.select(event.currentTarget).classed("on");
         d3.selectAll(".top-controllers>div")
                 .style("max-height", on?"0px":"500px")
                 .style("overflow", on?null:"hidden")
@@ -106,13 +108,13 @@
                 .style("opacity", on?1:0);
 //        d3.select(c[i]).transition(200).style("transform", on?"rotate(0deg)":"rotate(180deg)");
         d3.selectAll(".top-controllers").transition(200).style("padding", on?"5px":"0px");
-        d3.select(c[i]).classed("on", !on);
+        d3.select(event.currentTarget).classed("on", !on);
         setTimeout(function(){ viewer.refresh_size(); }, 250);
 
     });
     let showTaxonomy = true;
-    d3.select("#toggle-tree").on("click",(d,i,c)=>{
-        d3.select(c[i]).text(showTaxonomy ? "Show Taxonomy" : "Hide Taxonomy");
+    d3.select("#toggle-tree").on("click",(event, d)=>{
+        d3.select(event.currentTarget).text(showTaxonomy ? "Show Taxonomy" : "Hide Taxonomy");
         showTaxonomy = !showTaxonomy;
         viewer.gp_taxonomy.show_tree = showTaxonomy;
         viewer.update_viewer();

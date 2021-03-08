@@ -142,9 +142,9 @@ export default class GenomePropertiesViewer {
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     d3.select(element_selector)
-      .on("keydown", () => {
+      .on("keydown", (event) => {
         this.step = this.step || 1;
-        switch (d3.event.key) {
+        switch (event.key) {
           case "ArrowUp":
             this.moveScroll({ dy: this.options.cell_side * this.step });
             break;
@@ -191,7 +191,7 @@ export default class GenomePropertiesViewer {
         this.update_viewer(false, 500);
       })
       .on("removeSpacies", taxId => {
-        d3.event.stopPropagation();
+        event.stopPropagation();
         removeGenomePropertiesFile(this, taxId);
       })
       .on("changeWidth", w => {
@@ -265,10 +265,10 @@ export default class GenomePropertiesViewer {
       container: this.svg,
       function_plus: () => (this.cell_side = this.options.cell_side + 10),
       function_less: () => (this.cell_side = this.options.cell_side - 10),
-      function_slide: () => {
+      function_slide: (event) => {
         const newY = Math.max(
           this.zoomer.slider(this.zoomer.domain[1]),
-          Math.min(d3.event.y, this.zoomer.slider(this.zoomer.domain[0]))
+          Math.min(event.y, this.zoomer.slider(this.zoomer.domain[0]))
         );
         this.cell_side = Math.round(this.zoomer.slider.invert(newY));
       }
@@ -459,7 +459,7 @@ export default class GenomePropertiesViewer {
     }
   }
   update_viewer(zoom = false, time = 0) {
-    this.props = this.organisms.length ? d3.values(this.data) : [];
+    this.props = this.organisms.length ? Object.values(this.data) : [];
     refreshGPTotals(this);
     filterByHierarchy(this);
     filterByText(this);
@@ -500,14 +500,14 @@ export default class GenomePropertiesViewer {
     this.organisms = this.gp_taxonomy.get_tax_list();
     // this.x.domain(this.current_order);
     this.y.domain(this.current_order);
-    const t = d3.transition().duration(time);
+    // const t = d3.transition().duration(time);
 
     let new_column_p = this.newCols
         .selectAll('.column')
         .data(this.current_props, d => d.property);
 
     new_column_p
-        .transition(t)
+        // .transition(t)
         .attr("transform", (d, i) => "translate(" + (this.x(i + dx) + this.options.treeSpace) + ", " +
             (this.options.height - this.options.margin.top) +")" + "rotate(-90)")
         .each((d, i, c) => this.update_col(d, i, c));
@@ -535,12 +535,12 @@ export default class GenomePropertiesViewer {
                     ((i > visible_cols / 2 ? 1 : -1) * this.options.width) / 2) +
                 ",0)"
         )
-        .transition(t)
+        // .transition(t)
         .attr("transform", (d, i) => "translate(" + (this.x(i + dx) + this.options.treeSpace) + ", " +
             (this.options.height-this.options.margin.top) + ")" + "rotate(-90)");
 
     d3.selectAll("g.column line")
-        .transition()
+        // .transition()
         .attr("x1", this.organisms.length * this.options.cell_side);
 
     // TODO what move_row does - x, y coordinates in drag has be to checked
@@ -558,15 +558,15 @@ export default class GenomePropertiesViewer {
       .call(
         d3
           .drag()
-          .on("drag", (d, i, c) => {
-            d3.select(c[i]).attr(
+          .on("drag", (event, d) => {
+            d3.select(event.currentTarget).attr(
               "transform",
-              "translate(0, " + d3.event.y + ")"
+              "translate(0, " + event.y + ")"
             );
           })
-          .on("end", (d, i, c) => {
+          .on("end", (event, d) => {
             const h = this.options.cell_side;
-            let d_row = Math.round(d3.event.y / h);
+            let d_row = Math.round(event.y / h);
             d3.select(c[i]).attr("transform", "translate( 0, 0 )");
             this.move_row(d.property, d_row);
           })
@@ -687,7 +687,7 @@ export default class GenomePropertiesViewer {
 
     let new_row_p = this.newRows.selectAll(".row").data(this.organisms, p => p);
     new_row_p
-        .transition()
+        // .transition()
         .attr("transform", (d, i) => "translate(" + (this.options.treeSpace - this.options.cell_side) + ", " + this.y(i) + ")");
 
     let newRow = new_row_p
@@ -773,19 +773,19 @@ export default class GenomePropertiesViewer {
     //   .attr("width", this.x.bandwidth());
 
     cells
-        .transition()
+        // .transition()
         .attr("x", (d, i) => newY(i))
         .attr("height", cell_height)
         .attr("width", this.y.bandwidth());
 
     cells.exit().remove();
 
-    const mouseover = (p, i, c) => {
-      d3.select(c[i].parentNode)
+    const mouseover = (event, p) => {
+      d3.select(event.currentTarget.parentNode)
         .select("text")
         .classed("active", true);
       d3.selectAll(".node--leaf text").classed("active", d => d.label === p);
-      const data = d3.select(c[i].parentNode).data();
+      const data = d3.select(event.currentTarget.parentNode).data();
       if (data.length < 1) return;
 
       const info = {
@@ -806,9 +806,9 @@ export default class GenomePropertiesViewer {
           "}";
         info.Organism = "All";
       }
-      this.controller.draw_tooltip(info);
+      this.controller.draw_tooltip(event, info);
     };
-    const mouseout = p => {
+    const mouseout = (event, p) => {
       d3.selectAll("text").classed("active", false);
       d3.selectAll(".gpv-name").remove();
       this.controller.draw_tooltip();

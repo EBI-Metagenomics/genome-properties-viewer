@@ -68,13 +68,13 @@ export default class TaxonomySortButton {
       .attr("y1", barBottom)
       .attr("y2", d => barBottom - barMaxH*(d.id/this.modes.length))
       .merge(this.bars)
-      .transition()
+      // .transition()
       .attr("opacity", this.modes[this.currentMode].indexOf("tree") >=0 ? 0.7 : 0.2)
       .attr("x1", (d, i) => (i + 3.6) * this.r / 3)
       .attr("x2", (d, i) => (i + 3.6) * this.r / 3);
 
     this.text
-      .transition()
+      // .transition()
       .text(this.texts[this.currentMode]);
   }
 }

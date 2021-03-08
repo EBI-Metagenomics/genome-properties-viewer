@@ -1,4 +1,4 @@
-export { event, select, selectAll } from "d3-selection";
+export { select, selectAll } from "d3-selection";
 export { text, xml, json } from "d3-request";
 export { range } from "d3-array";
 export { drag } from "d3-drag";
@@ -13,7 +13,6 @@ export {
 } from "d3-shape";
 export { transition } from "d3-transition";
 export { stratify, cluster, tree, hierarchy } from "d3-hierarchy";
-export { entries, keys, values } from "d3-collection";
 export { scaleLinear, scaleBand, scaleOrdinal } from "d3-scale";
 
 const colors = s => s.match(/.{6}/g).map(x => "#" + x);
@@ -25,3 +24,5 @@ export { tsvParseRows } from "d3-dsv";
 export { zoom } from "d3-zoom";
 export { interpolate } from "d3-interpolate";
 export { dispatch } from "d3-dispatch";
+
+export const entries = (object)=> Object.entries(object || {}).map(([key, value])=>({key,value}));
