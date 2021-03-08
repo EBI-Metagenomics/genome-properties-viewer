@@ -1,14 +1,14 @@
 import * as d3 from "./d3";
 
-export const drawScrollXBar = viewer => {
+export const drawScrollXBar = (viewer) => {
   viewer.scrollbar_x_g = viewer.svg
     .append("g")
     .attr("class", "gpv-scrollbar")
     .attr(
       "transform",
-      "translate(" + viewer.options.treeSpace + ", " +
-        (viewer.options.height - viewer.options.margin.bottom) +
-        ")"
+      `translate(${viewer.options.treeSpace}, ${
+        viewer.options.height - viewer.options.margin.bottom
+      })`
     );
 
   viewer.scrollbar_x_bg = viewer.scrollbar_x_g
@@ -29,7 +29,7 @@ export const drawScrollXBar = viewer => {
       d3
         .drag()
         .on("end", () => (viewer.skip_scroll_refreshing = false))
-        .on("drag", function(event) {
+        .on("drag", function (event) {
           viewer.skip_scroll_refreshing = true;
           event.sourceEvent.stopPropagation();
           // const w = Number(viewer.options.width);
@@ -47,39 +47,46 @@ export const drawScrollXBar = viewer => {
           // viewer.current_scroll.x = ((w - sw - dx) * w1) / w;
           // transformByScroll(viewer);
 
-            const tw = viewer.x(viewer.props.length);
-            const prevX = Number(this.getAttribute("x"));
-            const nextX = prevX + event.dx;
+          const tw = viewer.x(viewer.props.length);
+          const prevX = Number(this.getAttribute("x"));
+          const nextX = prevX + event.dx;
 
-            viewer.scrollbar_x.attr(
-                "x",
-                Math.max(
-                    0,
-                    Math.min(
-                        nextX,
-                        viewer.options.width - viewer.options.treeSpace - this.getAttribute("width")
-                    )
-                )
-            );
-            let dx =
-                (-nextX * tw) /
-                (viewer.options.width - viewer.options.treeSpace - this.getAttribute("width"));
-            viewer.current_scroll.x = Math.min(
-                0,
-                Math.max(dx, -tw + viewer.options.width - viewer.options.treeSpace)
-            );
-            transformByScroll(viewer);
+          viewer.scrollbar_x.attr(
+            "x",
+            Math.max(
+              0,
+              Math.min(
+                nextX,
+                viewer.options.width -
+                  viewer.options.treeSpace -
+                  this.getAttribute("width")
+              )
+            )
+          );
+          const dx =
+            (-nextX * tw) /
+            (viewer.options.width -
+              viewer.options.treeSpace -
+              this.getAttribute("width"));
+          viewer.current_scroll.x = Math.min(
+            0,
+            Math.max(dx, -tw + viewer.options.width - viewer.options.treeSpace)
+          );
+          transformByScroll(viewer);
         })
     );
 };
 
-export const drawScrollYBar = viewer => {
+export const drawScrollYBar = (viewer) => {
   viewer.skip_scroll_refreshing = false;
   viewer.scrollbar_g = viewer.svg
     .append("g")
     .attr("class", "gpv-scrollbar")
     // .attr("transform", "translate(" + (viewer.options.width + 10) + ", 0)");
-    .attr("transform", "translate(" + (viewer.options.width + 10) + ", " + (-viewer.options.margin.top) + ")");
+    .attr(
+      "transform",
+      `translate(${viewer.options.width + 10}, ${-viewer.options.margin.top})`
+    );
 
   viewer.scrollbar_bg = viewer.scrollbar_g
     .append("rect")
@@ -100,46 +107,39 @@ export const drawScrollYBar = viewer => {
       d3
         .drag()
         .on("end", () => (viewer.skip_scroll_refreshing = false))
-        .on("drag", function(event) {
-            // const h = Number(viewer.options.height);
-            // // const h = Number(viewer.options.height + viewer.options.margin.top);
-            // const sh = Number(this.getAttribute("height"));
-            // const y = Number(this.getAttribute("y"));
-            // const h1 = viewer.newCols.node().getBBox().height;
-            // const dy = Math.max(
-            //   0,
-            //   Math.min(y + d3.event.dy, viewer.options.height - sh)
-            //   // Math.min(y + d3.event.dy, viewer.options.height + viewer.options.margin.top - sh)
-            // );
-            //
-            // viewer.scrollbar.attr("y", dy);
-            //
-            // viewer.current_scroll.y = ((h - sh - dy) * h1) / h;
-            // transformByScroll(viewer);
+        .on("drag", function (event) {
+          // const h = Number(viewer.options.height);
+          // // const h = Number(viewer.options.height + viewer.options.margin.top);
+          // const sh = Number(this.getAttribute("height"));
+          // const y = Number(this.getAttribute("y"));
+          // const h1 = viewer.newCols.node().getBBox().height;
+          // const dy = Math.max(
+          //   0,
+          //   Math.min(y + d3.event.dy, viewer.options.height - sh)
+          //   // Math.min(y + d3.event.dy, viewer.options.height + viewer.options.margin.top - sh)
+          // );
+          //
+          // viewer.scrollbar.attr("y", dy);
+          //
+          // viewer.current_scroll.y = ((h - sh - dy) * h1) / h;
+          // transformByScroll(viewer);
 
-          if (viewer.newCols.node().getBBox().height === 0)
-            return;
+          if (viewer.newCols.node().getBBox().height === 0) return;
           viewer.skip_scroll_refreshing = true;
           event.sourceEvent.stopPropagation();
-          const th = viewer.newCols.node().getBBox().y + viewer.newCols.node().getBBox().height;
+          const th =
+            viewer.newCols.node().getBBox().y +
+            viewer.newCols.node().getBBox().height;
           const fh = viewer.options.height + viewer.options.margin.top;
           const prevY = parseInt(this.getAttribute("y"));
           const nextY = prevY + event.dy;
           viewer.scrollbar.attr(
             "y",
-            Math.max(
-                0,
-              Math.min(
-                nextY,
-                fh - this.getAttribute("height")
-              )
-            )
+            Math.max(0, Math.min(nextY, fh - this.getAttribute("height")))
           );
-          let dy =
-            (-nextY * th) /
-            (fh - this.getAttribute("height"));
+          const dy = (-nextY * th) / (fh - this.getAttribute("height"));
           viewer.current_scroll.y = Math.min(
-              0,
+            0,
             Math.max(dy, -th + viewer.options.height)
           );
           transformByScroll(viewer);
@@ -147,62 +147,58 @@ export const drawScrollYBar = viewer => {
     );
 };
 
-export const transformByScroll = viewer => {
+export const transformByScroll = (viewer) => {
   viewer.newRows.attr(
     "transform",
-    () =>
-      "translate(" +
-      viewer.current_scroll.x +
-      ", " +
-      viewer.current_scroll.y +
-      ")"
+    () => `translate(${viewer.current_scroll.x}, ${viewer.current_scroll.y})`
   );
   viewer.newCols.attr(
     "transform",
-    "translate(" + viewer.current_scroll.x + ", " + viewer.current_scroll.y + ")"
+    `translate(${viewer.current_scroll.x}, ${viewer.current_scroll.y})`
   );
   viewer.gp_taxonomy.y = viewer.current_scroll.y - viewer.options.margin.top;
   viewer.update_viewer();
 };
 
-
 export const updateScrollBar = (viewer, visible_cols, current_col) => {
   const total_cols = viewer.props.length;
   viewer.scrollbar_g.attr(
     "transform",
-      // "translate(" + (viewer.options.width + 10) + ", 0)"
-      "translate(" + (viewer.options.width + 10) + ", " + (-viewer.options.margin.top) + ")"
-);
+    // "translate(" + (viewer.options.width + 10) + ", 0)"
+    `translate(${viewer.options.width + 10}, ${-viewer.options.margin.top})`
+  );
   viewer.scrollbar_x_g.attr(
     "transform",
-    "translate("+ viewer.options.treeSpace + ", " + (viewer.options.height - viewer.options.margin.bottom) + ")"
+    `translate(${viewer.options.treeSpace}, ${
+      viewer.options.height - viewer.options.margin.bottom
+    })`
   );
 
   viewer.scrollbar_x
     // .transition()
     .attr(
       "width",
-        (viewer.options.width - viewer.options.treeSpace) *
-      Math.min(1, total_cols !== 0 ? visible_cols / total_cols : 1)
+      (viewer.options.width - viewer.options.treeSpace) *
+        Math.min(1, total_cols !== 0 ? visible_cols / total_cols : 1)
     )
     .attr(
       "x",
-      total_cols ? (current_col * (viewer.options.width - viewer.options.treeSpace)) / total_cols : 0
+      total_cols
+        ? (current_col * (viewer.options.width - viewer.options.treeSpace)) /
+            total_cols
+        : 0
     );
-  viewer.scrollbar_x_bg.attr("width", viewer.options.width - viewer.options.treeSpace);
+  viewer.scrollbar_x_bg.attr(
+    "width",
+    viewer.options.width - viewer.options.treeSpace
+  );
 
-    const th = viewer.newCols.node().getBBox().y + viewer.newCols.node().getBBox().height;
-    const fh = viewer.options.height + viewer.options.margin.top;
-    viewer.scrollbar_bg.attr("height", th);
-    viewer.scrollbar
-        // .transition()
-        .attr(
-            "height",
-            fh *
-            Math.min(1, fh / th)
-        )
-        .attr(
-            "y",
-            Math.min(0, th?(viewer.current_scroll.y * fh) / th: 0)
-        );
+  const th =
+    viewer.newCols.node().getBBox().y + viewer.newCols.node().getBBox().height;
+  const fh = viewer.options.height + viewer.options.margin.top;
+  viewer.scrollbar_bg.attr("height", th);
+  viewer.scrollbar
+    // .transition()
+    .attr("height", fh * Math.min(1, fh / th))
+    .attr("y", Math.min(0, th ? (viewer.current_scroll.y * fh) / th : 0));
 };

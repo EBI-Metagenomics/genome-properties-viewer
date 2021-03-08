@@ -1,5 +1,3 @@
-"use strict";
-
 import * as d3 from "./d3";
 // import "js-autocomplete-tremby";
 // import AutoComplete from "js-autocomplete-tremby";
@@ -17,7 +15,7 @@ export default class GenomePropertiesController {
     tax_label_selector = null,
     tax_search_selector = null,
     hierarchy_contorller = null,
-    width = 400
+    width = 400,
   }) {
     this.gp_viewer = gp_viewer;
     this.hierarchy_contorller = hierarchy_contorller;
@@ -42,13 +40,14 @@ export default class GenomePropertiesController {
 
     if (tooltip_selector) {
       this.tooltip_selector = tooltip_selector;
-      this.draw_tooltip(null,null, true);
+      this.draw_tooltip(null, null, true);
     }
 
     this.text_filter = "";
     if (gp_text_filter_selector) {
       d3.select(gp_text_filter_selector).on("keyup", (event) => {
-        this.text_filter = event.currentTarget.value.length > 2 ? event.currentTarget.value : "";
+        this.text_filter =
+          event.currentTarget.value.length > 2 ? event.currentTarget.value : "";
         if (this.text_filter !== this.gp_viewer.filter_text) {
           this.gp_viewer.filter_text = this.text_filter;
           this.moveScrollUp();
@@ -92,18 +91,20 @@ export default class GenomePropertiesController {
       // });
     }
   }
-  moveScrollUp(){
+
+  moveScrollUp() {
     this.gp_viewer.current_scroll.y = 0;
     transformByScroll(this.gp_viewer);
   }
 
   loadSearchOptions() {
     this.search_options = this.gp_taxonomy.organisms.map(
-      e => e + ": " + this.gp_taxonomy.nodes[e].name
+      (e) => `${e}: ${this.gp_taxonomy.nodes[e].name}`
     );
     // this.search_options.splice(0,0,...this.search_options.map(e=>this.gp_taxonomy.nodes[e].species))
     // this.search_options = this.search_options.map(String);
   }
+
   draw_tooltip(event, items = null, first_time = false, header = null) {
     const parent = d3.select(this.tooltip_selector);
 
@@ -115,22 +116,22 @@ export default class GenomePropertiesController {
     parent.style("visibility", items == null ? "hidden" : "visible");
     const info_item = this.tooltip_component
       .selectAll("li")
-      .data(d3.entries(items), d => d.key);
+      .data(d3.entries(items), (d) => d.key);
     info_item.exit().remove();
     const li_e = info_item.enter().append("li");
     li_e
       .append("div")
       .attr("class", "label")
-      .text(d => d.key.toLowerCase());
+      .text((d) => d.key.toLowerCase());
     li_e
       .append("div")
       .attr("class", "content")
-      .text(d => d.value);
+      .text((d) => d.value);
 
     if (event) {
       const h = parent.node().getBoundingClientRect().height;
-      let top = 10 + event.pageY,
-        left = Math.max(event.pageX - this.width / 2, 0);
+      let top = 10 + event.pageY;
+      let left = Math.max(event.pageX - this.width / 2, 0);
       if (
         top + h >
         this.gp_viewer.options.height + this.gp_viewer.options.margin.top
@@ -146,43 +147,41 @@ export default class GenomePropertiesController {
           this.width;
 
       parent
-        .style("width", this.width + "px")
-        .style("top", top + "px")
-        .style("left", left + "px");
+        .style("width", `${this.width}px`)
+        .style("top", `${top}px`)
+        .style("left", `${left}px`);
     }
   }
-  draw_legends(total = { YES: 0, NO: 0, PARTIAL: 0 }) {
-    const legend_item = this.legends_component
-      .selectAll("li")
-      .data(
-        d3.entries(total).sort((a, b) => (a.key > b.key ? -1 : 1)),
-        d => d.key
-      );
 
-    const legends_filter = { YES: "", NO: "", PARTIAL: "" },
-      filter_symbols = ["", "∀", "∃", "∄"];
+  draw_legends(total = { YES: 0, NO: 0, PARTIAL: 0 }) {
+    const legend_item = this.legends_component.selectAll("li").data(
+      d3.entries(total).sort((a, b) => (a.key > b.key ? -1 : 1)),
+      (d) => d.key
+    );
+
+    const legends_filter = { YES: "", NO: "", PARTIAL: "" };
+    const filter_symbols = ["", "∀", "∃", "∄"];
 
     legend_item
       .select(".color>div")
-      .html(d => (d.value > 0 ? d.value : "&nbsp;"));
+      .html((d) => (d.value > 0 ? d.value : "&nbsp;"));
 
     const li_e = legend_item.enter().append("li");
 
-    li_e.append("label").text(d => d.key.toLowerCase());
+    li_e.append("label").text((d) => d.key.toLowerCase());
     li_e
       .append("div")
       .attr("class", "color")
-      .style("background", d => this.gp_viewer.c[d.key])
-      .style(
-        "color",
-        d => (d.key === "NO" ? "rgb(49, 130, 189)" : "rgb(230,230,230)")
+      .style("background", (d) => this.gp_viewer.c[d.key])
+      .style("color", (d) =>
+        d.key === "NO" ? "rgb(49, 130, 189)" : "rgb(230,230,230)"
       )
       .style("cursor", "pointer")
       .attr("type", "")
       .on("click", (event, d) => {
-        const e = d3.select(event.currentTarget), //Element
-          cu = filter_symbols.indexOf(e.attr("type")), //Current
-          n = (cu + 1) % filter_symbols.length; //Next
+        const e = d3.select(event.currentTarget); // Element
+        const cu = filter_symbols.indexOf(e.attr("type")); // Current
+        const n = (cu + 1) % filter_symbols.length; // Next
 
         e.classed("filter", filter_symbols[n] !== "").attr(
           "type",
@@ -193,15 +192,12 @@ export default class GenomePropertiesController {
         this.dipatcher.call("legendFilterChanged", this, legends_filter);
       })
       .on("mouseover", (event, d) =>
-        this.draw_tooltip(event,
+        this.draw_tooltip(
+          event,
           {
             "∀": `All the species in the row have the value (${d.key})`,
-            "∃": `There is at least one species in each row with the value (${
-              d.key
-            })`,
-            "∄": `There is not a single species in each row with the value (${
-              d.key
-            })`
+            "∃": `There is at least one species in each row with the value (${d.key})`,
+            "∄": `There is not a single species in each row with the value (${d.key})`,
           },
           false,
           "Click in this area to apply one of the following filters"
@@ -212,6 +208,7 @@ export default class GenomePropertiesController {
       .style("margin", "0 auto")
       .style("padding", "2px");
   }
+
   draw_hierarchy_selector() {
     this.gp_component.html(`
             <div class='current_status'>All</div>
@@ -231,21 +228,18 @@ export default class GenomePropertiesController {
     const tll = this.gp_component
       .select(".options ul")
       .selectAll(".top-level-option")
-      .data(this.hierarchy_contorller.hierarchy_switch, d => d.id);
+      .data(this.hierarchy_contorller.hierarchy_switch, (d) => d.id);
 
-    const li = tll
-      .enter()
-      .append("li")
-      .attr("class", "top-level-option");
+    const li = tll.enter().append("li").attr("class", "top-level-option");
     li.append("div")
       .style("width", "0.8em")
       .style("height", "0.8em")
       .style("margin-right", "5px")
       .style("display", "inline-block")
-      .style("background", d => this.hierarchy_contorller.color(d.id))
+      .style("background", (d) => this.hierarchy_contorller.color(d.id))
       .style(
         "border",
-        d => "2px solid " + this.hierarchy_contorller.color(d.id)
+        (d) => `2px solid ${this.hierarchy_contorller.color(d.id)}`
       )
       .style("border-radius", "50%")
       .on("click", (event, d) => this.update(d));
@@ -260,7 +254,7 @@ export default class GenomePropertiesController {
     this.moveScrollUp();
     if (d === "ALL" || d === "NONE") {
       this.hierarchy_contorller.hierarchy_switch.forEach(
-        e => (e.enable = d === "ALL")
+        (e) => (e.enable = d === "ALL")
       );
       this.hierarchy_contorller.dipatcher.call(
         "siwtchChanged",
@@ -272,7 +266,7 @@ export default class GenomePropertiesController {
       this.hierarchy_contorller.toggle_switch(d);
       this.gp_component.select(".current_status").text("");
       selected = this.hierarchy_contorller.hierarchy_switch.filter(
-        e => e.enable
+        (e) => e.enable
       );
       if (selected.length === 0)
         this.gp_component.select(".current_status").text("none");
@@ -284,7 +278,7 @@ export default class GenomePropertiesController {
         const samples = this.gp_component
           .select(".current_status")
           .selectAll("div.sample")
-          .data(selected, d => d.id);
+          .data(selected, (d) => d.id);
         samples
           .enter()
           .append("div")
@@ -293,7 +287,7 @@ export default class GenomePropertiesController {
           .style("height", "0.8em")
           .style("margin-left", "2px")
           .style("display", "inline-block")
-          .style("background", d => this.hierarchy_contorller.color(d.id))
+          .style("background", (d) => this.hierarchy_contorller.color(d.id))
           .style("border-radius", "50%");
         samples.exit().remove();
       }
@@ -301,11 +295,11 @@ export default class GenomePropertiesController {
     this.gp_component
       .select(".options ul")
       .selectAll(".top-level-option div")
-      .style(
-        "background",
-        d => (d.enable ? this.hierarchy_contorller.color(d.id) : "#e3e3e3")
+      .style("background", (d) =>
+        d.enable ? this.hierarchy_contorller.color(d.id) : "#e3e3e3"
       );
   }
+
   on(typename, callback) {
     this.dipatcher.on(typename, callback);
     return this;

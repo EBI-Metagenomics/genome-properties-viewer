@@ -1,6 +1,6 @@
 import * as d3 from "./d3";
 
-export const createGradient = viewer => {
+export const createGradient = (viewer) => {
   const defs = viewer.svg.append("defs");
   const gradient_d = defs
     .append("linearGradient")
@@ -38,7 +38,7 @@ export const createGradient = viewer => {
     .attr("stop-opacity", 1);
 };
 
-export const drawMasks = viewer => {
+export const drawMasks = (viewer) => {
   const ph = viewer.options.total_panel_height;
   viewer.masks = viewer.svg.append("g").attr("class", "masks");
   viewer.masks
@@ -47,10 +47,7 @@ export const drawMasks = viewer => {
     .style("fill", "url(#gradientdown)")
     .attr("x", -viewer.options.margin.left)
     .attr("y", -viewer.options.margin.top)
-    .attr(
-      "width",
-      viewer.options.treeSpace + viewer.options.margin.left
-    )
+    .attr("width", viewer.options.treeSpace + viewer.options.margin.left)
     .attr("height", viewer.options.height + viewer.options.margin.top);
   viewer.svg
     .insert("rect", ":first-child")
@@ -58,10 +55,7 @@ export const drawMasks = viewer => {
     .style("opacity", 0)
     .attr("x", viewer.options.treeSpace)
     .attr("y", 0)
-    .attr(
-      "width",
-      viewer.options.width - viewer.options.treeSpace
-    )
+    .attr("width", viewer.options.width - viewer.options.treeSpace)
     .attr("height", viewer.options.height - viewer.options.margin.bottom - ph);
   viewer.masks
     .append("rect")
@@ -69,57 +63,54 @@ export const drawMasks = viewer => {
     .style("fill", "url(#gradientup)")
     .attr("x", viewer.options.width - ph / 2)
     .attr("y", -viewer.options.margin.top)
-    .attr(
-      "width", viewer.options.margin.right + ph / 2
-    )
+    .attr("width", viewer.options.margin.right + ph / 2)
     .attr("height", viewer.options.height + viewer.options.margin.top);
 };
 
-export const updateMasks = viewer => {
+export const updateMasks = (viewer) => {
   const ph = viewer.options.total_panel_height;
   viewer.masks
     .select(".total-background")
-      .attr("x", viewer.options.width - ph / 2)
+    .attr("x", viewer.options.width - ph / 2)
     .attr("y", -viewer.options.margin.top)
-    .attr(
-      "width", viewer.options.margin.right + ph / 2
-    )
+    .attr("width", viewer.options.margin.right + ph / 2)
     .attr("height", viewer.options.height + viewer.options.margin.top);
   viewer.svg
     .select(".event-mask background")
-    .attr(
-      "width",
-      viewer.options.width - viewer.options.treeSpace
-    )
+    .attr("width", viewer.options.width - viewer.options.treeSpace)
     .attr("height", viewer.options.height - viewer.options.margin.bottom - ph);
   viewer.masks
     .select(".tree-background")
     .attr("y", -viewer.options.treeSpace)
-    .attr(
-      "width",
-        viewer.options.treeSpace + viewer.options.margin.left
-    )
+    .attr("width", viewer.options.treeSpace + viewer.options.margin.left)
     .attr("height", viewer.options.height + viewer.options.margin.top);
 };
 
-export const drawDragArea = viewer => {
-  const offset = 35;
+export const drawDragArea = (viewer) => {
   const zoom_height = 90;
   const g = viewer.svg
     .append("g")
     .attr("class", "height-dragger")
-    .attr("transform", `translate(${viewer.options.treeSpace}, -${viewer.options.margin.top})`)
+    .attr(
+      "transform",
+      `translate(${viewer.options.treeSpace}, -${viewer.options.margin.top})`
+    )
     .call(
       d3
         .drag()
         .on("drag", (event) => {
           viewer.options.margin.dx = Math.min(
-            Math.max(-viewer.options.treeSpace + event.x, zoom_height - viewer.options.treeSpace),
+            Math.max(
+              -viewer.options.treeSpace + event.x,
+              zoom_height - viewer.options.treeSpace
+            ),
             viewer.options.width - viewer.options.treeSpace
           );
           g.attr(
             "transform",
-            `translate(${viewer.options.margin.dx + viewer.options.treeSpace}, -${viewer.options.margin.top})`
+            `translate(${
+              viewer.options.margin.dx + viewer.options.treeSpace
+            }, -${viewer.options.margin.top})`
           );
         })
         .on("end", () => {
@@ -130,7 +121,10 @@ export const drawDragArea = viewer => {
             viewer.gp_taxonomy,
             new_width
           );
-          g.attr("transform", `translate(${viewer.options.treeSpace}, -${viewer.options.margin.top})`);
+          g.attr(
+            "transform",
+            `translate(${viewer.options.treeSpace}, -${viewer.options.margin.top})`
+          );
           viewer.gp_taxonomy.height = viewer.options.treeSpace;
           viewer.gp_taxonomy.y = -viewer.options.margin.top;
           viewer.gp_taxonomy.update_tree();

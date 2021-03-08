@@ -1,5 +1,3 @@
-"use strict";
-
 import * as d3 from "./d3";
 
 export default class ZoomPanel {
@@ -16,7 +14,7 @@ export default class ZoomPanel {
     domain = [0, 100],
     function_plus = null,
     function_less = null,
-    function_slide = null
+    function_slide = null,
   }) {
     this.x = x;
     this.y = y;
@@ -76,22 +74,12 @@ export default class ZoomPanel {
   }
 
   refresh() {
-    this.zoom_panel.attr(
-      "transform",
-      `translate(${this.x}, ${this.y})`
-    );
+    this.zoom_panel.attr("transform", `translate(${this.x}, ${this.y})`);
   }
+
   static add_button(panel, text, x, y, r) {
-    const c = panel
-      .append("circle")
-      .attr("cx", x)
-      .attr("cy", y)
-      .attr("r", r);
-    panel
-      .append("text")
-      .attr("x", x)
-      .attr("y", y)
-      .text(text);
+    const c = panel.append("circle").attr("cx", x).attr("cy", y).attr("r", r);
+    panel.append("text").attr("x", x).attr("y", y).text(text);
     return c;
   }
 }

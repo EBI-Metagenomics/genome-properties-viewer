@@ -1,5 +1,3 @@
-"use strict";
-
 import * as d3 from "./d3";
 
 export default class GenomePropertiesHierarchy {
@@ -34,49 +32,50 @@ export default class GenomePropertiesHierarchy {
     //     });
     //     this.dipatcher.call("hierarchyLoaded", this, this.root);
     // });
-    d3.json(path, data => {
-      this.load_hierarchy_from_data(data)
+    d3.json(path, (data) => {
+      this.load_hierarchy_from_data(data);
     });
 
     return this;
   }
+
   load_hierarchy_from_data(data) {
     this.root = data;
     this.nodes = {};
     this.add_node_recursively(this.root);
     this.color = d3
       .scaleOrdinal()
-      .domain(this.root.children.map(d => d.id))
+      .domain(this.root.children.map((d) => d.id))
       .range(d3.schemeCategory20b);
-    this.hierarchy_switch = this.root.children.map(d => {
-      return { id: d.id, enable: true };
-    });
+    this.hierarchy_switch = this.root.children.map((d) => ({
+      id: d.id,
+      enable: true,
+    }));
     this.dipatcher.call("hierarchyLoaded", this, this.root);
-
   }
+
   add_node_recursively(node, parent = null) {
     if (!node.parents) node.parents = [];
     if (parent) node.parents.push(parent);
-    if (!this.nodes[node.id])
-      this.nodes[node.id] = node;
-    else
-      this.nodes[node.id].parents.splice(0,0,...node.parents)
+    if (!this.nodes[node.id]) this.nodes[node.id] = node;
+    else this.nodes[node.id].parents.splice(0, 0, ...node.parents);
     if (node.children && node.children.length > 0)
-      for (let child of node.children) this.add_node_recursively(child, node);
+      for (const child of node.children) this.add_node_recursively(child, node);
   }
+
   static create_node(id, name) {
     return {
-      id: id,
-      name: name,
+      id,
+      name,
       parents: [],
       children: [],
-      top_level_gp: null
+      top_level_gp: null,
     };
   }
 
   get_top_level_gp_by_id(id) {
     if (id in this.nodes)
-      return [...this.get_top_level_gp(this.nodes[id])].map(d => d.id);
+      return [...this.get_top_level_gp(this.nodes[id])].map((d) => d.id);
     return [];
   }
 
@@ -88,16 +87,17 @@ export default class GenomePropertiesHierarchy {
       return node.top_level_gp;
     }
     node.top_level_gp = new Set();
-    for (let parent of node.parents) {
+    for (const parent of node.parents) {
       node.top_level_gp = new Set([
         ...node.top_level_gp,
-        ...this.get_top_level_gp(parent)
+        ...this.get_top_level_gp(parent),
       ]);
     }
     return node.top_level_gp;
   }
+
   toggle_switch(d) {
-    this.hierarchy_switch.forEach(e => {
+    this.hierarchy_switch.forEach((e) => {
       if (e.id == d.id) e.enable = !e.enable;
     });
     this.dipatcher.call("siwtchChanged", this, this.hierarchy_switch);
