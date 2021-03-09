@@ -41,7 +41,8 @@ const refreshOrganismTotals = (viewer) => {
 };
 
 export const updateTotalPerOrganismPanel = (viewer) => {
-  const ph = (viewer.options.total_panel_height = viewer.options.cell_side);
+  viewer.options.total_panel_height = viewer.options.cell_side;
+  const ph = viewer.options.total_panel_height;
   viewer.total_g.attr(
     "transform",
     `translate(${viewer.options.width - viewer.options.margin.right}, ${

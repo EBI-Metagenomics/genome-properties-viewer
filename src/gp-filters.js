@@ -3,32 +3,37 @@ import * as d3 from "./d3";
 export const filterByLegend = (viewer) => {
   if (viewer.legend_filters) {
     for (const x of Object.keys(viewer.legend_filters)) {
-      if (viewer.legend_filters[x] === "∀")
-        viewer.props = viewer.props.filter((e) => {
+      if (viewer.legend_filters[x] === "∀") {
+        // eslint-disable-next-line no-param-reassign
+        viewer.props = viewer.props.filter((prop) => {
           const values = d3
-            .entries(e.values)
+            .entries(prop.values)
             .filter((e) => viewer.organisms.indexOf(e.key) !== -1);
           return values.filter((e) => e.value === x).length === values.length;
         });
-      else if (viewer.legend_filters[x] === "∃")
-        viewer.props = viewer.props.filter((e) => {
+      } else if (viewer.legend_filters[x] === "∃") {
+        // eslint-disable-next-line no-param-reassign
+        viewer.props = viewer.props.filter((prop) => {
           const values = d3
-            .entries(e.values)
+            .entries(prop.values)
             .filter((e) => viewer.organisms.indexOf(e.key) !== -1);
           return values.filter((e) => e.value === x).length > 0;
         });
-      else if (viewer.legend_filters[x] === "∄")
-        viewer.props = viewer.props.filter((e) => {
+      } else if (viewer.legend_filters[x] === "∄") {
+        // eslint-disable-next-line no-param-reassign
+        viewer.props = viewer.props.filter((prop) => {
           const values = d3
-            .entries(e.values)
+            .entries(prop.values)
             .filter((e) => viewer.organisms.indexOf(e.key) !== -1);
           return values.filter((e) => e.value === x).length === 0;
         });
+      }
     }
   }
 };
 
 export const filterByHierarchy = (viewer) => {
+  // eslint-disable-next-line no-param-reassign
   viewer.props = viewer.props.filter((e) => {
     if (e.parent_top_properties === null) return true;
     for (const p of e.parent_top_properties)
@@ -39,7 +44,8 @@ export const filterByHierarchy = (viewer) => {
 };
 
 export const filterByText = (viewer) => {
-  if (viewer.filter_text)
+  if (viewer.filter_text) {
+    // eslint-disable-next-line no-param-reassign
     viewer.props = viewer.props.filter(
       (e) =>
         e.name.toLowerCase().indexOf(viewer.filter_text.toLowerCase()) !== -1 ||
@@ -47,4 +53,5 @@ export const filterByText = (viewer) => {
           .toLowerCase()
           .indexOf(viewer.filter_text.toLowerCase()) !== -1
     );
+  }
 };

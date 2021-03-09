@@ -55,6 +55,7 @@ export default class GenomePropertiesHierarchy {
   }
 
   add_node_recursively(node, parent = null) {
+    // eslint-disable-next-line no-param-reassign
     if (!node.parents) node.parents = [];
     if (parent) node.parents.push(parent);
     if (!this.nodes[node.id]) this.nodes[node.id] = node;
@@ -80,14 +81,17 @@ export default class GenomePropertiesHierarchy {
   }
 
   get_top_level_gp(node) {
-    if (node == this.root) return null;
+    if (node === this.root) return null;
     if (node.top_level_gp) return node.top_level_gp;
-    if (node.parents.indexOf(this.root) != -1) {
+    if (node.parents.indexOf(this.root) !== -1) {
+      // eslint-disable-next-line no-param-reassign
       node.top_level_gp = new Set([node]);
       return node.top_level_gp;
     }
+    // eslint-disable-next-line no-param-reassign
     node.top_level_gp = new Set();
     for (const parent of node.parents) {
+      // eslint-disable-next-line no-param-reassign
       node.top_level_gp = new Set([
         ...node.top_level_gp,
         ...this.get_top_level_gp(parent),
@@ -98,7 +102,7 @@ export default class GenomePropertiesHierarchy {
 
   toggle_switch(d) {
     this.hierarchy_switch.forEach((e) => {
-      if (e.id == d.id) e.enable = !e.enable;
+      if (e.id === d.id) e.enable = !e.enable;
     });
     this.dipatcher.call("siwtchChanged", this, this.hierarchy_switch);
   }

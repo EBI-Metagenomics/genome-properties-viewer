@@ -1,14 +1,5 @@
 import * as d3 from "./d3";
 
-export const loadGenomePropertiesFile = (viewer, tax_id) => {
-  if (viewer.organisms.indexOf(Number(tax_id)) !== -1) return;
-  d3.text(viewer.options.server.replace("{}", tax_id)).get((error, text) => {
-    if (error) throw error;
-    loadGenomePropertiesText(viewer, tax_id, text);
-    viewer.update_viewer(500);
-  });
-};
-
 const isLineOK = (line) => line.length === 3;
 
 const mergeObjectToData = (data, obj) => {
@@ -27,6 +18,21 @@ const mergeObjectToData = (data, obj) => {
     }
   }
 };
+
+export const enableSpeciesFromPreLoaded = (
+  viewer,
+  taxId,
+  isFromFile = false,
+  shouldUpdate = true
+) => {
+  let tax_id = Number(taxId);
+  if (Number.isNaN(tax_id)) tax_id = taxId;
+  viewer.gp_taxonomy.set_organisms_loaded(tax_id, isFromFile);
+  viewer.organisms.push(tax_id);
+  viewer.organism_totals[tax_id] = { YES: 0, NO: 0, PARTIAL: 0 };
+  if (shouldUpdate) viewer.update_viewer(500);
+};
+
 export const loadGenomePropertiesText = (
   viewer,
   label,
@@ -51,7 +57,8 @@ export const loadGenomePropertiesText = (
     // if (!viewer.propsOrder) viewer.propsOrder = Object.keys(viewer.data).sort();
     // viewer.update_viewer(500);
   } catch (e) {
-    console.log("File is not JSON. Trying to parse it as TSV now.");
+    // eslint-disable-next-line no-console
+    console.warn("File is not JSON. Trying to parse it as TSV now.");
     const wl = viewer.whitelist;
     let tax_id = Number(label);
     if (isFromFile) tax_id = label;
@@ -111,20 +118,6 @@ export const loadGenomePropertiesText = (
       );
     }
   }
-};
-
-export const enableSpeciesFromPreLoaded = (
-  viewer,
-  taxId,
-  isFromFile = false,
-  shouldUpdate = true
-) => {
-  let tax_id = Number(taxId);
-  if (isNaN(tax_id)) tax_id = taxId;
-  viewer.gp_taxonomy.set_organisms_loaded(tax_id, isFromFile);
-  viewer.organisms.push(tax_id);
-  viewer.organism_totals[tax_id] = { YES: 0, NO: 0, PARTIAL: 0 };
-  if (shouldUpdate) viewer.update_viewer(500);
 };
 
 export const preloadSpecies = (viewer, data) => {
@@ -303,3 +296,11 @@ export class FileGetter {
       );
   }
 }
+export const loadGenomePropertiesFile = (viewer, tax_id) => {
+  if (viewer.organisms.indexOf(Number(tax_id)) !== -1) return;
+  d3.text(viewer.options.server.replace("{}", tax_id)).get((error, text) => {
+    if (error) throw error;
+    loadGenomePropertiesText(viewer, tax_id, text);
+    viewer.update_viewer(500);
+  });
+};

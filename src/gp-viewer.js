@@ -146,6 +146,8 @@ export default class GenomePropertiesViewer {
           case "ArrowRight":
             this.moveScroll({ dx: -this.options.cell_side * this.step });
             break;
+          default:
+            break;
         }
         this.step += 0.5;
       })
@@ -178,7 +180,7 @@ export default class GenomePropertiesViewer {
         }
         this.update_viewer(500);
       })
-      .on("removeSpacies", (taxId) => {
+      .on("removeSpacies", (event, taxId) => {
         event.stopPropagation();
         removeGenomePropertiesFile(this, taxId);
       })
@@ -223,8 +225,8 @@ export default class GenomePropertiesViewer {
       });
     this.fileGetter.getJSON(hierarchy_path).get((error, data) => {
       this.gp_hierarchy.load_hierarchy_from_data(data);
-      this.fileGetter.getJSON(model_species_path).get((data) => {
-        preloadSpecies(this, data);
+      this.fileGetter.getJSON(model_species_path).get((dataSpecies) => {
+        preloadSpecies(this, dataSpecies);
       });
     });
     // if (hierarchy_path) {
@@ -364,6 +366,7 @@ export default class GenomePropertiesViewer {
       }
     });
     this.x = newX;
+    return null;
   }
 
   draw_rows_panel() {
@@ -391,7 +394,7 @@ export default class GenomePropertiesViewer {
       .call(
         d3
           .drag() // Window panning.
-          .subject(function () {
+          .subject(() => {
             const g = d3.select(this);
             const t = g.attr("transform").match(/translate\((.*),(.*)\)/);
             return {
@@ -501,7 +504,7 @@ export default class GenomePropertiesViewer {
         (d, i) =>
           `translate(${this.x(i + dx) + this.options.treeSpace}, ${
             this.options.height - this.options.margin.top
-          })` + `rotate(-90)`
+          })rotate(-90)`
       )
       .each((d, i, c) => this.update_col(d, i, c));
 
@@ -531,7 +534,7 @@ export default class GenomePropertiesViewer {
         (d, i) =>
           `translate(${this.x(i + dx) + this.options.treeSpace}, ${
             this.options.height - this.options.margin.top
-          })` + `rotate(-90)`
+          })rotate(-90)`
       );
 
     d3.selectAll("g.column line")
@@ -543,13 +546,11 @@ export default class GenomePropertiesViewer {
       .selectAll(".col_title")
       .attr("x", this.x.range()[0] - 6 - this.options.cell_side)
       .attr("y", this.column_total_width * 0.8)
-      .text((d) =>
-        this.gp_label_type === "name"
-          ? d.name
-          : this.gp_label_type === "id"
-          ? d.property
-          : `${d.property}:${d.name}`
-      )
+      .text((d) => {
+        if (this.gp_label_type === "name") return d.name;
+        if (this.gp_label_type === "id") return d.property;
+        return `${d.property}:${d.name}`;
+      })
       .call(
         d3
           .drag()
@@ -581,13 +582,11 @@ export default class GenomePropertiesViewer {
       .attr("x", this.x.range()[0] - 6 - this.options.cell_side)
       .attr("y", this.column_total_width * 0.8)
       .attr("text-anchor", "end")
-      .text((d) =>
-        this.gp_label_type === "name"
-          ? d.name
-          : this.gp_label_type === "id"
-          ? d.property
-          : `${d.property}:${d.name}`
-      );
+      .text((d) => {
+        if (this.gp_label_type === "name") return d.name;
+        if (this.gp_label_type === "id") return d.property;
+        return `${d.property}:${d.name}`;
+      });
 
     // let row_p = this.rows
     //   .selectAll(".row")
@@ -757,7 +756,7 @@ export default class GenomePropertiesViewer {
     gps
       .attr(
         "cx",
-        (d, i) => this.x.range()[0] - side - 6 - radius - (2 * radius + 2) * i
+        (d, j) => this.x.range()[0] - side - 6 - radius - (2 * radius + 2) * j
       )
       .attr("cy", side / 2 + text_heigth / 2 + radius - 2)
       .attr("r", radius);
@@ -768,7 +767,7 @@ export default class GenomePropertiesViewer {
       .attr("class", "top_level_gp")
       .attr(
         "cx",
-        (d, i) => this.x.range()[0] - side - 6 - radius - (2 * radius + 2) * i
+        (d, j) => this.x.range()[0] - side - 6 - radius - (2 * radius + 2) * j
       )
       .attr("cy", side / 2 + text_heigth / 2 + radius - 2)
       .attr("r", radius)
@@ -787,7 +786,7 @@ export default class GenomePropertiesViewer {
 
     cells
       // .transition()
-      .attr("x", (d, i) => newY(i))
+      .attr("x", (d, j) => newY(j))
       .attr("height", cell_height)
       .attr("width", this.y.bandwidth());
 
@@ -825,7 +824,7 @@ export default class GenomePropertiesViewer {
       .enter()
       .insert("rect", ":first-child")
       .attr("class", "cell")
-      .attr("x", (d, i) => newY(i))
+      .attr("x", (d, j) => newY(j))
       .attr("height", cell_height)
       .attr("width", this.y.bandwidth())
       // .attr("width", side)

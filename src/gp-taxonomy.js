@@ -190,6 +190,7 @@ export default class GenomePropertiesTaxonomy {
       }
       return leaves;
     }
+    return null;
   }
 
   set_organisms_loaded(tax_id, isFromFile) {
@@ -261,8 +262,10 @@ export default class GenomePropertiesTaxonomy {
     root.sort((a) => (a.has_loaded_leaves ? 1 : -1));
     root.eachBefore((node) => {
       let height = 0;
-      do node.height = height;
-      while ((node = node.parent) && node.height < ++height);
+      do {
+        node.height = height;
+        node = node.parent;
+      } while (node && node.height < ++height);
     });
 
     const leaves = root

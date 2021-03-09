@@ -1,5 +1,18 @@
 import * as d3 from "./d3";
 
+export const transformByScroll = (viewer) => {
+  viewer.newRows.attr(
+    "transform",
+    () => `translate(${viewer.current_scroll.x}, ${viewer.current_scroll.y})`
+  );
+  viewer.newCols.attr(
+    "transform",
+    `translate(${viewer.current_scroll.x}, ${viewer.current_scroll.y})`
+  );
+  viewer.gp_taxonomy.y = viewer.current_scroll.y - viewer.options.margin.top;
+  viewer.update_viewer();
+};
+
 export const drawScrollXBar = (viewer) => {
   viewer.scrollbar_x_g = viewer.svg
     .append("g")
@@ -29,7 +42,7 @@ export const drawScrollXBar = (viewer) => {
       d3
         .drag()
         .on("end", () => (viewer.skip_scroll_refreshing = false))
-        .on("drag", function (event) {
+        .on("drag", (event) => {
           viewer.skip_scroll_refreshing = true;
           event.sourceEvent.stopPropagation();
           // const w = Number(viewer.options.width);
@@ -48,7 +61,7 @@ export const drawScrollXBar = (viewer) => {
           // transformByScroll(viewer);
 
           const tw = viewer.x(viewer.props.length);
-          const prevX = Number(this.getAttribute("x"));
+          const prevX = Number(event.sourceEvent.target.getAttribute("x"));
           const nextX = prevX + event.dx;
 
           viewer.scrollbar_x.attr(
@@ -59,7 +72,7 @@ export const drawScrollXBar = (viewer) => {
                 nextX,
                 viewer.options.width -
                   viewer.options.treeSpace -
-                  this.getAttribute("width")
+                  event.sourceEvent.target.getAttribute("width")
               )
             )
           );
@@ -67,7 +80,7 @@ export const drawScrollXBar = (viewer) => {
             (-nextX * tw) /
             (viewer.options.width -
               viewer.options.treeSpace -
-              this.getAttribute("width"));
+              event.sourceEvent.target.getAttribute("width"));
           viewer.current_scroll.x = Math.min(
             0,
             Math.max(dx, -tw + viewer.options.width - viewer.options.treeSpace)
@@ -107,7 +120,7 @@ export const drawScrollYBar = (viewer) => {
       d3
         .drag()
         .on("end", () => (viewer.skip_scroll_refreshing = false))
-        .on("drag", function (event) {
+        .on("drag", (event) => {
           // const h = Number(viewer.options.height);
           // // const h = Number(viewer.options.height + viewer.options.margin.top);
           // const sh = Number(this.getAttribute("height"));
@@ -131,13 +144,24 @@ export const drawScrollYBar = (viewer) => {
             viewer.newCols.node().getBBox().y +
             viewer.newCols.node().getBBox().height;
           const fh = viewer.options.height + viewer.options.margin.top;
-          const prevY = parseInt(this.getAttribute("y"));
+          const prevY = parseInt(
+            event.sourceEvent.target.getAttribute("y"),
+            10
+          );
           const nextY = prevY + event.dy;
           viewer.scrollbar.attr(
             "y",
-            Math.max(0, Math.min(nextY, fh - this.getAttribute("height")))
+            Math.max(
+              0,
+              Math.min(
+                nextY,
+                fh - event.sourceEvent.target.getAttribute("height")
+              )
+            )
           );
-          const dy = (-nextY * th) / (fh - this.getAttribute("height"));
+          const dy =
+            (-nextY * th) /
+            (fh - event.sourceEvent.target.getAttribute("height"));
           viewer.current_scroll.y = Math.min(
             0,
             Math.max(dy, -th + viewer.options.height)
@@ -145,19 +169,6 @@ export const drawScrollYBar = (viewer) => {
           transformByScroll(viewer);
         })
     );
-};
-
-export const transformByScroll = (viewer) => {
-  viewer.newRows.attr(
-    "transform",
-    () => `translate(${viewer.current_scroll.x}, ${viewer.current_scroll.y})`
-  );
-  viewer.newCols.attr(
-    "transform",
-    `translate(${viewer.current_scroll.x}, ${viewer.current_scroll.y})`
-  );
-  viewer.gp_taxonomy.y = viewer.current_scroll.y - viewer.options.margin.top;
-  viewer.update_viewer();
 };
 
 export const updateScrollBar = (viewer, visible_cols, current_col) => {

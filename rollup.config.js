@@ -6,6 +6,7 @@ export default {
     if (message.code === 'CIRCULAR_DEPENDENCY') {
       return;
     }
+    // eslint-disable-next-line no-console
     console.error(message);
   },
   input: "index.js",

@@ -278,7 +278,7 @@ export default class GenomePropertiesController {
         const samples = this.gp_component
           .select(".current_status")
           .selectAll("div.sample")
-          .data(selected, (d) => d.id);
+          .data(selected, (item) => item.id);
         samples
           .enter()
           .append("div")
@@ -287,7 +287,9 @@ export default class GenomePropertiesController {
           .style("height", "0.8em")
           .style("margin-left", "2px")
           .style("display", "inline-block")
-          .style("background", (d) => this.hierarchy_contorller.color(d.id))
+          .style("background", (item) =>
+            this.hierarchy_contorller.color(item.id)
+          )
           .style("border-radius", "50%");
         samples.exit().remove();
       }
@@ -295,8 +297,8 @@ export default class GenomePropertiesController {
     this.gp_component
       .select(".options ul")
       .selectAll(".top-level-option div")
-      .style("background", (d) =>
-        d.enable ? this.hierarchy_contorller.color(d.id) : "#e3e3e3"
+      .style("background", (item) =>
+        d.enable ? this.hierarchy_contorller.color(item.id) : "#e3e3e3"
       );
   }
 
