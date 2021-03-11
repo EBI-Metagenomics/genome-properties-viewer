@@ -6,8 +6,8 @@ export default class GenomePropertiesTaxonomy {
     path,
     x = 0,
     y = 0,
-    width = 600,
-    height = 200,
+    width = 200,
+    height = 600,
     show_tree = true,
   }) {
     this.nodes = null;
@@ -35,16 +35,6 @@ export default class GenomePropertiesTaxonomy {
     this.tax_label_type = "name";
     this.node_manager = new TaxonomyNodeManager(this, this.node_r);
     return this;
-  }
-
-  // TODO: remove when the data is correct.
-  redifine_parents(tree) {
-    if (tree.children) {
-      for (const child of tree.children) {
-        child.parent = tree.id;
-        this.redifine_parents(child);
-      }
-    }
   }
 
   load_taxonomy() {
@@ -88,39 +78,33 @@ export default class GenomePropertiesTaxonomy {
 
   // Walks the tree and calculates x,y values for each node
   tree(node, deepness = 0) {
-    const ol = this.organisms.length;
-    const w_leaves = this.cell_side * ol;
-    const h = this.height;
-    const w_fr = w_leaves / ol;
-    const heatmap_start = this.width - this.cell_side * ol + this.svg.x;
-
     let avg = 0;
 
     if (node.has_loaded_leaves) {
       if (node.children) {
+        // Intermediate nodes with leaves get located in the midle of the leaves
         for (const child of node.children) {
           this.tree(child, deepness + 1);
-          avg += child.x;
-          // node.y = child.y < node.y ? child.y : node.y;
+          avg += child.y;
           node.deepness =
             !node.deepness || child.deepness > node.deepness
               ? child.deepness
               : node.deepness;
         }
-        node.x = avg / node.children.length;
-        // const tmp = (node.depth)*h/node.height;
-        // node.y = (tmp<h)?tmp:(node.parent.y+node.y)/2;
+        node.y = avg / node.children.length;
       } else {
-        node.x =
-          heatmap_start +
-          (w_fr / 2 +
-            w_fr *
-              this.current_order.indexOf(
-                this.organisms.indexOf(node.data.taxid)
-              ));
-        node.y = h;
+        // MAking sure it aligns with the heatmap
+        node.y =
+          this.cell_side / 2 +
+          this.cell_side *
+            this.current_order.indexOf(this.organisms.indexOf(node.data.taxid));
+        node.x = this.width - this.x;
         node.deepness = deepness;
       }
+    } else {
+      const number_of_selected_org = this.organisms.length;
+      const space_for_leaves = this.cell_side * number_of_selected_org;
+      node.y = space_for_leaves / 2 + node.y;
     }
   }
 
@@ -161,7 +145,7 @@ export default class GenomePropertiesTaxonomy {
       }
     }
     if (node.children) {
-      node.children.sort((a) => (a.has_loaded_leaves ? 1 : -1));
+      node.children.sort((a) => (a.has_loaded_leaves ? -1 : 1));
       node.children.forEach((n) => {
         n.data.expanded = node.data.expanded && n.data.expanded;
         this.filter_collapsed_nodes(n);
@@ -244,7 +228,7 @@ export default class GenomePropertiesTaxonomy {
   update_tree(time = 0, cell_side = null) {
     if (this.root === null) return;
     if (cell_side !== null) this.cell_side = cell_side;
-    this.tree_g.attr("transform", `translate(${this.x}, ${20 + this.y})`);
+    this.tree_g.attr("transform", `translate(${this.x}, ${this.y})`);
 
     const root = d3.hierarchy(this.get_tree_to_show());
 
@@ -259,7 +243,7 @@ export default class GenomePropertiesTaxonomy {
       .filter((d) => d.data.loaded)
       .forEach((d) => this.mark_branch_for_loaded_leaves(d));
     this.filter_collapsed_nodes(root);
-    root.sort((a) => (a.has_loaded_leaves ? 1 : -1));
+    root.sort((a) => (a.has_loaded_leaves ? -1 : 1));
     root.eachBefore((node) => {
       let height = 0;
       do {
@@ -296,11 +280,13 @@ export default class GenomePropertiesTaxonomy {
     };
     if (!this.current_order || this.current_order.length !== leaves.length)
       this.current_order = this.orders.tree1;
-
-    const tree_f = d3
-      .tree()
-      .size([this.width - this.cell_side * leaves.length, this.height]);
+    const tree_f = d3.tree().size([this.height, this.width - 2 * this.x]);
     tree_f(root);
+    root.each((node) => {
+      const { x, y } = node;
+      node.y = x;
+      node.x = y;
+    });
     this.tree(root);
     const t = d3.transition().duration(time).delay(100);
     const visible_nodes = root
@@ -311,11 +297,6 @@ export default class GenomePropertiesTaxonomy {
           d.parent.data.expanded ||
           d.parent.has_loaded_leaves
       );
-
-    // d3.select(".taxon_tree").attr("transform",
-    //     "translate(0 ,"
-    //     +(-this.height+20)
-    //     +")");
 
     const link = this.tree_g
       .selectAll(".link")
@@ -331,8 +312,8 @@ export default class GenomePropertiesTaxonomy {
       .attr(
         "d",
         (d) =>
-          `M${d.source.y},${d.source.x}H${d.source.y + 10}V${d.target.x}H${
-            d.target.y
+          `M${d.source.x},${d.source.y}H${d.source.x + 10}V${d.target.y}H${
+            d.target.x
           }`
       );
 
@@ -344,8 +325,8 @@ export default class GenomePropertiesTaxonomy {
       .attr(
         "d",
         (d) =>
-          `M${d.source.y},${d.source.x}H${d.source.y + 10}V${d.target.x}H${
-            d.target.y
+          `M${d.source.x},${d.source.y}H${d.source.x + 10}V${d.target.y}H${
+            d.target.x
           }`
       )
       .style("stroke", (d) =>

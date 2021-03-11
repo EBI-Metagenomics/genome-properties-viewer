@@ -47,15 +47,18 @@ export const drawMasks = (viewer) => {
     .style("fill", "url(#gradientdown)")
     .attr("x", -viewer.options.margin.left)
     .attr("y", -viewer.options.margin.top)
-    .attr("width", viewer.options.treeSpace + viewer.options.margin.left)
+    .attr(
+      "width",
+      viewer.options.dimensions.tree.width + viewer.options.margin.left
+    )
     .attr("height", viewer.options.height + viewer.options.margin.top);
   viewer.svg
     .insert("rect", ":first-child")
     .attr("class", "event-mask background")
     .style("opacity", 0)
-    .attr("x", viewer.options.treeSpace)
+    .attr("x", viewer.options.dimensions.tree.width)
     .attr("y", 0)
-    .attr("width", viewer.options.width - viewer.options.treeSpace)
+    .attr("width", viewer.options.width - viewer.options.dimensions.tree.width)
     .attr("height", viewer.options.height - viewer.options.margin.bottom - ph);
   viewer.masks
     .append("rect")
@@ -77,55 +80,47 @@ export const updateMasks = (viewer) => {
     .attr("height", viewer.options.height + viewer.options.margin.top);
   viewer.svg
     .select(".event-mask background")
-    .attr("width", viewer.options.width - viewer.options.treeSpace)
+    .attr("width", viewer.options.width - viewer.options.dimensions.tree.width)
     .attr("height", viewer.options.height - viewer.options.margin.bottom - ph);
   viewer.masks
     .select(".tree-background")
-    .attr("y", -viewer.options.treeSpace)
-    .attr("width", viewer.options.treeSpace + viewer.options.margin.left)
+    .attr("y", -viewer.options.dimensions.tree.width)
+    .attr(
+      "width",
+      viewer.options.dimensions.tree.width + viewer.options.margin.left
+    )
     .attr("height", viewer.options.height + viewer.options.margin.top);
 };
 
 export const drawDragArea = (viewer) => {
   const zoom_height = 90;
+  let dx = 0;
   const g = viewer.svg
     .append("g")
     .attr("class", "height-dragger")
-    .attr(
-      "transform",
-      `translate(${viewer.options.treeSpace}, -${viewer.options.margin.top})`
-    )
+    .attr("transform", `translate(${viewer.options.dimensions.tree.width}, 0)`)
     .call(
       d3
         .drag()
         .on("drag", (event) => {
-          viewer.options.margin.dx = Math.min(
-            Math.max(
-              -viewer.options.treeSpace + event.x,
-              zoom_height - viewer.options.treeSpace
-            ),
-            viewer.options.width - viewer.options.treeSpace
+          const treeSpace = viewer.options.dimensions.tree.width;
+          dx = Math.min(
+            Math.max(-treeSpace + event.x, zoom_height - treeSpace),
+            viewer.options.width - treeSpace
           );
-          g.attr(
-            "transform",
-            `translate(${
-              viewer.options.margin.dx + viewer.options.treeSpace
-            }, -${viewer.options.margin.top})`
-          );
+          g.attr("transform", `translate(${dx + treeSpace}, 0)`);
         })
         .on("end", () => {
-          const new_width = viewer.options.treeSpace + viewer.options.margin.dx;
+          const treeSpace = viewer.options.dimensions.tree.width;
+          const new_width = treeSpace + dx;
           if (Number.isNaN(new_width)) return;
           viewer.gp_taxonomy.dipatcher.call(
             "changeWidth",
             viewer.gp_taxonomy,
             new_width
           );
-          g.attr(
-            "transform",
-            `translate(${viewer.options.treeSpace}, -${viewer.options.margin.top})`
-          );
-          viewer.gp_taxonomy.height = viewer.options.treeSpace;
+          g.attr("transform", `translate(${treeSpace}, 0)`);
+          viewer.gp_taxonomy.height = treeSpace;
           viewer.gp_taxonomy.y = -viewer.options.margin.top;
           viewer.gp_taxonomy.update_tree();
         })

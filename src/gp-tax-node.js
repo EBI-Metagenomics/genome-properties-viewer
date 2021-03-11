@@ -48,7 +48,7 @@ export default class TaxonomyNodeManager {
       )
       .style("fill-opacity", (d) => (d.data.id === "fake-root" ? 0 : null))
       .transition(t)
-      .attr("transform", (d) => `translate(${d.y},${d.x})`)
+      .attr("transform", (d) => `translate(${d.x},${d.y})`)
       .each((d, i, c) => this.update_node(d, i, c));
     node.exit().remove();
     node
@@ -113,35 +113,36 @@ export default class TaxonomyNodeManager {
       .call(
         d3
           .drag()
-          // .subject(event => {
-          //   const g = d3.select(event.currentTarget);
-          //   console.log(g, event)
-          //   const t = g.attr("transform").match(/translate\((.*),(.*)\)/);
-          //   return {
-          //     x: Number(t[1]) + Number(g.attr("x")),
-          //     y: Number(t[2]) + Number(g.attr("y"))
-          //   };
-          // })
+          .subject((event) => {
+            const g = d3.select(event.sourceEvent.target.closest("g.node"));
+            const transform = g
+              .attr("transform")
+              .match(/translate\((.*),(.*)\)/);
+            const pos = {
+              x: Number(transform[1]), // + Number(g.attr("x")),
+              y: Number(transform[2]), // + Number(g.attr("y")),
+            };
+            return pos;
+          })
           .on("drag", (event, d) => {
-            // d3.event.sourceEvent.stopPropagation();
-            if (d.has_loaded_leaves)
-              d3.select(event.currentTarget).attr(
-                "transform",
-                (p) => `translate(${p.y},${event.y})`
-              );
+            event.sourceEvent.stopPropagation();
+            const g = d3.select(event.sourceEvent.target.closest("g.node"));
+            if (d.has_loaded_leaves) {
+              g.attr("transform", (p) => `translate(${p.x},${event.y})`);
+            }
           })
           .on("end", (event, d) => {
             if (d.has_loaded_leaves) {
+              const g = d3.select(event.sourceEvent.target.closest("g.node"));
               const w = this.main.cell_side;
-              // dx = d3.event.x - d.x; // - w/2,
               const dy = event.y - d.y; // - w/2,
-              // let d_col = Math.round(dx / w);
               const d_row = Math.round(dy / w);
               move_tree(d, d_row);
               const time = d3.transition().duration(500);
-              d3.select(event.currentTarget)
-                .transition(time)
-                .attr("transform", (p) => `translate(${p.y},${p.x})`);
+              g.transition(time).attr(
+                "transform",
+                (p) => `translate(${p.x},${p.y})`
+              );
             }
           })
       )
@@ -152,10 +153,10 @@ export default class TaxonomyNodeManager {
     const g = d3.select(context[i]);
     g.append("circle");
     // g.attr("transform", d => "translate(" + d.x + "," + d.y + ")scale(0)")
-    g.attr("transform", (d) => `translate(${d.y},${d.x})scale(0)`)
+    g.attr("transform", (d) => `translate(${d.x},${d.y})scale(0)`)
       .transition(this.t)
       .delay(300)
-      .attr("transform", (d) => `translate(${d.y},${d.x})scale(1)`);
+      .attr("transform", (d) => `translate(${d.x},${d.y})scale(1)`);
 
     g.append("text")
       .attr("class", "label-leaves")

@@ -1,17 +1,20 @@
 import * as d3 from "./d3";
 
 export const drawTotalPerOrganismPanel = (viewer) => {
-  const ph = viewer.options.total_panel_height;
+  // const ph = viewer.options.total_panel_height;
   viewer.total_g = viewer.svg
     .append("g")
     .attr("class", "total-group")
     .attr(
       "transform",
-      `translate(${viewer.options.width - viewer.options.margin.right}, ${
-        viewer.options.height -
-        viewer.options.margin.top +
-        viewer.current_scroll.y -
-        2 * ph
+      `translate(${
+        viewer.options.width - viewer.options.dimensions.total.short_side
+      }, ${
+        viewer.options.dimensions.total.short_side
+        // viewer.options.height -
+        // viewer.options.margin.top +
+        // viewer.current_scroll.y -
+        // 2 * ph
       }
       )`
     );
@@ -43,13 +46,19 @@ const refreshOrganismTotals = (viewer) => {
 export const updateTotalPerOrganismPanel = (viewer) => {
   viewer.options.total_panel_height = viewer.options.cell_side;
   const ph = viewer.options.total_panel_height;
+
   viewer.total_g.attr(
     "transform",
-    `translate(${viewer.options.width - viewer.options.margin.right}, ${
-      viewer.options.height -
-      viewer.options.margin.top +
-      viewer.current_scroll.y -
-      2 * ph
+    `translate(${
+      viewer.options.width - viewer.options.dimensions.total.short_side
+    }, ${
+      viewer.options.dimensions.total.short_side
+
+      // `translate(${viewer.options.width - viewer.options.margin.right}, ${
+      //   viewer.options.height -
+      //   viewer.options.margin.top +
+      //   viewer.current_scroll.y -
+      //   2 * ph
     }
       )`
   );
