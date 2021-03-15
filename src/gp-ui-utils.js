@@ -1,37 +1,42 @@
 import * as d3 from "./d3";
 
 export const createGradient = (viewer) => {
-  const defs = viewer.svg.append("defs");
-  const gradient_d = defs
+  const defs = viewer.mainGroup.append("defs");
+  const gradient_left = defs
     .append("linearGradient")
-    .attr("id", "gradientdown")
+    .attr("id", "gradientleft")
     .attr("x1", "0%")
     .attr("y1", "0%")
-    .attr("x2", "0%")
-    .attr("y2", "100%");
-  gradient_d
+    .attr("x2", "100%")
+    .attr("y2", "0%");
+  gradient_left
     .append("stop")
     .attr("offset", "85%")
     .attr("stop-color", "#fff")
     .attr("stop-opacity", 1);
-  gradient_d
+  gradient_left
     .append("stop")
     .attr("offset", "100%")
     .attr("stop-color", "#fff")
     .attr("stop-opacity", 0.5);
-  const gradient_u = defs
+  const gradient_right = defs
     .append("linearGradient")
-    .attr("id", "gradientup")
+    .attr("id", "gradientright")
     .attr("x1", "0%")
     .attr("y1", "0%")
-    .attr("x2", "0%")
-    .attr("y2", "100%");
-  gradient_u
+    .attr("x2", "100%")
+    .attr("y2", "0%");
+  gradient_right
     .append("stop")
     .attr("offset", "0%")
     .attr("stop-color", "#fff")
-    .attr("stop-opacity", 0.7);
-  gradient_u
+    .attr("stop-opacity", 0);
+  gradient_right
+    .append("stop")
+    .attr("offset", "15%")
+    .attr("stop-color", "#fff")
+    .attr("stop-opacity", 0.5);
+  gradient_right
     .append("stop")
     .attr("offset", "35%")
     .attr("stop-color", "#fff")
@@ -39,63 +44,61 @@ export const createGradient = (viewer) => {
 };
 
 export const drawMasks = (viewer) => {
-  const ph = viewer.options.total_panel_height;
-  viewer.masks = viewer.svg.append("g").attr("class", "masks");
+  viewer.masks = viewer.mainGroup.append("g").attr("class", "masks");
   viewer.masks
     .append("rect")
     .attr("class", "tree-background background")
-    .style("fill", "url(#gradientdown)")
-    .attr("x", -viewer.options.margin.left)
-    .attr("y", -viewer.options.margin.top)
-    .attr(
-      "width",
-      viewer.options.dimensions.tree.width + viewer.options.margin.left
-    )
-    .attr("height", viewer.options.height + viewer.options.margin.top);
-  viewer.svg
+    .style("fill", "url(#gradientleft)")
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("width", viewer.options.dimensions.tree.width)
+    .attr("height", viewer.options.height);
+  viewer.mainGroup
     .insert("rect", ":first-child")
     .attr("class", "event-mask background")
     .style("opacity", 0)
     .attr("x", viewer.options.dimensions.tree.width)
     .attr("y", 0)
     .attr("width", viewer.options.width - viewer.options.dimensions.tree.width)
-    .attr("height", viewer.options.height - viewer.options.margin.bottom - ph);
+    .attr("height", viewer.options.height);
   viewer.masks
     .append("rect")
     .attr("class", "total-background background")
-    .style("fill", "url(#gradientup)")
-    .attr("x", viewer.options.width - ph / 2)
-    .attr("y", -viewer.options.margin.top)
-    .attr("width", viewer.options.margin.right + ph / 2)
-    .attr("height", viewer.options.height + viewer.options.margin.top);
+    .style("fill", "url(#gradientright)")
+    .attr(
+      "x",
+      viewer.options.width - viewer.options.dimensions.total.short_side * 1.5
+    )
+    .attr("y", 0)
+    .attr("width", viewer.options.dimensions.total.short_side * 1.5)
+    .attr("height", viewer.options.height);
 };
 
 export const updateMasks = (viewer) => {
   const ph = viewer.options.total_panel_height;
   viewer.masks
     .select(".total-background")
-    .attr("x", viewer.options.width - ph / 2)
-    .attr("y", -viewer.options.margin.top)
-    .attr("width", viewer.options.margin.right + ph / 2)
-    .attr("height", viewer.options.height + viewer.options.margin.top);
-  viewer.svg
+    .attr(
+      "x",
+      viewer.options.width - viewer.options.dimensions.total.short_side * 1.5
+    )
+    .attr("width", viewer.options.dimensions.total.short_side * 1.5)
+    .attr("height", viewer.options.height);
+  viewer.mainGroup
     .select(".event-mask background")
     .attr("width", viewer.options.width - viewer.options.dimensions.tree.width)
     .attr("height", viewer.options.height - viewer.options.margin.bottom - ph);
   viewer.masks
     .select(".tree-background")
-    .attr("y", -viewer.options.dimensions.tree.width)
-    .attr(
-      "width",
-      viewer.options.dimensions.tree.width + viewer.options.margin.left
-    )
-    .attr("height", viewer.options.height + viewer.options.margin.top);
+    .attr("y", 0)
+    .attr("width", viewer.options.dimensions.tree.width)
+    .attr("height", viewer.options.height);
 };
 
 export const drawDragArea = (viewer) => {
   const zoom_height = 90;
   let dx = 0;
-  const g = viewer.svg
+  const g = viewer.mainGroup
     .append("g")
     .attr("class", "height-dragger")
     .attr("transform", `translate(${viewer.options.dimensions.tree.width}, 0)`)

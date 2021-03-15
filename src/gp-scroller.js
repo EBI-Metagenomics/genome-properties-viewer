@@ -16,7 +16,7 @@ export const transformByScroll = (viewer) => {
 };
 
 export const drawScrollXBar = (viewer) => {
-  viewer.scrollbar_x_g = viewer.svg
+  viewer.scrollbar_x_g = viewer.mainGroup
     .append("g")
     .attr("class", "gpv-scrollbar")
     .attr(
@@ -77,72 +77,6 @@ export const drawScrollXBar = (viewer) => {
     );
 };
 
-// let selectedYBar = null;
-// export const drawScrollYBar = (viewer) => {
-//   viewer.skip_scroll_refreshing = false;
-//   viewer.scrollbar_y_g = viewer.svg
-//     .append("g")
-//     .attr("class", "gpv-scrollbar")
-//     .attr(
-//       "transform",
-//       `translate(${viewer.options.width + viewer.cell_side}, ${-viewer.options
-//         .margin.top})`
-//     );
-
-//   viewer.scrollbar_y_bg = viewer.scrollbar_y_g
-//     .append("rect")
-//     .attr("class", "gpv-scrollbar-bg")
-//     .attr("width", SCROLLER_WIDTH)
-//     .attr("height", viewer.options.height + viewer.options.margin.top);
-
-//   viewer.scrollbar_y = viewer.scrollbar_y_g
-//     .append("rect")
-//     .attr("class", "gpv-scrollbar-handle")
-//     .attr("width", SCROLLER_WIDTH)
-//     .attr("height", viewer.options.height + viewer.options.margin.top)
-//     .attr("rx", SCROLLER_WIDTH / 2)
-//     .attr("ry", SCROLLER_WIDTH / 2)
-//     .call(
-//       d3
-//         .drag()
-//         .on("start", (event) => (selectedYBar = event.sourceEvent.target))
-//         .on("end", () => {
-//           viewer.skip_scroll_refreshing = false;
-//           selectedYBar = null;
-//         })
-//         .on("drag", (event) => {
-//           if (viewer.newCols.node().getBBox().height === 0) return; // no columns hence no scroller
-//           viewer.skip_scroll_refreshing = true;
-//           event.sourceEvent.stopPropagation();
-//           const heatmapHeight =
-//             Math.abs(viewer.newCols.node().getBBox().y) +
-//             viewer.newCols.node().getBBox().height;
-//           const availableHeight =
-//             viewer.options.height + viewer.options.margin.top;
-//           const prevY = parseInt(selectedYBar.getAttribute("y"), 10);
-//           const nextY = prevY + event.dy;
-//           viewer.scrollbar_y.attr(
-//             "y",
-//             Math.max(
-//               0,
-//               Math.min(
-//                 nextY,
-//                 availableHeight - selectedYBar.getAttribute("height")
-//               )
-//             )
-//           );
-//           const dy =
-//             (-nextY * heatmapHeight) /
-//             (availableHeight - selectedYBar.getAttribute("height"));
-//           viewer.current_scroll.y = Math.min(
-//             0,
-//             Math.max(dy, -heatmapHeight + viewer.options.height)
-//           );
-//           transformByScroll(viewer);
-//         })
-//     );
-// };
-
 const updateScrollBarX = (viewer, visible_cols, current_col) => {
   const total_cols = viewer.props.length;
   viewer.scrollbar_x_g.attr(
@@ -153,7 +87,9 @@ const updateScrollBarX = (viewer, visible_cols, current_col) => {
   );
 
   const available_x =
-    viewer.options.width - viewer.options.dimensions.tree.width;
+    viewer.options.width -
+    viewer.options.dimensions.tree.width -
+    viewer.options.dimensions.total.short_side;
   viewer.scrollbar_x
     .transition()
     .attr(

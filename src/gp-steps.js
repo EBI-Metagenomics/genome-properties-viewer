@@ -46,7 +46,8 @@ const displayStepsModal = (viewer, gp) => {
 };
 
 const updateStepDetailsButton = (viewer, gp, element, cellSide) => {
-  const x0 = viewer.x.range()[0] - cellSide * 0.9;
+  const localY = viewer.organisms.length * cellSide;
+  const x0 = cellSide * 0.1;
   const side = cellSide * 0.8;
   const top = cellSide * 0.1;
   const half = side / 2;
@@ -62,7 +63,6 @@ const updateStepDetailsButton = (viewer, gp, element, cellSide) => {
     .enter()
     .append("g")
     .attr("class", "step-details-button")
-    .attr("transform", `translate(0, ${cellSide})`)
     .on("click", () => displayStepsModal(viewer, gp));
 
   button.append("circle");
@@ -71,7 +71,7 @@ const updateStepDetailsButton = (viewer, gp, element, cellSide) => {
 
   buttonG
     .merge(button)
-    .attr("transform", `translate(0, ${cellSide})`)
+    .attr("transform", `translate(${cellSide}, ${localY})`)
     .selectAll("circle")
     .transition()
     .attr("cx", x0 + half)
@@ -105,7 +105,7 @@ export const updateSteps = (viewer, gp, element, cellSide, yScale) => {
     .append("g")
     .attr("class", "step")
     .merge(steps)
-    .attr("transform", (d, i) => `translate(0, ${i * cellSide + p})`);
+    .attr("transform", (d, i) => `translate(${i * cellSide + p}, 0)`);
 
   const onMouseOver = (event, d) => {
     viewer.controller.draw_tooltip(event, {
@@ -142,7 +142,7 @@ export const updateSteps = (viewer, gp, element, cellSide, yScale) => {
     .on("mouseover", onMouseOver)
     .on("mouseout", onMouseOut)
     .merge(stepPerSpecie)
-    .attr("x", (d, i) => yScale(i) + p)
+    .attr("y", (d, i) => yScale(i) + p)
     .transition()
     .attr("width", side)
     .attr("height", side)
@@ -156,12 +156,14 @@ export const updateStepToggler = (viewer, gp, element, cellSide) => {
     viewer.data[id].isShowingSteps = !viewer.data[id].isShowingSteps;
     viewer.update_viewer();
   };
+  const localY = viewer.organisms.length * cellSide;
+
   const toggler = d3
     .select(element)
     .selectAll(".step-toggler")
     .data([gp.property], (d) => d);
 
-  const x0 = viewer.x.range()[0] - cellSide * 0.9;
+  const x0 = 0.1;
   const side = cellSide * 0.8;
   const top = cellSide * 0.1;
   const half = side / 2;
@@ -191,18 +193,20 @@ export const updateStepToggler = (viewer, gp, element, cellSide) => {
     .attr("class", "step-toggler")
     .on("click", onClick);
 
-  newG
-    .append("circle")
-    .style("cursor", "row-resize")
-    .attr("fill", "rgba(30,60,90,0)");
+  newG.append("circle").attr("fill", "rgba(30,60,90,0)");
 
-  newG
-    .append("path")
-    .style("cursor", "row-resize")
-    .attr("fill", "rgba(30,60,90,0.2)");
+  newG.append("path").attr("fill", "rgba(30,60,90,0.2)");
 
   newG
     .merge(toggler)
+    .attr(
+      "transform",
+      `translate(0, ${localY})rotate(90,${cellSide / 2},${cellSide / 2})`
+    )
+    .attr(
+      "class",
+      (id) => `step-toggler ${viewer.data[id].isShowingSteps ? "expanded" : ""}`
+    )
     .selectAll("path")
     .transition()
     .attr("d", (id) => (viewer.data[id].isShowingSteps ? collapse : expand));

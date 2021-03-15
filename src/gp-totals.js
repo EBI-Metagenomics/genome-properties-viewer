@@ -2,20 +2,14 @@ import * as d3 from "./d3";
 
 export const drawTotalPerOrganismPanel = (viewer) => {
   // const ph = viewer.options.total_panel_height;
-  viewer.total_g = viewer.svg
+  viewer.total_g = viewer.mainGroup
     .append("g")
     .attr("class", "total-group")
     .attr(
       "transform",
       `translate(${
-        viewer.options.width - viewer.options.dimensions.total.short_side
-      }, ${
-        viewer.options.dimensions.total.short_side
-        // viewer.options.height -
-        // viewer.options.margin.top +
-        // viewer.current_scroll.y -
-        // 2 * ph
-      }
+        viewer.options.width - viewer.options.dimensions.total.short_side / 2
+      }, ${viewer.options.dimensions.total.short_side / 2}
       )`
     );
 };
@@ -50,16 +44,8 @@ export const updateTotalPerOrganismPanel = (viewer) => {
   viewer.total_g.attr(
     "transform",
     `translate(${
-      viewer.options.width - viewer.options.dimensions.total.short_side
-    }, ${
-      viewer.options.dimensions.total.short_side
-
-      // `translate(${viewer.options.width - viewer.options.margin.right}, ${
-      //   viewer.options.height -
-      //   viewer.options.margin.top +
-      //   viewer.current_scroll.y -
-      //   2 * ph
-    }
+      viewer.options.width - viewer.options.dimensions.total.short_side / 2
+    }, ${viewer.options.dimensions.total.short_side / 2}
       )`
   );
 
@@ -84,15 +70,12 @@ export const updateTotalPerOrganismPanel = (viewer) => {
 
   const newY = d3
     .scaleBand()
-    .range([viewer.organisms.length * viewer.options.cell_side, 0])
+    .range([0, viewer.organisms.length * viewer.options.cell_side])
     .domain(viewer.current_order);
 
   cells_t.attr(
     "transform",
-    (d, i) =>
-      `translate(${viewer.options.margin.right}, ${
-        -newY(i) + ph / 2 + viewer.options.cell_side
-      })`
+    (d, i) => `translate(0, ${newY(i) + viewer.options.cell_side})`
   );
   cells_t.exit().remove();
 
@@ -102,10 +85,7 @@ export const updateTotalPerOrganismPanel = (viewer) => {
     .attr("class", "total_cell_org")
     .attr(
       "transform",
-      (d, i) =>
-        `translate(${viewer.options.margin.right}, ${
-          -newY(i) + ph / 2 + viewer.options.cell_side
-        })`
+      (d, i) => `translate(0, ${newY(i) + viewer.options.cell_side})`
     )
     .on("mouseover", (event, p) => {
       d3.selectAll(".node--leaf text").classed(

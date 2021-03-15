@@ -511,3 +511,12 @@ div.container .top-block .minimise.on::after {
 svg.gp-viewer:focus {
   background: aliceblue;
 }
+
+.step-toggler circle,
+.step-toggler path {
+  cursor: zoom-in;
+}
+.step-toggler.expanded circle,
+.step-toggler.expanded path {
+  cursor: zoom-out;
+}
