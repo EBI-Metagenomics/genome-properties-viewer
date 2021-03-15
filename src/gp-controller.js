@@ -66,29 +66,6 @@ export default class GenomePropertiesController {
     }
     if (tax_search_selector && gp_taxonomy) {
       this.search_options = [];
-      // TODO Has to be replaced with a library compatible with React
-      // this.ac = new AutoComplete({
-      // this.ac = new autoComplete({
-      //   selector: tax_search_selector,
-      //   minChars: 2,
-      //   source: (term, suggest) => {
-      //     term = term.toLowerCase();
-      //     suggest(
-      //       this.search_options.filter(
-      //         d => d.toLowerCase().indexOf(term) !== -1
-      //       )
-      //     );
-      //   },
-      //   onSelect: (event, term) => {
-      //     const tax = term.substr(0, term.indexOf(":"));
-      //     this.gp_taxonomy.dipatcher.call(
-      //       "spaciesRequested",
-      //       this.gp_taxonomy,
-      //       tax
-      //     );
-      //     d3.select(tax_search_selector).node().value = "";
-      //   }
-      // });
     }
   }
 
@@ -129,22 +106,11 @@ export default class GenomePropertiesController {
       .text((d) => d.value);
 
     if (event) {
-      const h = parent.node().getBoundingClientRect().height;
-      let top = 10 + event.pageY;
+      // const h = parent.node().getBoundingClientRect().height;
+      const top = this.gp_viewer.options.cell_side / 2 + event.pageY;
       let left = Math.max(event.pageX - this.width / 2, 0);
-      if (
-        top + h >
-        this.gp_viewer.options.height + this.gp_viewer.options.margin.top
-      )
-        top = event.pageY - h - 10;
-      if (
-        left + this.width >
-        this.gp_viewer.options.width + this.gp_viewer.options.margin.left
-      )
-        left =
-          this.gp_viewer.options.width +
-          this.gp_viewer.options.margin.left -
-          this.width;
+      if (left + this.width > this.gp_viewer.options.width)
+        left = this.gp_viewer.options.width - this.width;
 
       parent
         .style("width", `${this.width}px`)

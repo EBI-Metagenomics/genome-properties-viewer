@@ -95,7 +95,7 @@ export default class GenomePropertiesTaxonomy {
       } else {
         // MAking sure it aligns with the heatmap
         node.y =
-          this.cell_side / 2 +
+          this.cell_side / 3 +
           this.cell_side *
             this.current_order.indexOf(this.organisms.indexOf(node.data.taxid));
         node.x = this.width - this.x;

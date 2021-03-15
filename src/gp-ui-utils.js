@@ -53,41 +53,29 @@ export const drawMasks = (viewer) => {
     .attr("y", 0)
     .attr("width", viewer.options.dimensions.tree.width)
     .attr("height", viewer.options.height);
-  viewer.mainGroup
-    .insert("rect", ":first-child")
-    .attr("class", "event-mask background")
-    .style("opacity", 0)
-    .attr("x", viewer.options.dimensions.tree.width)
-    .attr("y", 0)
-    .attr("width", viewer.options.width - viewer.options.dimensions.tree.width)
-    .attr("height", viewer.options.height);
   viewer.masks
     .append("rect")
     .attr("class", "total-background background")
     .style("fill", "url(#gradientright)")
     .attr(
       "x",
-      viewer.options.width - viewer.options.dimensions.total.short_side * 1.5
+      viewer.options.width - viewer.options.dimensions.total.short_side * 1.2
     )
     .attr("y", 0)
-    .attr("width", viewer.options.dimensions.total.short_side * 1.5)
+    .attr("width", viewer.options.dimensions.total.short_side * 1.2)
     .attr("height", viewer.options.height);
 };
 
 export const updateMasks = (viewer) => {
-  const ph = viewer.options.total_panel_height;
+  // const ph = viewer.options.total_panel_height;
   viewer.masks
     .select(".total-background")
     .attr(
       "x",
-      viewer.options.width - viewer.options.dimensions.total.short_side * 1.5
+      viewer.options.width - viewer.options.dimensions.total.short_side * 1.2
     )
-    .attr("width", viewer.options.dimensions.total.short_side * 1.5)
+    .attr("width", viewer.options.dimensions.total.short_side * 1.2)
     .attr("height", viewer.options.height);
-  viewer.mainGroup
-    .select(".event-mask background")
-    .attr("width", viewer.options.width - viewer.options.dimensions.tree.width)
-    .attr("height", viewer.options.height - viewer.options.margin.bottom - ph);
   viewer.masks
     .select(".tree-background")
     .attr("y", 0)
@@ -96,7 +84,7 @@ export const updateMasks = (viewer) => {
 };
 
 export const drawDragArea = (viewer) => {
-  const zoom_height = 90;
+  const xLimit = 90;
   let dx = 0;
   const g = viewer.mainGroup
     .append("g")
@@ -108,7 +96,7 @@ export const drawDragArea = (viewer) => {
         .on("drag", (event) => {
           const treeSpace = viewer.options.dimensions.tree.width;
           dx = Math.min(
-            Math.max(-treeSpace + event.x, zoom_height - treeSpace),
+            Math.max(-treeSpace + event.x, xLimit - treeSpace),
             viewer.options.width - treeSpace
           );
           g.attr("transform", `translate(${dx + treeSpace}, 0)`);
@@ -122,15 +110,15 @@ export const drawDragArea = (viewer) => {
             viewer.gp_taxonomy,
             new_width
           );
-          g.attr("transform", `translate(${treeSpace}, 0)`);
-          viewer.gp_taxonomy.height = treeSpace;
-          viewer.gp_taxonomy.y = -viewer.options.margin.top;
+          g.attr("transform", `translate(${new_width}, 0)`);
+          viewer.gp_taxonomy.width = new_width;
           viewer.gp_taxonomy.update_tree();
         })
     );
   const side = viewer.options.cell_side / 2;
   g.append("rect")
-    .attr("y", -side / 2)
+    .attr("x", -side / 2)
+    .attr("y", 0)
     .attr("width", side)
     .attr("height", side * 2)
     .style("fill", "transparent");

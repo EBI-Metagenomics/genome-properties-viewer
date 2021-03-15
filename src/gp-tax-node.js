@@ -169,8 +169,8 @@ export default class TaxonomyNodeManager {
 
     g.append("text")
       .attr("class", "label-species")
-      .attr("x", this.r)
-      .attr("y", this.r + 10)
+      .attr("x", -this.r / 2)
+      .attr("y", this.r + 4)
       .style("text-anchor", "end")
       // .style("transform", "rotate(-70deg)")
       .style("fill", (d) => (d.data.isFromFile ? "darkred" : null))

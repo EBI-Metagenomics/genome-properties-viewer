@@ -11,7 +11,8 @@ export const transformByScroll = (viewer) => {
     "transform",
     `translate(${viewer.current_scroll.x}, ${viewer.current_scroll.y})`
   );
-  // viewer.gp_taxonomy.y = viewer.current_scroll.y - viewer.options.margin.top;
+  viewer.options.dimensions.total.short_side = viewer.options.cell_side;
+  viewer.gp_taxonomy.y = viewer.options.dimensions.total.short_side;
   viewer.update_viewer();
 };
 
@@ -23,9 +24,7 @@ export const drawScrollXBar = (viewer) => {
       "transform",
       `translate(${
         viewer.options.dimensions.tree.width // at the right of the tree
-      }, ${
-        viewer.options.height - SCROLLER_WIDTH // under everything and taking the space given in margin.bottom
-      })`
+      }, ${viewer.options.height - SCROLLER_WIDTH})`
     );
 
   viewer.scrollbar_x_bg = viewer.scrollbar_x_g
@@ -100,24 +99,6 @@ const updateScrollBarX = (viewer, visible_cols, current_col) => {
     .attr("x", total_cols ? (current_col * available_x) / total_cols : 0);
   viewer.scrollbar_x_bg.attr("width", available_x);
 };
-
-// const updateScrollBarY = (viewer) => {
-//   viewer.scrollbar_y_g.attr(
-//     "transform",
-//     // "translate(" + (viewer.options.width + 10) + ", 0)"
-//     `translate(${viewer.options.width + SCROLLER_WIDTH}, ${-viewer.options
-//       .margin.top})`
-//   );
-
-//   const th =
-//     viewer.newCols.node().getBBox().y + viewer.newCols.node().getBBox().height;
-//   const fh = viewer.options.height + viewer.options.margin.top;
-//   viewer.scrollbar_y_bg.attr("height", th);
-//   viewer.scrollbar_y
-//     .transition()
-//     .attr("height", fh * Math.min(1, fh / th))
-//     .attr("y", Math.min(0, th ? (viewer.current_scroll.y * fh) / th : 0));
-// };
 
 export const updateScrollBars = (viewer, visible_cols, current_col) => {
   updateScrollBarX(viewer, visible_cols, current_col);
