@@ -255,15 +255,33 @@ Creates a panel with a slider and +/- buttons to allow resizing the view
 **Kind**: global class  
 <a name="new_ZoomPanel_new"></a>
 
-### new ZoomPanel(parameterNameHere)
+### new ZoomPanel(options)
 Sets all the passed options in class atributes and initiates a d3.scale for the slider.
+It also sets the events binding them to the callback funtions passed in the options object.
 
-**Returns**: <code>ReturnValueDataTypeHere</code> - Brief description of the returning value here.  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| parameterNameHere | <code>Object</code> | Brief description of the parameter here. Note: For other notations of data types, please refer to JSDocs: DataTypes command. |
+| options | <code>Object</code> | All the available options of this class: |
 
+**Example** *(Options defaults and explanations.)*  
+```javascript
+{
+   x = 0, // X coordinate to locate the panel
+   y = 0, // Y coordinate to locate the panel
+   centerX = 17, // X coordinate where the buttons should be centered to
+   top = 30, // Space in top before the center of the first button, use to create a gap for the sort button
+   r = 10, // radius of the buttons
+   padding = 3, // padding in between buttons and slider
+   scrollH = 40, // Height of the scroller/slider
+   scrollW = 10, // Width of the scroller/slider
+   container = null, // D3 selection where the panel will be added
+   domain = [0, 100], // Array of 2 positions defining the domain of values the function will return
+   function_plus = null, // Callback for when the + button gets clicked
+   function_less = null, // Callback for when the - button gets clicked
+   function_slide = null, // Callback for when the slider gets dragged
+ }
+```
 <a name="filterByLegend"></a>
 
 ## filterByLegend
