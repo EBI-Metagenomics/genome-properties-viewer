@@ -3,7 +3,7 @@ import * as d3 from "./d3";
  * Genome Properties are organized in a hierarchy.
  * This Class manages the file that defines that hierarchy and uses is to allow filtering over the heatmap
  */
-export default class GenomePropertiesHierarchy {
+class GenomePropertiesHierarchy {
   /**
    * Initializes all the class attributes.
    */
@@ -133,3 +133,5 @@ export default class GenomePropertiesHierarchy {
     return this;
   }
 }
+
+export default GenomePropertiesHierarchy;

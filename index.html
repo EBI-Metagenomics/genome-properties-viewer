@@ -78,7 +78,6 @@
             viewer = new GenomePropertiesViewer({
                 element_selector: "#gp-viewer",
                 controller_element_selector: "#gp-selector",
-                // height:500,
                 model_species_path: "https://raw.githubusercontent.com/ProteinsWebTeam/genome-properties-viewer/master/test-files/JSON_MERGED",
             });
     viewer.update_viewer();
@@ -106,7 +105,6 @@
                 .transition(200)
                 .style("max-height", on?"500px":"0px")
                 .style("opacity", on?1:0);
-//        d3.select(c[i]).transition(200).style("transform", on?"rotate(0deg)":"rotate(180deg)");
         d3.selectAll(".top-controllers").transition(200).style("padding", on?"5px":"0px");
         d3.select(event.currentTarget).classed("on", !on);
         setTimeout(function(){ viewer.refresh_size(); }, 250);

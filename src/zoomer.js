@@ -1,6 +1,14 @@
 import * as d3 from "./d3";
 
-export default class ZoomPanel {
+/**
+ * Creates a panel with a slider and +/- buttons to allow resizing the view
+ */
+class ZoomPanel {
+  /**
+   * Sets all the passed options in class atributes and initiates a d3.scale for the slider.
+   * @param {Object} parameterNameHere - Brief description of the parameter here. Note: For other notations of data types, please refer to JSDocs: DataTypes command.
+   * @return {ReturnValueDataTypeHere} Brief description of the returning value here.
+   */
   constructor({
     x = 0,
     y = 0,
@@ -83,3 +91,5 @@ export default class ZoomPanel {
     return c;
   }
 }
+
+export default ZoomPanel;
