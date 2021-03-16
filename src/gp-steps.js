@@ -46,7 +46,9 @@ const displayStepsModal = (viewer, gp) => {
 };
 
 const updateStepDetailsButton = (viewer, gp, element, cellSide) => {
-  const localY = viewer.organisms.length * cellSide;
+  const localY =
+    viewer.organisms.length * cellSide +
+    viewer.options.dimensions.scroller.short_side;
   const x0 = cellSide * 0.1;
   const side = cellSide * 0.8;
   const top = cellSide * 0.1;
@@ -156,7 +158,9 @@ export const updateStepToggler = (viewer, gp, element, cellSide) => {
     viewer.data[id].isShowingSteps = !viewer.data[id].isShowingSteps;
     viewer.update_viewer();
   };
-  const localY = viewer.organisms.length * cellSide;
+  const localY =
+    viewer.organisms.length * cellSide +
+    viewer.options.dimensions.scroller.short_side;
 
   const toggler = d3
     .select(element)

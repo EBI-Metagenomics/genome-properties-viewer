@@ -1,7 +1,9 @@
 import * as d3 from "./d3";
-
-const SCROLLER_WIDTH = 10;
-
+/**
+ * Updates this and othe components as if a scroll event happened.
+ * It became the de-facto refresh of the whole viewer, as it groups the minimum necesary changes to trigger a full update.
+ * @param {GernomeProperiesViewer} viewer - The instance of the genome properites viewer
+ */
 export const transformByScroll = (viewer) => {
   viewer.newRows.attr(
     "transform",
@@ -16,31 +18,40 @@ export const transformByScroll = (viewer) => {
   viewer.update_viewer();
 };
 
+/**
+ * Append a group into the viewer's mainGroup.
+ * It contains the elements to draw a simple horizontal srollbar, and attach the dragging events to them.
+ * @param {GernomeProperiesViewer} viewer - The instance of the genome properites viewer
+ */
 export const drawScrollXBar = (viewer) => {
+  const localY = (1 + viewer.organisms.length) * viewer.options.cell_side;
+  const scrollerShortSide = viewer.options.dimensions.scroller.short_side;
   viewer.scrollbar_x_g = viewer.mainGroup
     .append("g")
     .attr("class", "gpv-scrollbar")
+    .attr("opacity", 0)
     .attr(
       "transform",
       `translate(${
         viewer.options.dimensions.tree.width // at the right of the tree
-      }, ${viewer.options.height - SCROLLER_WIDTH})`
+      }, ${localY})`
     );
 
   viewer.scrollbar_x_bg = viewer.scrollbar_x_g
     .append("rect")
     .attr("class", "gpv-scrollbar-bg")
     .attr("width", viewer.options.width - viewer.options.dimensions.tree.width)
-    .attr("height", SCROLLER_WIDTH);
+    .attr("height", scrollerShortSide);
 
   let selectedXBar = null;
   viewer.scrollbar_x = viewer.scrollbar_x_g
     .append("rect")
     .attr("class", "gpv-scrollbar-handle")
     .attr("width", viewer.options.width - viewer.options.dimensions.tree.width)
-    .attr("height", SCROLLER_WIDTH)
-    .attr("rx", SCROLLER_WIDTH / 2)
-    .attr("ry", SCROLLER_WIDTH / 2)
+    .attr("height", scrollerShortSide - 2)
+    .attr("y", 1)
+    .attr("rx", scrollerShortSide / 2)
+    .attr("ry", scrollerShortSide / 2)
     .style("cursor", "ew-resize")
     .call(
       d3
@@ -66,24 +77,28 @@ export const drawScrollXBar = (viewer) => {
 
           viewer.scrollbar_x.attr("x", nextX);
           const dx = (-nextX * propertiesWidth) / available_x;
-          viewer.current_scroll.x = Math.min(
-            0,
-            dx
-            // Math.max(dx, -propertiesWidth + available_x)
-          );
+          viewer.current_scroll.x = Math.min(0, dx);
           transformByScroll(viewer);
         })
     );
 };
 
+/**
+ * Updates the size and position of the scrollbar.
+ * The size of the draggable is proportional to the number of visible columns in the graphic
+ * @param {GernomeProperiesViewer} viewer - The instance of the genome properites viewer
+ * @param {Number} visible_cols - Indicates how many columns are visible in the area assgined to the heatmap.
+ * @param {Number} current_col - Indicates the index of the first visible column out of the total number of GP.
+ */
 const updateScrollBarX = (viewer, visible_cols, current_col) => {
+  const localY = (1 + viewer.organisms.length) * viewer.options.cell_side;
   const total_cols = viewer.props.length;
-  viewer.scrollbar_x_g.attr(
-    "transform",
-    `translate(${viewer.options.dimensions.tree.width}, ${
-      viewer.options.height - SCROLLER_WIDTH
-    })`
-  );
+  viewer.scrollbar_x_g
+    .attr(
+      "transform",
+      `translate(${viewer.options.dimensions.tree.width}, ${localY})`
+    )
+    .attr("opacity", total_cols > 0 ? 1 : 0);
 
   const available_x =
     viewer.options.width -
@@ -100,6 +115,12 @@ const updateScrollBarX = (viewer, visible_cols, current_col) => {
   viewer.scrollbar_x_bg.attr("width", available_x);
 };
 
+/**
+ * A single method to trigger the update of all the scroll bars of the viewer. We currently only use 1.
+ * @param {GernomeProperiesViewer} viewer - The instance of the genome properites viewer
+ * @param {Number} visible_cols - Indicates how many columns are visible in the area assgined to the heatmap.
+ * @param {Number} current_col - Indicates the index of the first visible column out of the total number of GP.
+ */
 export const updateScrollBars = (viewer, visible_cols, current_col) => {
   updateScrollBarX(viewer, visible_cols, current_col);
   // updateScrollBarY(viewer);

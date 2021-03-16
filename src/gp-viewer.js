@@ -61,7 +61,7 @@ export default class GenomePropertiesViewer {
       tree: { width: 180 },
       total: { short_side: cell_side },
       step_expander: { short_side: cell_side },
-      scroller: { short_side: cell_side },
+      scroller: { short_side: 12 },
     },
   }) {
     this.data = {};
@@ -250,7 +250,7 @@ export default class GenomePropertiesViewer {
       },
     });
 
-    this.legends_filter = { YES: "", NO: "", PARTIAL: "" };
+    // this.legends_filter = { YES: "", NO: "", PARTIAL: "" };
     this.gp_label_type = "name";
 
     this.controller = new GenomePropertiesController({
@@ -461,7 +461,8 @@ export default class GenomePropertiesViewer {
     const localX = this.options.cell_side / 4;
     const localY =
       this.options.dimensions.total.short_side +
-      this.organisms.length * this.options.cell_side;
+      this.organisms.length * this.options.cell_side +
+      this.options.dimensions.scroller.short_side;
     new_column_p
       .selectAll(".col_title")
       .attr("x", localX)
@@ -542,7 +543,8 @@ export default class GenomePropertiesViewer {
     const localX = this.options.cell_side * 0.75;
     const localY =
       this.options.dimensions.total.short_side +
-      this.organisms.length * this.options.cell_side;
+      this.organisms.length * this.options.cell_side +
+      this.options.dimensions.scroller.short_side;
 
     const newY = d3
       .scaleBand()

@@ -432,14 +432,15 @@ div.container .top-block .minimise.on::after {
   box-shadow: 0 0 3px rgb(173, 73, 74);
 }
 .gpv-scrollbar rect.gpv-scrollbar-handle {
-  fill: rgba(180, 180, 180, 0.4);
+  fill: rgba(100, 100, 100, 0.6);
   cursor: ns-resize;
 }
 .gpv-scrollbar rect.gpv-scrollbar-bg {
-  fill: rgba(230, 230, 230, 0.4);
+  fill: rgba(100, 100, 100, 0.2);
+  stroke: rgba(100, 100, 100, 0.4);
 }
 .gpv-scrollbar rect.gpv-scrollbar-handle:hover {
-  fill: rgba(180, 180, 180, 0.7);
+  fill: rgba(100, 100, 100, 0.8);
 }
 .gpv-zoomer circle,
 .gpv-sorter circle {
@@ -508,9 +509,9 @@ div.container .top-block .minimise.on::after {
   background: #f0f0f0;
 }
 
-svg.gp-viewer:focus {
+/* svg.gp-viewer:focus {
   background: aliceblue;
-}
+} */
 
 .step-toggler circle,
 .step-toggler path {

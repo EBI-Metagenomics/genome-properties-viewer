@@ -1,5 +1,9 @@
 import * as d3 from "./d3";
-
+/**
+ * Appends a `defs` element in the main group of the viewer.
+ * It contains the definitions of the gradients used in th masks around the heatmap
+ * @param {GernomeProperiesViewer} viewer - The instance of the genome properites viewer
+ */
 export const createGradient = (viewer) => {
   const defs = viewer.mainGroup.append("defs");
   const gradient_left = defs
@@ -42,7 +46,11 @@ export const createGradient = (viewer) => {
     .attr("stop-color", "#fff")
     .attr("stop-opacity", 1);
 };
-
+/**
+ * Appends a new group element into the mainGroup of the viewer.
+ * The group contains masks as rectangles to give the effect of new GP fading-in/out while horizontal scrolling
+ * @param {GernomeProperiesViewer} viewer - The instance of the genome properites viewer
+ */
 export const drawMasks = (viewer) => {
   viewer.masks = viewer.mainGroup.append("g").attr("class", "masks");
   viewer.masks
@@ -65,9 +73,11 @@ export const drawMasks = (viewer) => {
     .attr("width", viewer.options.dimensions.total.short_side * 1.2)
     .attr("height", viewer.options.height);
 };
-
+/**
+ * Update the size and position of the masks
+ * @param {GernomeProperiesViewer} viewer - The instance of the genome properites viewer
+ */
 export const updateMasks = (viewer) => {
-  // const ph = viewer.options.total_panel_height;
   viewer.masks
     .select(".total-background")
     .attr(
@@ -83,6 +93,10 @@ export const updateMasks = (viewer) => {
     .attr("height", viewer.options.height);
 };
 
+/**
+ * Draws a draggable area ||| to redifine the widthassigned to the tree.
+ * @param {GernomeProperiesViewer} viewer - The instance of the genome properites viewer
+ */
 export const drawDragArea = (viewer) => {
   const xLimit = 90;
   let dx = 0;
@@ -95,6 +109,7 @@ export const drawDragArea = (viewer) => {
         .drag()
         .on("drag", (event) => {
           const treeSpace = viewer.options.dimensions.tree.width;
+          // Forces limits for the drag
           dx = Math.min(
             Math.max(-treeSpace + event.x, xLimit - treeSpace),
             viewer.options.width - treeSpace

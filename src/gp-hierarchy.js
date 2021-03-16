@@ -1,37 +1,42 @@
 import * as d3 from "./d3";
-
+/**
+ * Genome Properties are organized in a hierarchy.
+ * This Class manages the file that defines that hierarchy and uses is to allow filtering over the heatmap
+ */
 export default class GenomePropertiesHierarchy {
+  /**
+   * Initializes all the class attributes.
+   */
   constructor() {
+    /**
+     * Hashmap object from nodeId to its object.
+     * @type {Object}
+     * */
     this.nodes = {};
+    /**
+     * Reference to the root of the GP hierarchy
+     * @type {Object}
+     * */
     this.root = null;
+    /**
+     * List of top level GP indicating if its enabled or not for filtering purposes
+     * @type {Array}
+     * */
     this.hierarchy_switch = [];
+    /**
+     * Event dispatcher using `d3.dispatch`
+     * @type {Object}
+     * */
     this.dipatcher = d3.dispatch("siwtchChanged", "hierarchyLoaded");
     return this;
   }
 
+  /**
+   * Fetches  the hierarchy from a given URL, and triggers the processing of the file.
+   * @param {String} path - The URL where the hierarchy file is.
+   * @return {GenomePropertiesHierarchy} The curent instance for chaining methods.
+   */
   load_hierarchy_from_path(path) {
-    // d3.text(path).get( (error, text) => {
-    //     if (error) throw error;
-    //     d3.tsvParseRows(text, (d) => {
-    //         if (!(d[0] in this.nodes))
-    //             this.nodes[d[0]] = GenomePropertiesHierarchy.create_node(d[0], d[1]);
-    //         if (!(d[2] in this.nodes))
-    //             this.nodes[d[2]] = GenomePropertiesHierarchy.create_node(d[2], d[3]);
-    //         if (this.nodes[d[0]].children.indexOf(this.nodes[d[2]])==-1)
-    //             this.nodes[d[0]].children.push(this.nodes[d[2]]);
-    //         if (this.nodes[d[2]].parents.indexOf(this.nodes[d[0]])==-1)
-    //             this.nodes[d[2]].parents.push(this.nodes[d[0]]);
-    //         if (d[1]=="genome properties")
-    //             this.root = this.nodes[d[0]]
-    //     });
-    //     this.color = d3.scaleOrdinal()
-    //         .domain(this.root.children.map(d=>d.id))
-    //         .range(d3.schemeCategory20b);
-    //     this.hierarchy_switch = this.root.children.map(d=>{
-    //         return {"id": d.id, "enable": true };
-    //     });
-    //     this.dipatcher.call("hierarchyLoaded", this, this.root);
-    // });
     d3.json(path, (data) => {
       this.load_hierarchy_from_data(data);
     });
@@ -39,6 +44,10 @@ export default class GenomePropertiesHierarchy {
     return this;
   }
 
+  /**
+   * Defines all the atrributes by processing the JSON object
+   * @param {Object} data - Object representing the root of the Hierachy
+   */
   load_hierarchy_from_data(data) {
     this.root = data;
     this.nodes = {};
@@ -54,44 +63,47 @@ export default class GenomePropertiesHierarchy {
     this.dipatcher.call("hierarchyLoaded", this, this.root);
   }
 
+  /**
+   * Wlaks the tree, adding each node in `this.nodes` and generating a list of parents(in `node.parents`) for each node.
+   * @param {Object} node - each node has the shape `{id: <String>, name: <String>, children: [<Node>]}`.
+   */
   add_node_recursively(node, parent = null) {
-    // eslint-disable-next-line no-param-reassign
     if (!node.parents) node.parents = [];
     if (parent) node.parents.push(parent);
-    if (!this.nodes[node.id]) this.nodes[node.id] = node;
-    else this.nodes[node.id].parents.splice(0, 0, ...node.parents);
+    if (!this.nodes[node.id]) {
+      this.nodes[node.id] = node;
+    } else {
+      this.nodes[node.id].parents.splice(0, 0, ...node.parents);
+    }
     if (node.children && node.children.length > 0)
       for (const child of node.children) this.add_node_recursively(child, node);
   }
 
-  static create_node(id, name) {
-    return {
-      id,
-      name,
-      parents: [],
-      children: [],
-      top_level_gp: null,
-    };
-  }
-
+  /**
+   * Gets the node from `this.nodes` and searches it top level properties
+   * @param {String} id - node present in this.nodes
+   * @return {Array} Array of ids of the top level properties.
+   */
   get_top_level_gp_by_id(id) {
     if (id in this.nodes)
       return [...this.get_top_level_gp(this.nodes[id])].map((d) => d.id);
     return [];
   }
 
+  /**
+   * Gets the top level genome properties associated with a given node
+   * @param {Object} node - node present in this.nodes
+   * @return {Set} Set of top level genome properties.
+   */
   get_top_level_gp(node) {
     if (node === this.root) return null;
     if (node.top_level_gp) return node.top_level_gp;
     if (node.parents.indexOf(this.root) !== -1) {
-      // eslint-disable-next-line no-param-reassign
       node.top_level_gp = new Set([node]);
       return node.top_level_gp;
     }
-    // eslint-disable-next-line no-param-reassign
     node.top_level_gp = new Set();
     for (const parent of node.parents) {
-      // eslint-disable-next-line no-param-reassign
       node.top_level_gp = new Set([
         ...node.top_level_gp,
         ...this.get_top_level_gp(parent),
@@ -100,13 +112,22 @@ export default class GenomePropertiesHierarchy {
     return node.top_level_gp;
   }
 
-  toggle_switch(d) {
+  /**
+   * finds the top level property with the given id,  toggles the value of `enable`, and then dispatches an event announceing the change.
+   * @param {String} id - Id of the top level genome property
+   */
+  toggle_switch(id) {
     this.hierarchy_switch.forEach((e) => {
-      if (e.id === d.id) e.enable = !e.enable;
+      if (e.id === id.id) e.enable = !e.enable;
     });
     this.dipatcher.call("siwtchChanged", this, this.hierarchy_switch);
   }
 
+  /**
+   * shortcut to add invoke a callback when one of the dispatched events gets trigger
+   * @param {String} typename - one of the dispatched events: "siwtchChanged", "hierarchyLoaded"
+   * @return {GenomePropertiesHierarchy} The curent instance for chaining methods.
+   */
   on(typename, callback) {
     this.dipatcher.on(typename, callback);
     return this;

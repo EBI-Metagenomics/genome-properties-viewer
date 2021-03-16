@@ -1,6 +1,4 @@
 import * as d3 from "./d3";
-// import "js-autocomplete-tremby";
-// import AutoComplete from "js-autocomplete-tremby";
 import { transformByScroll } from "./gp-scroller";
 
 export default class GenomePropertiesController {
