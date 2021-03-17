@@ -253,11 +253,19 @@ Returns the reference(created in d3) to the content object.
 Creates a panel with a slider and +/- buttons to allow resizing the view
 
 **Kind**: global class  
+
+* [ZoomPanel](#ZoomPanel)
+    * [new ZoomPanel(options)](#new_ZoomPanel_new)
+    * _instance_
+        * [.draw_panel()](#ZoomPanel+draw_panel)
+        * [.refresh()](#ZoomPanel+refresh)
+    * _static_
+        * [.add_button(panel, text, x, y, r)](#ZoomPanel.add_button)
+
 <a name="new_ZoomPanel_new"></a>
 
 ### new ZoomPanel(options)
 Sets all the passed options in class atributes and initiates a d3.scale for the slider.
-It also sets the events binding them to the callback funtions passed in the options object.
 
 
 | Param | Type | Description |
@@ -282,6 +290,35 @@ It also sets the events binding them to the callback funtions passed in the opti
    function_slide = null, // Callback for when the slider gets dragged
  }
 ```
+<a name="ZoomPanel+draw_panel"></a>
+
+### zoomPanel.draw\_panel()
+Appends a group in the given container that includes the SVG elements to represent the zoomer.
+It also sets the events binding them to the callback funtions passed in the options object.
+
+**Kind**: instance method of [<code>ZoomPanel</code>](#ZoomPanel)  
+**Summary**: If the description is long, write your summary here. Otherwise, feel free to remove this.  
+<a name="ZoomPanel+refresh"></a>
+
+### zoomPanel.refresh()
+Updates the position of the panel
+
+**Kind**: instance method of [<code>ZoomPanel</code>](#ZoomPanel)  
+<a name="ZoomPanel.add_button"></a>
+
+### ZoomPanel.add\_button(panel, text, x, y, r)
+Add a new circular button into a panel
+
+**Kind**: static method of [<code>ZoomPanel</code>](#ZoomPanel)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| panel | <code>Object</code> | D3 selector of the panel to add the button |
+| text | <code>String</code> | Text for the button. the function doesn't check if the text doesn't fit the given radius |
+| x | <code>Number</code> | X coordinate in the panel |
+| y | <code>Number</code> | Y coordinate in the panel |
+| r | <code>Number</code> | radius of the circles |
+
 <a name="filterByLegend"></a>
 
 ## filterByLegend
