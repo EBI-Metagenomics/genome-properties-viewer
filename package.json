@@ -36,7 +36,6 @@
     "d3-dsv": "2.0.0",
     "d3-hierarchy": "2.0.0",
     "d3-interpolate": "2.0.1",
-    "d3-request": "^1.0.6",
     "d3-scale": "3.2.3",
     "d3-scale-chromatic": "2.0.0",
     "d3-selection": "2.0.0",
@@ -44,7 +43,8 @@
     "d3-timer": "2.0.0",
     "d3-transition": "2.0.0",
     "d3-zoom": "2.0.0",
-    "js-autocomplete-tremby": "^1.0.5"
+    "js-autocomplete-tremby": "^1.0.5",
+    "regenerator-runtime": "0.13.7"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.0",
@@ -59,6 +59,7 @@
     "jsdoc-to-markdown": "7.0.0",
     "mysql": "2.18.1",
     "prettier": "2.2.1",
+    "regenerator": "0.14.7",
     "rollup": "2.40.0",
     "rollup-plugin-babel": "^4.1.0",
     "rollup-plugin-node-resolve": "5.2.0"

@@ -109,6 +109,7 @@ class ZoomPanel {
   refresh() {
     this.zoom_panel.attr("transform", `translate(${this.x}, ${this.y})`);
   }
+
   /**
    * Add a new circular button into a panel
    * @param {Object} panel - D3 selector of the panel to add the button

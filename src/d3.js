@@ -1,5 +1,4 @@
 export { select, selectAll } from "d3-selection";
-export { text, xml, json } from "d3-request";
 export { range } from "d3-array";
 export { drag } from "d3-drag";
 export {

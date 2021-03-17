@@ -37,9 +37,15 @@ class GenomePropertiesHierarchy {
    * @return {GenomePropertiesHierarchy} The curent instance for chaining methods.
    */
   load_hierarchy_from_path(path) {
-    d3.json(path, (data) => {
-      this.load_hierarchy_from_data(data);
-    });
+    fetch(path)
+      .then((response) => {
+        if (!response.ok)
+          throw new Error(`${response.status} ${response.statusText}`);
+        return response.json;
+      })
+      .then((data) => {
+        this.load_hierarchy_from_data(data);
+      });
 
     return this;
   }

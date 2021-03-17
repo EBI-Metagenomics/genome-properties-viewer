@@ -15,7 +15,6 @@ The code API reference is under construction and its current state is available 
 
 | File                  | Status |
 | --------------------- | ------ |
-| d3.js                 | ⚠      |
 | gp-controller.js      | ⚠️     |
 | gp-filters.js         | ✅     |
 | gp-hierarchy.js       | ✅     |

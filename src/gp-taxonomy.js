@@ -38,10 +38,15 @@ export default class GenomePropertiesTaxonomy {
   }
 
   load_taxonomy() {
-    d3.json(this.path, (error, data) => {
-      if (error) throw error;
-      this.load_taxonomy_obj(data);
-    });
+    fetch(this.path)
+      .then((response) => {
+        if (!response.ok)
+          throw new Error(`${response.status} ${response.statusText}`);
+        return response.json;
+      })
+      .then((data) => {
+        this.load_taxonomy_obj(data);
+      });
     return this;
   }
 

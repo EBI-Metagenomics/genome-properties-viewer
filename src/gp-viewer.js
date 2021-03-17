@@ -4,6 +4,8 @@ import ZoomPanel from "./zoomer";
 import TaxonomySortButton from "./gp-taxonomy-sorter";
 import GenomePropertiesController from "./gp-controller";
 import { updateStepToggler, updateSteps } from "./gp-steps";
+import "regenerator-runtime/runtime";
+
 import {
   drawScrollXBar,
   // drawScrollYBar,
@@ -57,6 +59,7 @@ export default class GenomePropertiesViewer {
     tax_label_selector = "#tax_label",
     tax_search_selector = "#tax-search",
     template_link_to_GP_page = "https://wwwdev.ebi.ac.uk/interpro/genomeproperties/#{}",
+    gp_server = "http://wwwdev.ebi.ac.uk/interpro/genomeproperties/cgi-bin/test.pl",
     dimensions = {
       tree: { width: 180 },
       total: { short_side: cell_side },
@@ -100,6 +103,7 @@ export default class GenomePropertiesViewer {
       element_selector,
       cell_side,
       server,
+      gp_server,
       server_tax,
       total_panel_height,
       hierarchy_path,
@@ -120,7 +124,15 @@ export default class GenomePropertiesViewer {
     this.current_order = null;
 
     if (whitelist_path) {
-      d3.json(whitelist_path, (data) => (this.whitelist = data));
+      fetch(whitelist_path)
+        .then((response) => {
+          if (!response.ok)
+            throw new Error(`${response.status} ${response.statusText}`);
+          return response.json;
+        })
+        .then((data) => {
+          this.whitelist = data;
+        });
     }
     this.svg = d3
       .select(element_selector)
@@ -200,7 +212,7 @@ export default class GenomePropertiesViewer {
         this.x.range([0, this.options.cell_side]);
         this.update_viewer();
       });
-    this.fileGetter.getJSON(server_tax).get((error, data) => {
+    this.fileGetter.getJSON(server_tax).then((data) => {
       this.gp_taxonomy.load_taxonomy_obj(data);
     });
 
@@ -215,9 +227,9 @@ export default class GenomePropertiesViewer {
         this.update_viewer(500);
         updateTotalPerOrganismPanel(this);
       });
-    this.fileGetter.getJSON(hierarchy_path).get((error, data) => {
+    this.fileGetter.getJSON(hierarchy_path).then((data) => {
       this.gp_hierarchy.load_hierarchy_from_data(data);
-      this.fileGetter.getJSON(model_species_path).get((dataSpecies) => {
+      this.fileGetter.getJSON(model_species_path).then((dataSpecies) => {
         preloadSpecies(this, dataSpecies);
       });
     });
@@ -291,7 +303,6 @@ export default class GenomePropertiesViewer {
       .node()
       .getBoundingClientRect();
     this.options.width = rect.width;
-    this.gp_taxonomy.width = this.options.height;
     d3.select(this.options.element_selector)
       .select("svg")
       .attr("width", rect.width);

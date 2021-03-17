@@ -1,4 +1,4 @@
-import * as d3 from "./d3";
+import { tsvParseRows, select } from "./d3";
 
 const isLineOK = (line) => line.length === 3;
 
@@ -42,20 +42,12 @@ export const loadGenomePropertiesText = (
   try {
     const obj = JSON.parse(text);
     mergeObjectToData(viewer.data, obj);
-    // Object.values(viewer.data).forEach(gp => {
-    //   gp.parent_top_properties = viewer.gp_hierarchy.get_top_level_gp_by_id(gp.property);
-    //   gp.isShowingSteps = false;
-    // });
     const objOrgs = Object.keys(Object.values(obj)[0].values).filter(
       (x) => x !== "TOTAL"
     );
     for (const org of objOrgs) {
       enableSpeciesFromPreLoaded(viewer, org, isFromFile);
     }
-    // viewer.organisms
-    //   .forEach(tax_id => viewer.gp_taxonomy.set_organisms_loaded(tax_id));
-    // if (!viewer.propsOrder) viewer.propsOrder = Object.keys(viewer.data).sort();
-    // viewer.update_viewer(500);
   } catch (e) {
     // eslint-disable-next-line no-console
     console.warn("File is not JSON. Trying to parse it as TSV now.");
@@ -66,7 +58,7 @@ export const loadGenomePropertiesText = (
     viewer.organism_totals[tax_id] = { YES: 0, NO: 0, PARTIAL: 0 };
     let allLinesAreOK = true;
     const errorLines = [];
-    d3.tsvParseRows(text, (d, i) => {
+    tsvParseRows(text, (d, i) => {
       if (!isLineOK(d)) {
         allLinesAreOK = false;
         errorLines.push([i, d]);
@@ -138,23 +130,28 @@ export const removeGenomePropertiesFile = (viewer, id) => {
   const i = viewer.organisms.indexOf(tax_id);
   viewer.organisms.splice(i, 1);
   viewer.gp_taxonomy.remove_organism_loaded(tax_id, isFromFile);
-  // if (viewer.organisms.length === 0) {
-  //   viewer.data = {};
-  // }
-  // for (const gp of Object.keys(viewer.data)) {
-  //   viewer.data[gp].values["TOTAL"][viewer.data[gp].values[tax_id]]--;
-  //   if (viewer.data[gp].values[tax_id]) delete viewer.data[gp].values[tax_id];
-  // }
   viewer.update_viewer(500);
 };
 
+function concat(arrays) {
+  let i = 0;
+  let n = 0;
+  for (const a of arrays) n += a.length;
+  const newArray = new Uint8Array(n);
+  for (const a of arrays) {
+    newArray.set(a, i);
+    i += a.length;
+  }
+  return newArray.buffer;
+}
 export class FileGetter {
   constructor({ element = "body", viewer }) {
-    this.base = d3.select(element);
+    this.base = select(element);
     this.files = {};
     this.isActive = false;
     this.viewer = viewer;
     this.activeGauge = 0;
+    this.activeGauges = [];
     setInterval(
       (_this) => {
         _this.activeGauge =
@@ -166,6 +163,10 @@ export class FileGetter {
   }
 
   getJSON(path) {
+    return this.getText(path, true);
+  }
+
+  async getText(path, shouldParseAsJSON = false) {
     if (this.files[path]) return this.files[path].request;
     this.files[path] = {
       loading: true,
@@ -174,17 +175,48 @@ export class FileGetter {
     const { modal } = this.viewer;
     if (!this.isActive) this.createProgressContent(modal);
     // this.activeGauge = path;
-    return (this.files[path].request = d3
-      .json(path)
-      .on("progress", (evt) => this.updateProgress(path, evt))
-      .on("load.inner", (error, data) => {
-        this.files[path].loading = false;
-        this.files[path].data = data;
-        if (Object.values(this.files).every((file) => !file.loading)) {
-          modal.setVisibility(false);
-          this.isActive = false;
-        }
-      }));
+    const response = await fetch(path);
+    this.files[path].request = response;
+    const total = response.headers.get("content-length");
+    const reader = response.body && response.body.getReader();
+    const values = [];
+    let loaded = 0;
+    let responseAsArrayBuffer = null;
+    if (!reader) {
+      responseAsArrayBuffer = await response.arrayBuffer();
+      loaded = responseAsArrayBuffer.byteLength;
+      this.files[path].progress = 1;
+    } else {
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        // eslint-disable-next-line no-await-in-loop
+        const { done, value } = await reader.read();
+        if (done) break;
+        loaded += value.length;
+        this.files[path].progress = total ? loaded / total : null;
+        this.files[path].event = {
+          total,
+          loaded,
+        };
+        this.updateProgress();
+        values.push(value);
+      }
+      responseAsArrayBuffer = concat(values);
+    }
+    const codeUnits = new Uint8Array(responseAsArrayBuffer);
+    let text = "";
+    for (let i = 0; i < codeUnits.length; i++) {
+      text += String.fromCharCode(codeUnits[i]);
+    }
+    this.files[path].loading = false;
+    this.files[path].data = shouldParseAsJSON ? JSON.parse(text) : text;
+
+    if (Object.values(this.files).every((file) => !file.loading)) {
+      modal.setVisibility(false);
+      this.isActive = false;
+    }
+
+    return this.files[path].data;
   }
 
   createProgressContent(modal) {
@@ -208,10 +240,8 @@ export class FileGetter {
     this.isActive = true;
   }
 
-  updateProgress(path, event) {
+  updateProgress() {
     if (!this.isActive) return;
-    this.files[path].progress = event.total ? event.loaded / event.total : null;
-    this.files[path].event = event;
 
     const files = Object.values(this.files);
     const total = {
@@ -298,9 +328,66 @@ export class FileGetter {
 }
 export const loadGenomePropertiesFile = (viewer, tax_id) => {
   if (viewer.organisms.indexOf(Number(tax_id)) !== -1) return;
-  d3.text(viewer.options.server.replace("{}", tax_id)).get((error, text) => {
-    if (error) throw error;
-    loadGenomePropertiesText(viewer, tax_id, text);
-    viewer.update_viewer(500);
-  });
+  fetch(viewer.options.server.replace("{}", tax_id))
+    .then((response) => {
+      if (!response.ok)
+        throw new Error(`${response.status} ${response.statusText}`);
+      return response.text();
+    })
+    .then((text) => {
+      loadGenomePropertiesText(viewer, tax_id, text);
+      viewer.update_viewer(500);
+    });
+};
+
+function isIpproLine(line) {
+  const parts = line.split("\t");
+  return !(parts.length < 11 || parts[1].length !== 32);
+}
+
+export const uploadLocalGPFile = (viewer, fileToRead) => {
+  const reader = new FileReader();
+  reader.fileToRead = fileToRead;
+  reader.onload = (evt) => {
+    try {
+      const firstline = evt.target.result.split("\n")[0];
+      if (isIpproLine(firstline)) {
+        viewer.modal.showContent(
+          "<h3><div class='loading'>◉</div>Calculation Genome Properties from InterProScan Data</h3>",
+          true
+        );
+
+        fetch(viewer.options.gp_server, {
+          method: "POST",
+          body: `ipproname=${reader.fileToRead.name}&ipprotsv=${evt.target.result}`,
+          headers: new Headers({
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Access-Control-Request-Method": "POST",
+            "Access-Control-Request-Headers": "X-PINGOTHER, Content-Type",
+          }),
+        })
+          .then((response) => response.text())
+          .then((x) => {
+            viewer.loadGenomePropertiesText(reader.fileToRead.name, x);
+            viewer.modal.setVisibility(false);
+          })
+          .catch(() => {
+            viewer.modal.showContent(
+              "<h3><div class='error'>Server Error processing the file</div></h3>",
+              false
+            );
+          });
+      } else {
+        viewer.loadGenomePropertiesText(
+          reader.fileToRead.name,
+          evt.target.result
+        );
+      }
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
+    }
+    document.getElementById("newfile").value = null;
+  };
+  reader.readAsText(fileToRead);
 };
