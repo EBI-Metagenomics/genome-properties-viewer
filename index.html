@@ -31,7 +31,9 @@
                         <input type="file" id="newfile" onchange="uploadFile()"/>
                     </li>
                     <li><input type="checkbox" id="collapse_tree" checked="checked"/><label for="collapse_tree">Collapse tree</label></li>
-                    <li><label for="tax_label">Labels:</label>
+                </div>
+                <div>
+                        <li><label for="tax_label">Labels:</label>
                         <select id="tax_label">
                             <option value="name">Species</option>
                             <option value="id">Tax ID</option>
@@ -76,8 +78,8 @@
             viewer = new GenomePropertiesViewer({
                 element_selector: "#gp-viewer",
                 controller_element_selector: "#gp-selector",
-                height:700,
                 model_species_path: "https://raw.githubusercontent.com/ProteinsWebTeam/genome-properties-viewer/master/test-files/JSON_MERGED",
+                gp_server: 'http://wwwdev.ebi.ac.uk/interpro/genomeproperties/cgi-bin/test.pl',
             });
     viewer.update_viewer();
     d3.select("#upload-button").on("click", function() {
@@ -96,23 +98,22 @@
         viewer.gp_taxonomy.collapse_tree = d3.select(this).property('checked');
         viewer.update_viewer();
     });
-    d3.select(".minimise").on("click",(d,i,c)=>{
-        const on = d3.select(c[i]).classed("on");
+    d3.select(".minimise").on("click",(event, d)=>{
+        const on = d3.select(event.currentTarget).classed("on");
         d3.selectAll(".top-controllers>div")
                 .style("max-height", on?"0px":"500px")
                 .style("overflow", on?null:"hidden")
                 .transition(200)
                 .style("max-height", on?"500px":"0px")
                 .style("opacity", on?1:0);
-//        d3.select(c[i]).transition(200).style("transform", on?"rotate(0deg)":"rotate(180deg)");
         d3.selectAll(".top-controllers").transition(200).style("padding", on?"5px":"0px");
-        d3.select(c[i]).classed("on", !on);
+        d3.select(event.currentTarget).classed("on", !on);
         setTimeout(function(){ viewer.refresh_size(); }, 250);
 
     });
     let showTaxonomy = true;
-    d3.select("#toggle-tree").on("click",(d,i,c)=>{
-        d3.select(c[i]).text(showTaxonomy ? "Show Taxonomy" : "Hide Taxonomy");
+    d3.select("#toggle-tree").on("click",(event, d)=>{
+        d3.select(event.currentTarget).text(showTaxonomy ? "Show Taxonomy" : "Hide Taxonomy");
         showTaxonomy = !showTaxonomy;
         viewer.gp_taxonomy.show_tree = showTaxonomy;
         viewer.update_viewer();
@@ -124,48 +125,9 @@
     function uploadFile() {
         const oFiles = document.getElementById("newfile").files;
         for (let i=0; i < oFiles.length; i++){
-            const reader = new FileReader();
-            reader.fileToRead = oFiles[i];
-            reader.onload = function(evt) {
-                try {
-                    const firstline = evt.target.result.split('\n')[0];
-                    if (isIpproLine(firstline)){
-                      viewer.modal.showContent(
-                        "<h3><div class='loading'>◉</div>Calculation Genome Properties from InterProScan Data</h3>",
-                        true
-                      );
-
-                      fetch(gp_server, {
-                            method: 'POST',
-                            body: 'ipproname='+reader.fileToRead.name+'&ipprotsv='+evt.target.result,
-                            headers: new Headers({
-                                "Content-Type": "application/x-www-form-urlencoded",
-                                "Access-Control-Request-Method": "POST",
-                                "Access-Control-Request-Headers": "X-PINGOTHER, Content-Type",
-                            })
-                        }).then(response => response.text()).then(
-                            x=> {
-                                viewer.loadGenomePropertiesText(reader.fileToRead.name, x)
-                                viewer.modal.setVisibility(false);
-                            }
-                        )
-                    } else {
-                        viewer.loadGenomePropertiesText(reader.fileToRead.name, evt.target.result);
-
-                    }
-                }catch(e){
-                    alert('Bad formatted file');
-                    console.error(e);
-                }
-                document.getElementById("newfile").value =null;
-            };
-            reader.readAsText(oFiles[i]);
+            gpv.uploadLocalGPFile(viewer,oFiles[i] )
         }
 
-    }
-    function isIpproLine(line){
-        const parts = line.split('\t');
-        return !(parts.length < 11 || parts[1].length !== 32);
     }
 </script>
 </body>

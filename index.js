@@ -1,7 +1,8 @@
-
-import GenomePropertiesViewer from "./src/gp-viewer"
+import GenomePropertiesViewer from "./src/gp-viewer";
 import * as d3 from "./src/d3";
-export default {d3: d3,GenomePropertiesViewer:GenomePropertiesViewer};
+import { uploadLocalGPFile } from "./src/gp-uploader";
+
+export default { d3, GenomePropertiesViewer, uploadLocalGPFile };
 
 // TODO: Focus/Filter on a tax branch.
 // DONE: scrollbars

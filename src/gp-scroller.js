@@ -1,208 +1,127 @@
 import * as d3 from "./d3";
+/**
+ * Updates this and othe components as if a scroll event happened.
+ * It became the de-facto refresh of the whole viewer, as it groups the minimum necesary changes to trigger a full update.
+ * @param {GernomeProperiesViewer} viewer - The instance of the genome properites viewer
+ */
+export const transformByScroll = (viewer) => {
+  viewer.newRows.attr(
+    "transform",
+    () => `translate(${viewer.current_scroll.x}, ${viewer.current_scroll.y})`
+  );
+  viewer.newCols.attr(
+    "transform",
+    `translate(${viewer.current_scroll.x}, ${viewer.current_scroll.y})`
+  );
+  viewer.options.dimensions.total.short_side = viewer.options.cell_side;
+  viewer.gp_taxonomy.y = viewer.options.dimensions.total.short_side;
+  viewer.update_viewer();
+};
 
-export const drawScrollXBar = viewer => {
-  viewer.scrollbar_x_g = viewer.svg
+/**
+ * Append a group into the viewer's mainGroup.
+ * It contains the elements to draw a simple horizontal srollbar, and attach the dragging events to them.
+ * @param {GernomeProperiesViewer} viewer - The instance of the genome properites viewer
+ */
+export const drawScrollXBar = (viewer) => {
+  const localY = (1 + viewer.organisms.length) * viewer.options.cell_side;
+  const scrollerShortSide = viewer.options.dimensions.scroller.short_side;
+  viewer.scrollbar_x_g = viewer.mainGroup
     .append("g")
     .attr("class", "gpv-scrollbar")
+    .attr("opacity", 0)
     .attr(
       "transform",
-      "translate(" + viewer.options.treeSpace + ", " +
-        (viewer.options.height - viewer.options.margin.bottom) +
-        ")"
+      `translate(${
+        viewer.options.dimensions.tree.width // at the right of the tree
+      }, ${localY})`
     );
 
   viewer.scrollbar_x_bg = viewer.scrollbar_x_g
     .append("rect")
     .attr("class", "gpv-scrollbar-bg")
-    .attr("width", viewer.options.width - viewer.options.treeSpace)
-    .attr("height", viewer.options.margin.bottom);
+    .attr("width", viewer.options.width - viewer.options.dimensions.tree.width)
+    .attr("height", scrollerShortSide);
 
+  let selectedXBar = null;
   viewer.scrollbar_x = viewer.scrollbar_x_g
     .append("rect")
     .attr("class", "gpv-scrollbar-handle")
-    .attr("width", viewer.options.width - viewer.options.treeSpace)
-    .attr("height", viewer.options.margin.bottom)
-    .attr("rx", 5)
-    .attr("ry", 5)
+    .attr("width", viewer.options.width - viewer.options.dimensions.tree.width)
+    .attr("height", scrollerShortSide - 2)
+    .attr("y", 1)
+    .attr("rx", scrollerShortSide / 2)
+    .attr("ry", scrollerShortSide / 2)
     .style("cursor", "ew-resize")
     .call(
       d3
         .drag()
-        .on("end", () => (viewer.skip_scroll_refreshing = false))
-        .on("drag", function() {
-          viewer.skip_scroll_refreshing = true;
-          d3.event.sourceEvent.stopPropagation();
-          // const w = Number(viewer.options.width);
-          // const sw = Number(this.getAttribute("width"));
-          // const x = Number(this.getAttribute("x"));
-          // // const w1 = viewer.rows.node().getBBox().width;
-          // const w1 = viewer.newRows.node().getBBox().width;
-          // const dx = Math.max(
-          //   0,
-          //   Math.min(x + d3.event.dx, viewer.options.width - sw)
-          // );
-          //
-          // viewer.scrollbar_x.attr("x", dx);
-          //
-          // viewer.current_scroll.x = ((w - sw - dx) * w1) / w;
-          // transformByScroll(viewer);
-
-            const tw = viewer.x(viewer.props.length);
-            const prevX = Number(this.getAttribute("x"));
-            const nextX = prevX + d3.event.dx;
-
-            viewer.scrollbar_x.attr(
-                "x",
-                Math.max(
-                    0,
-                    Math.min(
-                        nextX,
-                        viewer.options.width - viewer.options.treeSpace - this.getAttribute("width")
-                    )
-                )
-            );
-            let dx =
-                (-nextX * tw) /
-                (viewer.options.width - viewer.options.treeSpace - this.getAttribute("width"));
-            viewer.current_scroll.x = Math.min(
-                0,
-                Math.max(dx, -tw + viewer.options.width - viewer.options.treeSpace)
-            );
-            transformByScroll(viewer);
+        .on("start", (event) => (selectedXBar = event.sourceEvent.target))
+        .on("end", () => {
+          viewer.skip_scroll_refreshing = false;
+          selectedXBar = null;
         })
-    );
-};
-
-export const drawScrollYBar = viewer => {
-  viewer.skip_scroll_refreshing = false;
-  viewer.scrollbar_g = viewer.svg
-    .append("g")
-    .attr("class", "gpv-scrollbar")
-    // .attr("transform", "translate(" + (viewer.options.width + 10) + ", 0)");
-    .attr("transform", "translate(" + (viewer.options.width + 10) + ", " + (-viewer.options.margin.top) + ")");
-
-  viewer.scrollbar_bg = viewer.scrollbar_g
-    .append("rect")
-    .attr("class", "gpv-scrollbar-bg")
-    .attr("width", 10)
-    // .attr("height", viewer.options.height + viewer.newCols.node().getBBox().height);
-    .attr("height", viewer.options.height + viewer.options.margin.top);
-
-  viewer.scrollbar = viewer.scrollbar_g
-    .append("rect")
-    .attr("class", "gpv-scrollbar-handle")
-    .attr("width", 10)
-    // .attr("height", viewer.options.height + viewer.newCols.node().getBBox().height)
-    .attr("height", viewer.options.height + viewer.options.margin.top)
-    .attr("rx", 5)
-    .attr("ry", 5)
-    .call(
-      d3
-        .drag()
-        .on("end", () => (viewer.skip_scroll_refreshing = false))
-        .on("drag", function() {
-            // const h = Number(viewer.options.height);
-            // // const h = Number(viewer.options.height + viewer.options.margin.top);
-            // const sh = Number(this.getAttribute("height"));
-            // const y = Number(this.getAttribute("y"));
-            // const h1 = viewer.newCols.node().getBBox().height;
-            // const dy = Math.max(
-            //   0,
-            //   Math.min(y + d3.event.dy, viewer.options.height - sh)
-            //   // Math.min(y + d3.event.dy, viewer.options.height + viewer.options.margin.top - sh)
-            // );
-            //
-            // viewer.scrollbar.attr("y", dy);
-            //
-            // viewer.current_scroll.y = ((h - sh - dy) * h1) / h;
-            // transformByScroll(viewer);
-
-          if (viewer.newCols.node().getBBox().height === 0)
-            return;
+        .on("drag", (event) => {
           viewer.skip_scroll_refreshing = true;
-          d3.event.sourceEvent.stopPropagation();
-          const th = viewer.newCols.node().getBBox().y + viewer.newCols.node().getBBox().height;
-          const fh = viewer.options.height + viewer.options.margin.top;
-          const prevY = parseInt(this.getAttribute("y"));
-          const nextY = prevY + d3.event.dy;
-          viewer.scrollbar.attr(
-            "y",
-            Math.max(
-                0,
-              Math.min(
-                nextY,
-                fh - this.getAttribute("height")
-              )
-            )
+          event.sourceEvent.stopPropagation();
+          const propertiesWidth = viewer.x(viewer.props.length);
+          const prevX = Number(selectedXBar.getAttribute("x"));
+          let nextX = prevX + event.dx;
+          const available_x =
+            viewer.options.width - viewer.options.dimensions.tree.width;
+
+          nextX = Math.max(
+            0,
+            Math.min(nextX, available_x - selectedXBar.getAttribute("width"))
           );
-          let dy =
-            (-nextY * th) /
-            (fh - this.getAttribute("height"));
-          viewer.current_scroll.y = Math.min(
-              0,
-            Math.max(dy, -th + viewer.options.height)
-          );
+
+          viewer.scrollbar_x.attr("x", nextX);
+          const dx = (-nextX * propertiesWidth) / available_x;
+          viewer.current_scroll.x = Math.min(0, dx);
           transformByScroll(viewer);
         })
     );
 };
 
-export const transformByScroll = viewer => {
-  viewer.newRows.attr(
-    "transform",
-    () =>
-      "translate(" +
-      viewer.current_scroll.x +
-      ", " +
-      viewer.current_scroll.y +
-      ")"
-  );
-  viewer.newCols.attr(
-    "transform",
-    "translate(" + viewer.current_scroll.x + ", " + viewer.current_scroll.y + ")"
-  );
-  viewer.gp_taxonomy.y = viewer.current_scroll.y - viewer.options.margin.top;
-  viewer.update_viewer();
-};
-
-
-export const updateScrollBar = (viewer, visible_cols, current_col) => {
+/**
+ * Updates the size and position of the scrollbar.
+ * The size of the draggable is proportional to the number of visible columns in the graphic
+ * @param {GernomeProperiesViewer} viewer - The instance of the genome properites viewer
+ * @param {Number} visible_cols - Indicates how many columns are visible in the area assgined to the heatmap.
+ * @param {Number} current_col - Indicates the index of the first visible column out of the total number of GP.
+ */
+const updateScrollBarX = (viewer, visible_cols, current_col) => {
+  const localY = (1 + viewer.organisms.length) * viewer.options.cell_side;
   const total_cols = viewer.props.length;
-  viewer.scrollbar_g.attr(
-    "transform",
-      // "translate(" + (viewer.options.width + 10) + ", 0)"
-      "translate(" + (viewer.options.width + 10) + ", " + (-viewer.options.margin.top) + ")"
-);
-  viewer.scrollbar_x_g.attr(
-    "transform",
-    "translate("+ viewer.options.treeSpace + ", " + (viewer.options.height - viewer.options.margin.bottom) + ")"
-  );
+  viewer.scrollbar_x_g
+    .attr(
+      "transform",
+      `translate(${viewer.options.dimensions.tree.width}, ${localY})`
+    )
+    .attr("opacity", total_cols > 0 ? 1 : 0);
 
+  const available_x =
+    viewer.options.width -
+    viewer.options.dimensions.tree.width -
+    viewer.options.dimensions.total.short_side;
   viewer.scrollbar_x
     .transition()
     .attr(
       "width",
-        (viewer.options.width - viewer.options.treeSpace) *
-      Math.min(1, total_cols !== 0 ? visible_cols / total_cols : 1)
+      available_x *
+        Math.min(1, total_cols !== 0 ? visible_cols / total_cols : 1)
     )
-    .attr(
-      "x",
-      total_cols ? (current_col * (viewer.options.width - viewer.options.treeSpace)) / total_cols : 0
-    );
-  viewer.scrollbar_x_bg.attr("width", viewer.options.width - viewer.options.treeSpace);
+    .attr("x", total_cols ? (current_col * available_x) / total_cols : 0);
+  viewer.scrollbar_x_bg.attr("width", available_x);
+};
 
-    const th = viewer.newCols.node().getBBox().y + viewer.newCols.node().getBBox().height;
-    const fh = viewer.options.height + viewer.options.margin.top;
-    viewer.scrollbar_bg.attr("height", th);
-    viewer.scrollbar
-        .transition()
-        .attr(
-            "height",
-            fh *
-            Math.min(1, fh / th)
-        )
-        .attr(
-            "y",
-            Math.min(0, (viewer.current_scroll.y * fh) / th)
-        );
+/**
+ * A single method to trigger the update of all the scroll bars of the viewer. We currently only use 1.
+ * @param {GernomeProperiesViewer} viewer - The instance of the genome properites viewer
+ * @param {Number} visible_cols - Indicates how many columns are visible in the area assgined to the heatmap.
+ * @param {Number} current_col - Indicates the index of the first visible column out of the total number of GP.
+ */
+export const updateScrollBars = (viewer, visible_cols, current_col) => {
+  updateScrollBarX(viewer, visible_cols, current_col);
+  // updateScrollBarY(viewer);
 };

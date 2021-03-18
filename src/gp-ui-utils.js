@@ -1,144 +1,139 @@
 import * as d3 from "./d3";
-
-export const createGradient = viewer => {
-  const defs = viewer.svg.append("defs");
-  const gradient_d = defs
+/**
+ * Appends a `defs` element in the main group of the viewer.
+ * It contains the definitions of the gradients used in th masks around the heatmap
+ * @param {GernomeProperiesViewer} viewer - The instance of the genome properites viewer
+ */
+export const createGradient = (viewer) => {
+  const defs = viewer.mainGroup.append("defs");
+  const gradient_left = defs
     .append("linearGradient")
-    .attr("id", "gradientdown")
+    .attr("id", "gradientleft")
     .attr("x1", "0%")
     .attr("y1", "0%")
-    .attr("x2", "0%")
-    .attr("y2", "100%");
-  gradient_d
+    .attr("x2", "100%")
+    .attr("y2", "0%");
+  gradient_left
     .append("stop")
     .attr("offset", "85%")
     .attr("stop-color", "#fff")
     .attr("stop-opacity", 1);
-  gradient_d
+  gradient_left
     .append("stop")
     .attr("offset", "100%")
     .attr("stop-color", "#fff")
     .attr("stop-opacity", 0.5);
-  const gradient_u = defs
+  const gradient_right = defs
     .append("linearGradient")
-    .attr("id", "gradientup")
+    .attr("id", "gradientright")
     .attr("x1", "0%")
     .attr("y1", "0%")
-    .attr("x2", "0%")
-    .attr("y2", "100%");
-  gradient_u
+    .attr("x2", "100%")
+    .attr("y2", "0%");
+  gradient_right
     .append("stop")
     .attr("offset", "0%")
     .attr("stop-color", "#fff")
-    .attr("stop-opacity", 0.7);
-  gradient_u
+    .attr("stop-opacity", 0);
+  gradient_right
+    .append("stop")
+    .attr("offset", "15%")
+    .attr("stop-color", "#fff")
+    .attr("stop-opacity", 0.5);
+  gradient_right
     .append("stop")
     .attr("offset", "35%")
     .attr("stop-color", "#fff")
     .attr("stop-opacity", 1);
 };
-
-export const drawMasks = viewer => {
-  const ph = viewer.options.total_panel_height;
-  viewer.masks = viewer.svg.append("g").attr("class", "masks");
+/**
+ * Appends a new group element into the mainGroup of the viewer.
+ * The group contains masks as rectangles to give the effect of new GP fading-in/out while horizontal scrolling
+ * @param {GernomeProperiesViewer} viewer - The instance of the genome properites viewer
+ */
+export const drawMasks = (viewer) => {
+  viewer.masks = viewer.mainGroup.append("g").attr("class", "masks");
   viewer.masks
     .append("rect")
     .attr("class", "tree-background background")
-    .style("fill", "url(#gradientdown)")
-    .attr("x", -viewer.options.margin.left)
-    .attr("y", -viewer.options.margin.top)
-    .attr(
-      "width",
-      viewer.options.treeSpace + viewer.options.margin.left
-    )
-    .attr("height", viewer.options.height + viewer.options.margin.top);
-  viewer.svg
-    .insert("rect", ":first-child")
-    .attr("class", "event-mask background")
-    .style("opacity", 0)
-    .attr("x", viewer.options.treeSpace)
+    .style("fill", "url(#gradientleft)")
+    .attr("x", 0)
     .attr("y", 0)
-    .attr(
-      "width",
-      viewer.options.width - viewer.options.treeSpace
-    )
-    .attr("height", viewer.options.height - viewer.options.margin.bottom - ph);
+    .attr("width", viewer.options.dimensions.tree.width)
+    .attr("height", viewer.options.height);
   viewer.masks
     .append("rect")
     .attr("class", "total-background background")
-    .style("fill", "url(#gradientup)")
-    .attr("x", viewer.options.width - ph / 2)
-    .attr("y", -viewer.options.margin.top)
+    .style("fill", "url(#gradientright)")
     .attr(
-      "width", viewer.options.margin.right + ph / 2
+      "x",
+      viewer.options.width - viewer.options.dimensions.total.short_side * 1.2
     )
-    .attr("height", viewer.options.height + viewer.options.margin.top);
+    .attr("y", 0)
+    .attr("width", viewer.options.dimensions.total.short_side * 1.2)
+    .attr("height", viewer.options.height);
 };
-
-export const updateMasks = viewer => {
-  const ph = viewer.options.total_panel_height;
+/**
+ * Update the size and position of the masks
+ * @param {GernomeProperiesViewer} viewer - The instance of the genome properites viewer
+ */
+export const updateMasks = (viewer) => {
   viewer.masks
     .select(".total-background")
-      .attr("x", viewer.options.width - ph / 2)
-    .attr("y", -viewer.options.margin.top)
     .attr(
-      "width", viewer.options.margin.right + ph / 2
+      "x",
+      viewer.options.width - viewer.options.dimensions.total.short_side * 1.2
     )
-    .attr("height", viewer.options.height + viewer.options.margin.top);
-  viewer.svg
-    .select(".event-mask background")
-    .attr(
-      "width",
-      viewer.options.width - viewer.options.treeSpace
-    )
-    .attr("height", viewer.options.height - viewer.options.margin.bottom - ph);
+    .attr("width", viewer.options.dimensions.total.short_side * 1.2)
+    .attr("height", viewer.options.height);
   viewer.masks
     .select(".tree-background")
-    .attr("y", -viewer.options.treeSpace)
-    .attr(
-      "width",
-        viewer.options.treeSpace + viewer.options.margin.left
-    )
-    .attr("height", viewer.options.height + viewer.options.margin.top);
+    .attr("y", 0)
+    .attr("width", viewer.options.dimensions.tree.width)
+    .attr("height", viewer.options.height);
 };
 
-export const drawDragArea = viewer => {
-  const offset = 35;
-  const zoom_height = 90;
-  const g = viewer.svg
+/**
+ * Draws a draggable area ||| to redifine the widthassigned to the tree.
+ * @param {GernomeProperiesViewer} viewer - The instance of the genome properites viewer
+ */
+export const drawDragArea = (viewer) => {
+  const xLimit = 90;
+  let dx = 0;
+  const g = viewer.mainGroup
     .append("g")
     .attr("class", "height-dragger")
-    .attr("transform", `translate(${viewer.options.treeSpace}, -${viewer.options.margin.top})`)
+    .attr("transform", `translate(${viewer.options.dimensions.tree.width}, 0)`)
     .call(
       d3
         .drag()
-        .on("drag", () => {
-          viewer.options.margin.dx = Math.min(
-            Math.max(-viewer.options.treeSpace + d3.event.x, zoom_height - viewer.options.treeSpace),
-            viewer.options.width - viewer.options.treeSpace
+        .on("drag", (event) => {
+          const treeSpace = viewer.options.dimensions.tree.width;
+          // Forces limits for the drag
+          dx = Math.min(
+            Math.max(-treeSpace + event.x, xLimit - treeSpace),
+            viewer.options.width - treeSpace
           );
-          g.attr(
-            "transform",
-            `translate(${viewer.options.margin.dx + viewer.options.treeSpace}, -${viewer.options.margin.top})`
-          );
+          g.attr("transform", `translate(${dx + treeSpace}, 0)`);
         })
         .on("end", () => {
-          const new_width = viewer.options.treeSpace + viewer.options.margin.dx;
-          if (isNaN(new_width)) return;
+          const treeSpace = viewer.options.dimensions.tree.width;
+          const new_width = treeSpace + dx;
+          if (Number.isNaN(new_width)) return;
           viewer.gp_taxonomy.dipatcher.call(
             "changeWidth",
             viewer.gp_taxonomy,
             new_width
           );
-          g.attr("transform", `translate(${viewer.options.treeSpace}, -${viewer.options.margin.top})`);
-          viewer.gp_taxonomy.height = viewer.options.treeSpace;
-          viewer.gp_taxonomy.y = -viewer.options.margin.top;
+          g.attr("transform", `translate(${new_width}, 0)`);
+          viewer.gp_taxonomy.width = new_width;
           viewer.gp_taxonomy.update_tree();
         })
     );
   const side = viewer.options.cell_side / 2;
   g.append("rect")
-    .attr("y", -side / 2)
+    .attr("x", -side / 2)
+    .attr("y", 0)
     .attr("width", side)
     .attr("height", side * 2)
     .style("fill", "transparent");

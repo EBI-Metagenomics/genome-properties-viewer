@@ -1,19 +1,21 @@
 import * as d3 from "./d3";
 
-export const drawTotalPerOrganismPanel = viewer => {
-  const ph = viewer.options.total_panel_height;
-  viewer.total_g = viewer.svg
+export const drawTotalPerOrganismPanel = (viewer) => {
+  // const ph = viewer.options.total_panel_height;
+  viewer.total_g = viewer.mainGroup
     .append("g")
     .attr("class", "total-group")
     .attr(
       "transform",
-      `translate(${viewer.options.width - viewer.options.margin.right}, ${viewer.options.height - viewer.options.margin.top + viewer.current_scroll.y - 2 * ph}
+      `translate(${
+        viewer.options.width - viewer.options.dimensions.total.short_side / 2
+      }, ${viewer.options.dimensions.total.short_side / 2}
       )`
     );
 };
 
-export const refreshGPTotals = viewer => {
-  for (const prop of viewer.props){
+export const refreshGPTotals = (viewer) => {
+  for (const prop of viewer.props) {
     const total = {
       NO: 0,
       YES: 0,
@@ -26,21 +28,24 @@ export const refreshGPTotals = viewer => {
   }
 };
 
-const refreshOrganismTotals = viewer => {
-  for (let o of Object.keys(viewer.organism_totals))
+const refreshOrganismTotals = (viewer) => {
+  for (const o of Object.keys(viewer.organism_totals))
     viewer.organism_totals[o] = { YES: 0, NO: 0, PARTIAL: 0 };
-  viewer.props.forEach(e => {
-    for (let v of Object.keys(viewer.organism_totals))
+  viewer.props.forEach((e) => {
+    for (const v of Object.keys(viewer.organism_totals))
       viewer.organism_totals[v][e.values[v]]++;
   });
 };
 
-export const updateTotalPerOrganismPanel = (viewer, time = 0) => {
-  const ph = (viewer.options.total_panel_height = viewer.options.cell_side),
-    t = d3.transition().duration(time);
+export const updateTotalPerOrganismPanel = (viewer) => {
+  viewer.options.total_panel_height = viewer.options.cell_side;
+  const ph = viewer.options.total_panel_height;
+
   viewer.total_g.attr(
     "transform",
-      `translate(${viewer.options.width - viewer.options.margin.right}, ${viewer.options.height - viewer.options.margin.top + viewer.current_scroll.y - 2 * ph}
+    `translate(${
+      viewer.options.width - viewer.options.dimensions.total.short_side / 2
+    }, ${viewer.options.dimensions.total.short_side / 2}
       )`
   );
 
@@ -49,34 +54,29 @@ export const updateTotalPerOrganismPanel = (viewer, time = 0) => {
     .outerRadius(ph * 0.4)
     .innerRadius(0);
 
-  const pie_f = d3.pie().value(d => d.value);
+  const pie_f = d3.pie().value((d) => d.value);
 
   refreshOrganismTotals(viewer);
 
-  const cells_t = viewer.total_g
-    .selectAll(".total_cell_org")
-    .data(
-      d3
-        .entries(viewer.organism_totals)
-        .sort(
-          (a, b) =>
-            viewer.organisms.indexOf(a.key) - viewer.organisms.indexOf(b.key)
-        ),
-      d => d.key
-    );
+  const cells_t = viewer.total_g.selectAll(".total_cell_org").data(
+    d3
+      .entries(viewer.organism_totals)
+      .sort(
+        (a, b) =>
+          viewer.organisms.indexOf(a.key) - viewer.organisms.indexOf(b.key)
+      ),
+    (d) => d.key
+  );
 
-  const newY = d3.scaleBand().range([viewer.organisms.length * viewer.options.cell_side, 0]).domain(viewer.current_order);
+  const newY = d3
+    .scaleBand()
+    .range([0, viewer.organisms.length * viewer.options.cell_side])
+    .domain(viewer.current_order);
 
-  cells_t
-    .transition(t)
-    .attr(
-      "transform",
-        (d, i) =>
-        "translate(" +
-          (viewer.options.margin.right) + ", " +
-          (-newY(i) + ph / 2 + viewer.options.cell_side) +
-        ")"
-    );
+  cells_t.attr(
+    "transform",
+    (d, i) => `translate(0, ${newY(i) + viewer.options.cell_side})`
+  );
   cells_t.exit().remove();
 
   const g_e = cells_t
@@ -85,18 +85,15 @@ export const updateTotalPerOrganismPanel = (viewer, time = 0) => {
     .attr("class", "total_cell_org")
     .attr(
       "transform",
-        (d, i) =>
-        "translate(" +
-          (viewer.options.margin.right) + ", " +
-          (-newY(i) + ph / 2 + viewer.options.cell_side) +
-        ")"
+      (d, i) => `translate(0, ${newY(i) + viewer.options.cell_side})`
     )
-    .on("mouseover", p => {
-      d3.selectAll(".node--leaf text").classed("active", function() {
-        return viewer.textContent === p.key;
-      });
-      viewer.controller.draw_tooltip({
-        Organism: p.key
+    .on("mouseover", (event, p) => {
+      d3.selectAll(".node--leaf text").classed(
+        "active",
+        () => viewer.textContent === p.key
+      );
+      viewer.controller.draw_tooltip(event, {
+        Organism: p.key,
       });
       viewer.controller.draw_legends(p.value);
     })
@@ -106,18 +103,15 @@ export const updateTotalPerOrganismPanel = (viewer, time = 0) => {
       d3.selectAll(".node--leaf text").classed("active", false);
     });
 
-  const group = g_e.size() ? g_e : cells_t,
-    arcs = group.selectAll(".arc").data(d => pie_f(d3.entries(d.value)));
+  const group = g_e.size() ? g_e : cells_t;
+  const arcs = group.selectAll(".arc").data((d) => pie_f(d3.entries(d.value)));
 
-  arcs
-    .transition(t)
-    .attr("d", arc_f)
-    .attr("transform", "scale(1)");
+  arcs.attr("d", arc_f).attr("transform", "scale(1)");
 
   arcs
     .enter()
     .append("path")
     .attr("class", "arc")
     .attr("d", arc_f)
-    .style("fill", d => viewer.c[d.data.key]);
+    .style("fill", (d) => viewer.c[d.data.key]);
 };
