@@ -20,13 +20,14 @@ import {
 } from "./gp-ui-utils";
 
 import {
-  FileGetter,
   preloadSpecies,
   enableSpeciesFromPreLoaded,
   loadGenomePropertiesFile,
   loadGenomePropertiesText,
   removeGenomePropertiesFile,
 } from "./gp-uploader";
+
+import FileGetter from "./FileGetter";
 
 import { filterByLegend, filterByHierarchy, filterByText } from "./gp-filters";
 
@@ -80,7 +81,6 @@ export default class GenomePropertiesViewer {
     this.modal = new GPModal(element_selector);
 
     this.fileGetter = new FileGetter({
-      element: ".gp-modal-content",
       viewer: this,
     });
     if (width === null) {

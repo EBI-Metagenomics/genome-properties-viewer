@@ -25,7 +25,8 @@ The code API reference is under construction and its current state is available 
 | gp-taxonomy.js        | ⚠️     |
 | gp-totals.js          | ✅     |
 | gp-ui-utils.js        | ✅     |
-| gp-uploader.js        | ⚠️     |
+| gp-uploader.js        | ✅     |
 | gp-viewer.js          | ⚠️     |
 | modal.js              | ✅     |
 | zoomer.js             | ✅     |
+| FileGetter.js         | ✅     |

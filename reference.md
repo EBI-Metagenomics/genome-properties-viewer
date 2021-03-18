@@ -1,6 +1,9 @@
 ## Classes
 
 <dl>
+<dt><a href="#FileGetter">FileGetter</a></dt>
+<dd><p>The file getter allows to fetch files and use a Gauge visualization to report its progress</p>
+</dd>
 <dt><a href="#GenomePropertiesHierarchy">GenomePropertiesHierarchy</a></dt>
 <dd><p>Genome Properties are organized in a hierarchy.
 This Class manages the file that defines that hierarchy and uses is to allow filtering over the heatmap</p>
@@ -50,17 +53,165 @@ The group contains masks as rectangles to give the effect of new GP fading-in/ou
 <dt><a href="#drawDragArea">drawDragArea</a></dt>
 <dd><p>Draws a draggable area ||| to redifine the widthassigned to the tree.</p>
 </dd>
+<dt><a href="#enableSpeciesFromPreLoaded">enableSpeciesFromPreLoaded</a></dt>
+<dd><p>Assuming the matches for the species with the given <code>taxid</code> are already loaded. This funcions sets it as selected in the tree and trigger a refresh, so the heatmap is updated.</p>
+</dd>
+<dt><a href="#loadGenomePropertiesText">loadGenomePropertiesText</a></dt>
+<dd><p>Takes the information of the GP matches of a species, given as a text file, parses it as JSON and loads it in the viewer.
+If the text is not a valid JSON it tries to process it as a TSV.
+<em>NOTE:</em> The step information from a TSV file is randomly generated.</p>
+</dd>
+<dt><a href="#preloadSpecies">preloadSpecies</a></dt>
+<dd><p>Preloads a data structure with data for multiple species.
+Useful to preload all data and this way make the viewer more performant, instead of making a call per species.</p>
+</dd>
+<dt><a href="#removeGenomePropertiesFile">removeGenomePropertiesFile</a></dt>
+<dd><p>Removes a species from the GP viewer. it removes its prescence from  <code>viewer.organism_totals</code>, <code>viewer.organisms</code>, <code>viewer.gp_taxonomy</code> and then updates the viewer.
+The data won&#39;t be removed from <code>viewer.data</code> so it is still available in the client in case the users add the species back.
+Useful to preload all data and this way make the viewer more performant, instead of making a call per species.</p>
+</dd>
+<dt><a href="#loadGenomePropertiesFile">loadGenomePropertiesFile</a> ⇒ <code>ReturnValueDataTypeHere</code></dt>
+<dd><p>Loads a genome property file for a single species. If the fetch requests is succesfull it loads it in the viewer via <code>loadGenomePropertiesText</code>.
+The source is the server sert in the options of the initializaation of the viewer. Defaults to the github files.</p>
+</dd>
+<dt><a href="#uploadLocalGPFile">uploadLocalGPFile</a></dt>
+<dd><p>Reads a local file from the users machine.
+If it follows the InterProScan format it calls the genome properties server to get the  of the genome properties on the given protein matches.
+Otherwise it tries to use the file as if it is already in the Genomeproperties format and loades it in the viewer using  <code>loadGenomePropertiesText</code>.</p>
+</dd>
 </dl>
 
 ## Functions
 
 <dl>
+<dt><a href="#concat">concat(arrays)</a> ⇒ <code>Uint8Array</code></dt>
+<dd><p>Merges multiple byteArrays into a single Array.
+This is a utility function to be able to get the progress of a request.</p>
+</dd>
 <dt><a href="#updateScrollBarX">updateScrollBarX(viewer, visible_cols, current_col)</a></dt>
 <dd><p>Updates the size and position of the scrollbar.
 The size of the draggable is proportional to the number of visible columns in the graphic</p>
 </dd>
+<dt><a href="#isLineOK">isLineOK(line)</a> ⇒ <code>Boolean</code></dt>
+<dd><p>Quick check if a line from a TSV file is as expected</p>
+</dd>
+<dt><a href="#mergeObjectToData">mergeObjectToData(data, obj)</a></dt>
+<dd><p>Merges the data of the genome properties of a single species into a data structure of multiple species</p>
+</dd>
+<dt><a href="#isIpproLine">isIpproLine(line)</a> ⇒ <code>Boolean</code></dt>
+<dd><p>Quick check if a line follows the TSV InterProScan format</p>
+</dd>
 </dl>
 
+## Typedefs
+
+<dl>
+<dt><a href="#GenomePropertiesMatches">GenomePropertiesMatches</a> : <code>Object</code></dt>
+<dd><p>Data structure that contains all the genome properties, and the values of matching several species.</p>
+</dd>
+</dl>
+
+<a name="FileGetter"></a>
+
+## FileGetter
+The file getter allows to fetch files and use a Gauge visualization to report its progress
+
+**Kind**: global class  
+
+* [FileGetter](#FileGetter)
+    * [new FileGetter(viewer)](#new_FileGetter_new)
+    * [.files](#FileGetter+files) : <code>Object</code>
+    * [.isActive](#FileGetter+isActive) : <code>Boolean</code>
+    * [.viewer](#FileGetter+viewer) : <code>GernomeProperiesViewer</code>
+    * [.activeGauge](#FileGetter+activeGauge) : <code>Number</code>
+    * [.activeGauges](#FileGetter+activeGauges) : <code>Array</code>
+    * [.getJSON(path)](#FileGetter+getJSON) ⇒ <code>Object</code>
+    * [.getText(path, shouldParseAsJSON)](#FileGetter+getText) ⇒ <code>String</code> \| <code>Object</code>
+    * [.createProgressContent(modal)](#FileGetter+createProgressContent)
+    * [.updateProgress()](#FileGetter+updateProgress)
+
+<a name="new_FileGetter_new"></a>
+
+### new FileGetter(viewer)
+Initializes the the FileGetter
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| viewer | <code>GernomeProperiesViewer</code> | The instance of the genome properites viewer |
+
+<a name="FileGetter+files"></a>
+
+### fileGetter.files : <code>Object</code>
+Hashmap object from filename to data and download metadata.
+
+**Kind**: instance property of [<code>FileGetter</code>](#FileGetter)  
+<a name="FileGetter+isActive"></a>
+
+### fileGetter.isActive : <code>Boolean</code>
+indicates if the modal dialog showing FileGetter si currently active
+
+**Kind**: instance property of [<code>FileGetter</code>](#FileGetter)  
+<a name="FileGetter+viewer"></a>
+
+### fileGetter.viewer : <code>GernomeProperiesViewer</code>
+The instance of the genome properites viewer
+
+**Kind**: instance property of [<code>FileGetter</code>](#FileGetter)  
+<a name="FileGetter+activeGauge"></a>
+
+### fileGetter.activeGauge : <code>Number</code>
+Index of the Gauge that is currently in display.
+
+**Kind**: instance property of [<code>FileGetter</code>](#FileGetter)  
+<a name="FileGetter+activeGauges"></a>
+
+### fileGetter.activeGauges : <code>Array</code>
+All the gauges. One per file to download.
+
+**Kind**: instance property of [<code>FileGetter</code>](#FileGetter)  
+<a name="FileGetter+getJSON"></a>
+
+### fileGetter.getJSON(path) ⇒ <code>Object</code>
+Alias over the method `getText()` indicating that it should parse it as JSON
+
+**Kind**: instance method of [<code>FileGetter</code>](#FileGetter)  
+**Returns**: <code>Object</code> - JSON object with the content of the file.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| path | <code>String</code> | URL to the file to upload |
+
+<a name="FileGetter+getText"></a>
+
+### fileGetter.getText(path, shouldParseAsJSON) ⇒ <code>String</code> \| <code>Object</code>
+Triggers the fetch for the file in the `path` and updates the progress in the gauges
+
+**Kind**: instance method of [<code>FileGetter</code>](#FileGetter)  
+**Returns**: <code>String</code> \| <code>Object</code> - Text content of the file or JSON object.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| path | <code>String</code> |  | URL to the file to upload |
+| shouldParseAsJSON | <code>Boolean</code> | <code>false</code> | Indicates if it should attent to parse is as JSON. |
+
+<a name="FileGetter+createProgressContent"></a>
+
+### fileGetter.createProgressContent(modal)
+Creates the Dialog components to display thr FileGetter
+
+**Kind**: instance method of [<code>FileGetter</code>](#FileGetter)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| modal | <code>D3Selector</code> | D3 Selector of the modal component were the gauge will be displayed. |
+
+<a name="FileGetter+updateProgress"></a>
+
+### fileGetter.updateProgress()
+Goes through `this.files` and updates the graphical components to reflect the progress of each downloaded file.
+
+**Kind**: instance method of [<code>FileGetter</code>](#FileGetter)  
 <a name="GenomePropertiesHierarchy"></a>
 
 ## GenomePropertiesHierarchy
@@ -444,6 +595,102 @@ Draws a draggable area ||| to redifine the widthassigned to the tree.
 | --- | --- | --- |
 | viewer | <code>GernomeProperiesViewer</code> | The instance of the genome properites viewer |
 
+<a name="enableSpeciesFromPreLoaded"></a>
+
+## enableSpeciesFromPreLoaded
+Assuming the matches for the species with the given `taxid` are already loaded. This funcions sets it as selected in the tree and trigger a refresh, so the heatmap is updated.
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| viewer | <code>GernomeProperiesViewer</code> | The instance of the genome properites viewer |
+| taxId | <code>String</code> | Taxonomy ID to be dsiplayed. |
+| isFromFile | <code>Boolean</code> | Indicates if the file to be enabled comes from a file uploaded by the user. |
+| shouldUpdate | <code>Boolean</code> | Indicates if an update of the viewer is necesary after enabling the taxId. |
+
+<a name="loadGenomePropertiesText"></a>
+
+## loadGenomePropertiesText
+Takes the information of the GP matches of a species, given as a text file, parses it as JSON and loads it in the viewer.
+If the text is not a valid JSON it tries to process it as a TSV.
+*NOTE:* The step information from a TSV file is randomly generated.
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| viewer | <code>GernomeProperiesViewer</code> | The instance of the genome properites viewer |
+| label | <code>String</code> | Taxonomy ID or file name to be displayed. |
+| text | <code>String</code> | P matches of a species as a String, either in JSON or TSV format. |
+| isFromFile | <code>Boolean</code> | Indicates if the file to be enabled comes from a file uploaded by the user. |
+
+<a name="preloadSpecies"></a>
+
+## preloadSpecies
+Preloads a data structure with data for multiple species.
+Useful to preload all data and this way make the viewer more performant, instead of making a call per species.
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| viewer | <code>GernomeProperiesViewer</code> | The instance of the genome properites viewer |
+
+<a name="removeGenomePropertiesFile"></a>
+
+## removeGenomePropertiesFile
+Removes a species from the GP viewer. it removes its prescence from  `viewer.organism_totals`, `viewer.organisms`, `viewer.gp_taxonomy` and then updates the viewer.
+The data won't be removed from `viewer.data` so it is still available in the client in case the users add the species back.
+Useful to preload all data and this way make the viewer more performant, instead of making a call per species.
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| viewer | <code>GernomeProperiesViewer</code> | The instance of the genome properites viewer |
+
+<a name="loadGenomePropertiesFile"></a>
+
+## loadGenomePropertiesFile ⇒ <code>ReturnValueDataTypeHere</code>
+Loads a genome property file for a single species. If the fetch requests is succesfull it loads it in the viewer via `loadGenomePropertiesText`.
+The source is the server sert in the options of the initializaation of the viewer. Defaults to the github files.
+
+**Kind**: global constant  
+**Returns**: <code>ReturnValueDataTypeHere</code> - Brief description of the returning value here.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| viewer | <code>GernomeProperiesViewer</code> | The instance of the genome properites viewer |
+| tax_id | <code>String</code> | Taxonomy ID to be requested. |
+
+<a name="uploadLocalGPFile"></a>
+
+## uploadLocalGPFile
+Reads a local file from the users machine.
+If it follows the InterProScan format it calls the genome properties server to get the  of the genome properties on the given protein matches.
+Otherwise it tries to use the file as if it is already in the Genomeproperties format and loades it in the viewer using  `loadGenomePropertiesText`.
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| viewer | <code>GernomeProperiesViewer</code> | The instance of the genome properites viewer |
+| fileToRead | <code>Blob</code> | The Blob or File from which to read. |
+
+<a name="concat"></a>
+
+## concat(arrays) ⇒ <code>Uint8Array</code>
+Merges multiple byteArrays into a single Array.
+This is a utility function to be able to get the progress of a request.
+
+**Kind**: global function  
+**Returns**: <code>Uint8Array</code> - Single merged array.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| arrays | <code>Array</code> | Array of ByteArrays. |
+
 <a name="updateScrollBarX"></a>
 
 ## updateScrollBarX(viewer, visible_cols, current_col)
@@ -458,3 +705,63 @@ The size of the draggable is proportional to the number of visible columns in th
 | visible_cols | <code>Number</code> | Indicates how many columns are visible in the area assgined to the heatmap. |
 | current_col | <code>Number</code> | Indicates the index of the first visible column out of the total number of GP. |
 
+<a name="isLineOK"></a>
+
+## isLineOK(line) ⇒ <code>Boolean</code>
+Quick check if a line from a TSV file is as expected
+
+**Kind**: global function  
+**Returns**: <code>Boolean</code> - Is OK `true` or not `false`  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| line | <code>String</code> | Line to text |
+
+<a name="mergeObjectToData"></a>
+
+## mergeObjectToData(data, obj)
+Merges the data of the genome properties of a single species into a data structure of multiple species
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| data | [<code>GenomePropertiesMatches</code>](#GenomePropertiesMatches) | Genome Properties matching multiple species |
+| obj | [<code>GenomePropertiesMatches</code>](#GenomePropertiesMatches) | Genome Properties matching a single species |
+
+<a name="isIpproLine"></a>
+
+## isIpproLine(line) ⇒ <code>Boolean</code>
+Quick check if a line follows the TSV InterProScan format
+
+**Kind**: global function  
+**Returns**: <code>Boolean</code> - Is OK `true` or not `false`  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| line | <code>String</code> | Line to test |
+
+<a name="GenomePropertiesMatches"></a>
+
+## GenomePropertiesMatches : <code>Object</code>
+Data structure that contains all the genome properties, and the values of matching several species.
+
+**Kind**: global typedef  
+**Example** *(Genome properties matching data for a single property with a single step on a single species)*  
+```js
+{
+   "GenPropXXXX":{
+     property: "GenPropXXXX",
+     name: "Name of GenPropXXXX",
+     steps: [
+       {
+         step: "1",
+         step_name: "Lonely Step",
+         required: 1,
+         values: { 833330: 1 },
+       },
+     ],
+     values: { 833330: "YES", TOTAL: { PARTIAL: 0, NO: 0, YES: 1 } },
+   }
+}
+```
