@@ -1,8 +1,17 @@
 {
-  "name": "genome-properties-viewer",
+  "name": "@microbiome-informatics/genome-properties-viewer",
   "version": "1.0.0-beta.1",
   "description": "A heatmap styled viewer for the genome properties",
   "main": "index.js",
+  "files": [
+    "index.js",
+    "src/*.js",
+    "gp-style.css",
+    "bin/d3.custom.min.js"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "rollup -c",
     "watch": "rollup -cw",
@@ -11,12 +20,12 @@
     "serve": "npm run watch & npm run browser-sync",
     "create-taxonomy-file": "node src/taxonomy/taxonomy_retriever.js > taxonomy.json",
     "prettier": "prettier --write src/*",
-    "prepare": "husky install",
+    "prepare": "node -e \"try{require('husky').install()}catch(e){if(e.code!=='MODULE_NOT_FOUND')throw e}\"",
     "jsdoc": "jsdoc2md src/*.js > reference.md"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ProteinsWebTeam/genome-properties-viewer.git"
+    "url": "git+https://github.com/EBI-Metagenomics/genome-properties-viewer.git"
   },
   "keywords": [
     "genome",
@@ -26,9 +35,9 @@
   "author": "Gustavo A. Salazar",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/ProteinsWebTeam/genome-properties-viewer/issues"
+    "url": "https://github.com/EBI-Metagenomics/genome-properties-viewer/issues"
   },
-  "homepage": "https://github.com/ProteinsWebTeam/genome-properties-viewer#readme",
+  "homepage": "https://github.com/EBI-Metagenomics/genome-properties-viewer#readme",
   "dependencies": {
     "d3-array": "2.11.0",
     "d3-dispatch": "2.0.0",
