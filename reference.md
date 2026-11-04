@@ -26,7 +26,7 @@ by only including those whose <code>parent_top_properties</code> are included in
 <dd><p>Filters the list of properties in <code>viewer.props</code> by checnking if their name includes the text in <code>viewer.filter_text</code></p>
 </dd>
 <dt><a href="#transformByScroll">transformByScroll</a></dt>
-<dd><p>Updates this and othe components as if a scroll event happened.
+<dd><p>Updates this and other components as if a scroll event happened.
 It became the de-facto refresh of the whole viewer, as it groups the minimum necesary changes to trigger a full update.</p>
 </dd>
 <dt><a href="#drawScrollXBar">drawScrollXBar</a></dt>
@@ -34,7 +34,7 @@ It became the de-facto refresh of the whole viewer, as it groups the minimum nec
 It contains the elements to draw a simple horizontal srollbar, and attach the dragging events to them.</p>
 </dd>
 <dt><a href="#updateScrollBars">updateScrollBars</a></dt>
-<dd><p>A single method to trigger the update of all the scroll bars of the viewer. We currently only use 1.</p>
+<dd><p>A single method to trigger the update of all the scroll bars of the viewer.</p>
 </dd>
 <dt><a href="#createGradient">createGradient</a></dt>
 <dd><p>Appends a <code>defs</code> element in the main group of the viewer.
@@ -42,22 +42,13 @@ It contains the definitions of the gradients used in th masks around the heatmap
 </dd>
 <dt><a href="#drawMasks">drawMasks</a></dt>
 <dd><p>Appends a new group element into the mainGroup of the viewer.
-The group contains masks as rectangles to give the effect of new GP fading-in/out while horizontal scrolling</p>
+The group contains masks as rectangles to give the effect of fading around the heatmap</p>
 </dd>
 <dt><a href="#updateMasks">updateMasks</a></dt>
 <dd><p>Update the size and position of the masks</p>
 </dd>
 <dt><a href="#drawDragArea">drawDragArea</a></dt>
-<dd><p>Draws a draggable area ||| to redifine the widthassigned to the tree.</p>
-</dd>
-</dl>
-
-## Functions
-
-<dl>
-<dt><a href="#updateScrollBarX">updateScrollBarX(viewer, visible_cols, current_col)</a></dt>
-<dd><p>Updates the size and position of the scrollbar.
-The size of the draggable is proportional to the number of visible columns in the graphic</p>
+<dd><p>Draws a draggable area to redefine the height assigned to the taxonomy tree.</p>
 </dd>
 </dl>
 
@@ -364,7 +355,7 @@ Filters the list of properties in `viewer.props` by checnking if their name incl
 <a name="transformByScroll"></a>
 
 ## transformByScroll
-Updates this and othe components as if a scroll event happened.
+Updates this and other components as if a scroll event happened.
 It became the de-facto refresh of the whole viewer, as it groups the minimum necesary changes to trigger a full update.
 
 **Kind**: global constant  
@@ -388,15 +379,15 @@ It contains the elements to draw a simple horizontal srollbar, and attach the dr
 <a name="updateScrollBars"></a>
 
 ## updateScrollBars
-A single method to trigger the update of all the scroll bars of the viewer. We currently only use 1.
+A single method to trigger the update of all the scroll bars of the viewer.
 
 **Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | viewer | <code>GernomeProperiesViewer</code> | The instance of the genome properites viewer |
-| visible_cols | <code>Number</code> | Indicates how many columns are visible in the area assgined to the heatmap. |
-| current_col | <code>Number</code> | Indicates the index of the first visible column out of the total number of GP. |
+| visible_rows | <code>Number</code> | Visible property rows in the heatmap. |
+| current_row | <code>Number</code> | Index of the first visible property. |
 
 <a name="createGradient"></a>
 
@@ -414,7 +405,7 @@ It contains the definitions of the gradients used in th masks around the heatmap
 
 ## drawMasks
 Appends a new group element into the mainGroup of the viewer.
-The group contains masks as rectangles to give the effect of new GP fading-in/out while horizontal scrolling
+The group contains masks as rectangles to give the effect of fading around the heatmap
 
 **Kind**: global constant  
 
@@ -436,25 +427,11 @@ Update the size and position of the masks
 <a name="drawDragArea"></a>
 
 ## drawDragArea
-Draws a draggable area ||| to redifine the widthassigned to the tree.
+Draws a draggable area to redefine the height assigned to the taxonomy tree.
 
 **Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | viewer | <code>GernomeProperiesViewer</code> | The instance of the genome properites viewer |
-
-<a name="updateScrollBarX"></a>
-
-## updateScrollBarX(viewer, visible_cols, current_col)
-Updates the size and position of the scrollbar.
-The size of the draggable is proportional to the number of visible columns in the graphic
-
-**Kind**: global function  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| viewer | <code>GernomeProperiesViewer</code> | The instance of the genome properites viewer |
-| visible_cols | <code>Number</code> | Indicates how many columns are visible in the area assgined to the heatmap. |
-| current_col | <code>Number</code> | Indicates the index of the first visible column out of the total number of GP. |
 
