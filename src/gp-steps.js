@@ -46,9 +46,6 @@ const displayStepsModal = (viewer, gp) => {
 };
 
 const updateStepDetailsButton = (viewer, gp, element, cellSide) => {
-  const localY =
-    viewer.organisms.length * cellSide +
-    viewer.options.dimensions.scroller.short_side;
   const x0 = cellSide * 0.1;
   const side = cellSide * 0.8;
   const top = cellSide * 0.1;
@@ -73,7 +70,10 @@ const updateStepDetailsButton = (viewer, gp, element, cellSide) => {
 
   buttonG
     .merge(button)
-    .attr("transform", `translate(${cellSide}, ${localY})`)
+    .attr(
+      "transform",
+      `translate(${-cellSide}, ${cellSide})`
+    )
     .selectAll("circle")
     .transition()
     .attr("cx", x0 + half)
@@ -107,7 +107,10 @@ export const updateSteps = (viewer, gp, element, cellSide, yScale) => {
     .append("g")
     .attr("class", "step")
     .merge(steps)
-    .attr("transform", (d, i) => `translate(${i * cellSide + p}, 0)`);
+    .attr(
+      "transform",
+      (d, i) => `translate(0, ${(i + 1) * cellSide + p})`
+    );
 
   const onMouseOver = (event, d) => {
     viewer.controller.draw_tooltip(event, {
@@ -144,7 +147,8 @@ export const updateSteps = (viewer, gp, element, cellSide, yScale) => {
     .on("mouseover", onMouseOver)
     .on("mouseout", onMouseOut)
     .merge(stepPerSpecie)
-    .attr("y", (d, i) => yScale(i) + p)
+    .attr("x", (d, i) => yScale(i) + p)
+    .attr("y", 0)
     .transition()
     .attr("width", side)
     .attr("height", side)
@@ -158,10 +162,6 @@ export const updateStepToggler = (viewer, gp, element, cellSide) => {
     viewer.data[id].isShowingSteps = !viewer.data[id].isShowingSteps;
     viewer.update_viewer();
   };
-  const localY =
-    viewer.organisms.length * cellSide +
-    viewer.options.dimensions.scroller.short_side;
-
   const toggler = d3
     .select(element)
     .selectAll(".step-toggler")
@@ -205,7 +205,7 @@ export const updateStepToggler = (viewer, gp, element, cellSide) => {
     .merge(toggler)
     .attr(
       "transform",
-      `translate(0, ${localY})rotate(90,${cellSide / 2},${cellSide / 2})`
+      `translate(${-cellSide}, 0)`
     )
     .attr(
       "class",

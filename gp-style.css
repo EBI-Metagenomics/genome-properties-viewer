@@ -42,7 +42,7 @@ text.active,
 }
 
 g.node.loaded {
-  cursor: ns-resize;
+  cursor: ew-resize;
   opacity: 1;
 }
 g.node.loaded:hover .node-type {
@@ -79,7 +79,7 @@ g.node.loaded text.label-species {
   pointer-events: none;
 }
 .height-dragger {
-  cursor: ew-resize;
+  cursor: ns-resize;
   opacity: 0.7;
 }
 .height-dragger:hover {
@@ -433,6 +433,11 @@ div.container .top-block .minimise.on::after {
 }
 .gpv-scrollbar rect.gpv-scrollbar-handle {
   fill: rgba(100, 100, 100, 0.6);
+}
+.gpv-scrollbar-x rect.gpv-scrollbar-handle {
+  cursor: ew-resize;
+}
+.gpv-scrollbar-y rect.gpv-scrollbar-handle {
   cursor: ns-resize;
 }
 .gpv-scrollbar rect.gpv-scrollbar-bg {
