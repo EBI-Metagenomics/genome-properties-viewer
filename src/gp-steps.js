@@ -70,10 +70,7 @@ const updateStepDetailsButton = (viewer, gp, element, cellSide) => {
 
   buttonG
     .merge(button)
-    .attr(
-      "transform",
-      `translate(${-cellSide}, ${cellSide})`
-    )
+    .attr("transform", `translate(${-cellSide}, ${cellSide})`)
     .selectAll("circle")
     .transition()
     .attr("cx", x0 + half)
@@ -107,10 +104,7 @@ export const updateSteps = (viewer, gp, element, cellSide, yScale) => {
     .append("g")
     .attr("class", "step")
     .merge(steps)
-    .attr(
-      "transform",
-      (d, i) => `translate(0, ${(i + 1) * cellSide + p})`
-    );
+    .attr("transform", (d, i) => `translate(0, ${(i + 1) * cellSide + p})`);
 
   const onMouseOver = (event, d) => {
     viewer.controller.draw_tooltip(event, {
@@ -203,10 +197,7 @@ export const updateStepToggler = (viewer, gp, element, cellSide) => {
 
   newG
     .merge(toggler)
-    .attr(
-      "transform",
-      `translate(${-cellSide}, 0)`
-    )
+    .attr("transform", `translate(${-cellSide}, 0)`)
     .attr(
       "class",
       (id) => `step-toggler ${viewer.data[id].isShowingSteps ? "expanded" : ""}`

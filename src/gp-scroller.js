@@ -143,7 +143,10 @@ const updateScrollBarX = (viewer, visible_cols, current_col) => {
     .attr(
       "width",
       available_x *
-        Math.min(1, total_cols !== 0 ? visible_cols / Math.max(total_cols, 1) : 1)
+        Math.min(
+          1,
+          total_cols !== 0 ? visible_cols / Math.max(total_cols, 1) : 1
+        )
     )
     .attr("x", total_cols ? (current_col * available_x) / total_cols : 0);
   viewer.scrollbar_x_bg.attr("width", available_x);
@@ -166,7 +169,10 @@ const updateScrollBarY = (viewer, visible_rows, current_row) => {
     .attr(
       "height",
       available_y *
-        Math.min(1, total_rows !== 0 ? visible_rows / Math.max(total_rows, 1) : 1)
+        Math.min(
+          1,
+          total_rows !== 0 ? visible_rows / Math.max(total_rows, 1) : 1
+        )
     )
     .attr("y", total_rows ? (current_row * available_y) / total_rows : 0);
   viewer.scrollbar_y_bg.attr("height", available_y);

@@ -394,8 +394,14 @@ export default class GenomePropertiesViewer {
     const propsHeight = this.y ? this.y(this.props?.length || 0) : 0;
     const maxX = Math.max(0, speciesWidth - this.heatmapWidth());
     const maxY = Math.max(0, propsHeight - this.heatmapHeight());
-    this.current_scroll.x = Math.max(-maxX, Math.min(0, this.current_scroll.x + dx));
-    this.current_scroll.y = Math.max(-maxY, Math.min(0, this.current_scroll.y + dy));
+    this.current_scroll.x = Math.max(
+      -maxX,
+      Math.min(0, this.current_scroll.x + dx)
+    );
+    this.current_scroll.y = Math.max(
+      -maxY,
+      Math.min(0, this.current_scroll.y + dy)
+    );
     this.refresh(this);
   }
 
@@ -413,8 +419,7 @@ export default class GenomePropertiesViewer {
         const prevY = newY(i);
 
         if (!marks[i]) marks[i] = prevY;
-        marks[i + 1] =
-          marks[i] + Math.max(2, prop.steps.length + 1) * side;
+        marks[i + 1] = marks[i] + Math.max(2, prop.steps.length + 1) * side;
         marks[i + 2] = marks[i + 1] + side;
         const domain = Object.keys(marks)
           .map(Number)
@@ -540,10 +545,7 @@ export default class GenomePropertiesViewer {
       .data(this.current_props, (d) => d.property);
 
     labels.exit().remove();
-    labels.attr(
-      "transform",
-      (d, i) => `translate(${heatmapX}, ${rowY(d, i)})`
-    );
+    labels.attr("transform", (d, i) => `translate(${heatmapX}, ${rowY(d, i)})`);
 
     const newLabel = labels
       .enter()
@@ -597,12 +599,10 @@ export default class GenomePropertiesViewer {
     const orgLines = this.newCols
       .selectAll(".row")
       .data(this.organisms, (p) => p);
-    orgLines
-      .attr(
-        "transform",
-        (d, i) =>
-          `translate(${heatmapX + this.x(i)}, ${this.heatmapTop})`
-      );
+    orgLines.attr(
+      "transform",
+      (d, i) => `translate(${heatmapX + this.x(i)}, ${this.heatmapTop})`
+    );
     orgLines.exit().remove();
     orgLines
       .enter()
@@ -610,8 +610,7 @@ export default class GenomePropertiesViewer {
       .attr("class", "row")
       .attr(
         "transform",
-        (d, i) =>
-          `translate(${heatmapX + this.x(i)}, ${this.heatmapTop})`
+        (d, i) => `translate(${heatmapX + this.x(i)}, ${this.heatmapTop})`
       )
       .append("line")
       .attr("y2", 0);
@@ -625,8 +624,7 @@ export default class GenomePropertiesViewer {
     this.zoomer.y = this.buttonHeight;
     this.sorter.refresh();
     this.zoomer.refresh();
-    if (!this.skip_scroll_refreshing)
-      updateScrollBars(this, visible_rows, dy);
+    if (!this.skip_scroll_refreshing) updateScrollBars(this, visible_rows, dy);
   }
 
   update_col(gp, i, c) {

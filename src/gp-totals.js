@@ -48,7 +48,9 @@ export const updateTotalPerOrganismPanel = (viewer) => {
 
   viewer.total_g.attr(
     "transform",
-    `translate(${viewer.heatmapAnchor + viewer.current_scroll.x}, ${heatmapBottom})`
+    `translate(${
+      viewer.heatmapAnchor + viewer.current_scroll.x
+    }, ${heatmapBottom})`
   );
 
   const arc_f = d3
@@ -153,9 +155,7 @@ export const updateRowTotalPanel = (viewer) => {
     .text("TOTAL");
 
   const props = viewer.current_props || [];
-  const dy = props.length
-    ? Math.max(0, viewer.props.indexOf(props[0]))
-    : 0;
+  const dy = props.length ? Math.max(0, viewer.props.indexOf(props[0])) : 0;
   const localY = (d, i) => viewer.heatmapTop + viewer.y(i + dy) + side * 0.5;
 
   const cells_t = viewer.row_total_g
@@ -194,9 +194,10 @@ export const updateRowTotalPanel = (viewer) => {
   const pie_f = d3.pie().value((d) => d.value);
 
   const group = entered.merge(cells_t);
-  const arcs = group
-    .selectAll(".arc")
-    .data((d) => pie_f(d3.entries(d.values.TOTAL)), (d) => d.data.key);
+  const arcs = group.selectAll(".arc").data(
+    (d) => pie_f(d3.entries(d.values.TOTAL)),
+    (d) => d.data.key
+  );
 
   arcs.attr("d", arc_f);
   arcs

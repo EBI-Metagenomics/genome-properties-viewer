@@ -305,9 +305,7 @@ export default class GenomePropertiesTaxonomy {
     const visible_nodes = root.descendants().filter((d) => {
       if (!d.parent) return true;
       return (
-        d.data.expanded ||
-        d.parent.data.expanded ||
-        d.parent.has_loaded_leaves
+        d.data.expanded || d.parent.data.expanded || d.parent.has_loaded_leaves
       );
     });
 
