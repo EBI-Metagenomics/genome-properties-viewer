@@ -2,7 +2,7 @@
 
 A heatmap-styled web viewer for the Genome Properties project.
 
-The x axis is Genome Properties; the y axis is the selected species. Species can be selected from a taxonomy tree on the left of the screen.
+Each column is a species and each row is a Genome Property. Species are selected from a taxonomy tree at the top of the viewer, with property names on the left.
 
 Published on npm as [`@microbiome-informatics/genome-properties-viewer`](https://www.npmjs.com/package/@microbiome-informatics/genome-properties-viewer). This is a new scoped package, not a continuation of the unscoped `genome-properties-viewer` name.
 

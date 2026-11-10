@@ -32,12 +32,15 @@ export default class GenomePropertiesController {
     }
 
     if (legends_element_selector) {
-      this.legends_component = d3.select(legends_element_selector).append("ul");
+      const host = d3.select(legends_element_selector);
+      host.selectAll("ul").remove();
+      this.legends_component = host.append("ul");
       this.draw_legends();
     }
 
     if (tooltip_selector) {
       this.tooltip_selector = tooltip_selector;
+      d3.select(tooltip_selector).selectAll("ul").remove();
       this.draw_tooltip(null, null, true);
     }
 
@@ -269,5 +272,11 @@ export default class GenomePropertiesController {
   on(typename, callback) {
     this.dipatcher.on(typename, callback);
     return this;
+  }
+
+  destroy() {
+    if (this.legends_component) this.legends_component.remove();
+    if (this.tooltip_component) this.tooltip_component.remove();
+    if (this.gp_component) this.gp_component.html("");
   }
 }
