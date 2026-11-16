@@ -1,19 +1,22 @@
 import { tsvParseRows, select } from "./d3";
 
-const isLineOK = (line) => line.length === 3;
+const isLineOK = (line) => Array.isArray(line) && line.length >= 3;
 
 const mergeObjectToData = (data, obj) => {
-  for (const gp of Object.keys(data)) {
+  for (const gp of Object.keys(obj || {})) {
+    if (!data[gp]) continue;
     for (const newOrg of Object.keys((obj[gp] && obj[gp].values) || {})) {
       if (newOrg !== "TOTAL") data[gp].values[newOrg] = obj[gp].values[newOrg];
     }
     const stepsObj = ((obj[gp] && obj[gp].steps) || []).reduce((agg, v) => {
-      agg[v.step] = v;
+      agg[String(v.step)] = v;
       return agg;
     }, {});
-    for (const step of data[gp].steps) {
-      for (const newOrg of Object.keys(stepsObj[step.step].values)) {
-        step.values[newOrg] = stepsObj[step.step].values[newOrg];
+    for (const step of data[gp].steps || []) {
+      const stepData = stepsObj[String(step.step)];
+      if (!stepData || !stepData.values) continue;
+      for (const newOrg of Object.keys(stepData.values)) {
+        step.values[newOrg] = stepData.values[newOrg];
       }
     }
   }
@@ -355,11 +358,20 @@ function isIpproLine(line) {
 }
 
 export const uploadLocalGPFile = (viewer, fileToRead) => {
+  if (!viewer || !fileToRead) return;
   const reader = new FileReader();
   reader.fileToRead = fileToRead;
+  const showError = (message) => {
+    if (viewer.modal && viewer.modal.showContent) {
+      viewer.modal.showContent(
+        `<h3><div class='error'>${message}</div></h3>`,
+        false
+      );
+    }
+  };
   reader.onload = (evt) => {
     try {
-      const firstline = evt.target.result.split("\n")[0];
+      const firstline = String(evt.target.result || "").split("\n")[0];
       if (isIpproLine(firstline)) {
         viewer.modal.showContent(
           "<h3><div class='loading'>◉</div>Calculation Genome Properties from InterProScan Data</h3>",
@@ -368,23 +380,25 @@ export const uploadLocalGPFile = (viewer, fileToRead) => {
 
         fetch(viewer.options.gp_server, {
           method: "POST",
-          body: `ipproname=${reader.fileToRead.name}&ipprotsv=${evt.target.result}`,
-          headers: new Headers({
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Access-Control-Request-Method": "POST",
-            "Access-Control-Request-Headers": "X-PINGOTHER, Content-Type",
+          body: new URLSearchParams({
+            ipproname: reader.fileToRead.name,
+            ipprotsv: evt.target.result,
           }),
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
         })
-          .then((response) => response.text())
+          .then((response) => {
+            if (!response.ok)
+              throw new Error(`${response.status} ${response.statusText}`);
+            return response.text();
+          })
           .then((x) => {
             viewer.loadGenomePropertiesText(reader.fileToRead.name, x);
             viewer.modal.setVisibility(false);
           })
           .catch(() => {
-            viewer.modal.showContent(
-              "<h3><div class='error'>Server Error processing the file</div></h3>",
-              false
-            );
+            showError("Server error processing the InterProScan file");
           });
       } else {
         viewer.loadGenomePropertiesText(
@@ -395,8 +409,13 @@ export const uploadLocalGPFile = (viewer, fileToRead) => {
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error(e);
+      showError(e.message || "Could not load the selected file");
     }
-    document.getElementById("newfile").value = null;
+    const input = document.getElementById("newfile");
+    if (input) input.value = null;
+  };
+  reader.onerror = () => {
+    showError("Could not read the selected file");
   };
   reader.readAsText(fileToRead);
 };
