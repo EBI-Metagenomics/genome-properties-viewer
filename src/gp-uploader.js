@@ -411,8 +411,6 @@ export const uploadLocalGPFile = (viewer, fileToRead) => {
       console.error(e);
       showError(e.message || "Could not load the selected file");
     }
-    const input = document.getElementById("newfile");
-    if (input) input.value = null;
   };
   reader.onerror = () => {
     showError("Could not read the selected file");

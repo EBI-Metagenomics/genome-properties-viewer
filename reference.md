@@ -16,8 +16,6 @@ This Class manages the file that defines that hierarchy and uses is to allow fil
 ## Constants
 
 <dl>
-<dt><a href="#filterByLegend">filterByLegend</a></dt>
-<dd></dd>
 <dt><a href="#filterByHierarchy">filterByHierarchy</a></dt>
 <dd><p>Genome Properties are organised in a hierarchy. By invoking this function, the list of properties in <code>viewer.props</code> is filtered
 by only including those whose <code>parent_top_properties</code> are included in <code>viewer.gp_hierarchy</code></p>
@@ -50,6 +48,13 @@ The group contains masks as rectangles to give the effect of fading around the h
 <dt><a href="#drawDragArea">drawDragArea</a></dt>
 <dd><p>Draws a draggable area to redefine the height assigned to the taxonomy tree.</p>
 </dd>
+</dl>
+
+## Functions
+
+<dl>
+<dt><a href="#organismKeys">organismKeys(viewer)</a></dt>
+<dd></dd>
 </dl>
 
 <a name="GenomePropertiesHierarchy"></a>
@@ -310,25 +315,6 @@ Add a new circular button into a panel
 | y | <code>Number</code> | Y coordinate in the panel |
 | r | <code>Number</code> | radius of the circles |
 
-<a name="filterByLegend"></a>
-
-## filterByLegend
-**Kind**: global constant  
-**Summary**: A cell in the heatmap can have 1 of 3 values: Yes, No or partial. Indicating if there is evidence that the GP is present in a given species.
-Given multiple species, this function filters the list of genome properties to which currentluy selected species match the given condition, For example:
-
-|Value    | Filter | JSON               | Explanation                                          |
-|---------|--------|--------------------|------------------------------------------------------|
-| YES     | ∀      | `{"YES": "∀"}`     | All the species have this GP                         |
-| NO      | ∃      | `{"NO": "∃"}`      | There is at least 1 species with this GP             |
-| PARTIAL | ∄      | `{"PARTIAL": "∄"}` | None of the species have partial evidence of this GP |
-
-The current set of filters is in `viewer.legend_filters` and the filtered props will be saved in `viewer.props`.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| viewer | <code>GernomeProperiesViewer</code> | The instance of the genome properites viewer |
-
 <a name="filterByHierarchy"></a>
 
 ## filterByHierarchy
@@ -430,6 +416,25 @@ Update the size and position of the masks
 Draws a draggable area to redefine the height assigned to the taxonomy tree.
 
 **Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| viewer | <code>GernomeProperiesViewer</code> | The instance of the genome properites viewer |
+
+<a name="organismKeys"></a>
+
+## organismKeys(viewer)
+**Kind**: global function  
+**Summary**: A cell in the heatmap can have 1 of 3 values: Yes, No or partial. Indicating if there is evidence that the GP is present in a given species.
+Given multiple species, this function filters the list of genome properties to which currentluy selected species match the given condition, For example:
+
+|Value    | Filter | JSON               | Explanation                                          |
+|---------|--------|--------------------|------------------------------------------------------|
+| YES     | ∀      | `{"YES": "∀"}`     | All the species have this GP                         |
+| NO      | ∃      | `{"NO": "∃"}`      | There is at least 1 species with this GP             |
+| PARTIAL | ∄      | `{"PARTIAL": "∄"}` | None of the species have partial evidence of this GP |
+
+The current set of filters is in `viewer.legend_filters` and the filtered props will be saved in `viewer.props`.  
 
 | Param | Type | Description |
 | --- | --- | --- |
