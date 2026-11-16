@@ -189,20 +189,16 @@ export default class GenomePropertiesController {
                 </ul>
             </div>`);
 
-    this.gp_component
-      .select(".options .all")
-      .on("click", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        this.update("ALL");
-      });
-    this.gp_component
-      .select(".options .none")
-      .on("click", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        this.update("NONE");
-      });
+    this.gp_component.select(".options .all").on("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      this.update("ALL");
+    });
+    this.gp_component.select(".options .none").on("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      this.update("NONE");
+    });
     this.gp_component.on("click.gpselector", (event) => {
       if (event.target.closest(".options")) return;
       this.gp_component.classed("open", !this.gp_component.classed("open"));
