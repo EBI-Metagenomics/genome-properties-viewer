@@ -91,8 +91,10 @@ class GenomePropertiesHierarchy {
    * @return {Array} Array of ids of the top level properties.
    */
   get_top_level_gp_by_id(id) {
-    if (id in this.nodes)
-      return [...this.get_top_level_gp(this.nodes[id])].map((d) => d.id);
+    if (id in this.nodes) {
+      const top = this.get_top_level_gp(this.nodes[id]);
+      if (top) return [...top].map((d) => d.id);
+    }
     return [];
   }
 
@@ -109,11 +111,11 @@ class GenomePropertiesHierarchy {
       return node.top_level_gp;
     }
     node.top_level_gp = new Set();
-    for (const parent of node.parents) {
-      node.top_level_gp = new Set([
-        ...node.top_level_gp,
-        ...this.get_top_level_gp(parent),
-      ]);
+    for (const parent of node.parents || []) {
+      const parentTop = this.get_top_level_gp(parent);
+      if (parentTop) {
+        node.top_level_gp = new Set([...node.top_level_gp, ...parentTop]);
+      }
     }
     return node.top_level_gp;
   }

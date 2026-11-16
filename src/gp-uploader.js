@@ -1,19 +1,22 @@
 import { tsvParseRows, select } from "./d3";
 
-const isLineOK = (line) => line.length === 3;
+const isLineOK = (line) => Array.isArray(line) && line.length >= 3;
 
 const mergeObjectToData = (data, obj) => {
-  for (const gp of Object.keys(data)) {
+  for (const gp of Object.keys(obj || {})) {
+    if (!data[gp]) continue;
     for (const newOrg of Object.keys((obj[gp] && obj[gp].values) || {})) {
       if (newOrg !== "TOTAL") data[gp].values[newOrg] = obj[gp].values[newOrg];
     }
     const stepsObj = ((obj[gp] && obj[gp].steps) || []).reduce((agg, v) => {
-      agg[v.step] = v;
+      agg[String(v.step)] = v;
       return agg;
     }, {});
-    for (const step of data[gp].steps) {
-      for (const newOrg of Object.keys(stepsObj[step.step].values)) {
-        step.values[newOrg] = stepsObj[step.step].values[newOrg];
+    for (const step of data[gp].steps || []) {
+      const stepData = stepsObj[String(step.step)];
+      if (!stepData || !stepData.values) continue;
+      for (const newOrg of Object.keys(stepData.values)) {
+        step.values[newOrg] = stepData.values[newOrg];
       }
     }
   }
@@ -152,14 +155,18 @@ export class FileGetter {
     this.viewer = viewer;
     this.activeGauge = 0;
     this.activeGauges = [];
-    setInterval(
-      (_this) => {
-        _this.activeGauge =
-          (_this.activeGauge + 1) % Object.values(_this.activeGauges).length;
-      },
-      3000,
-      this
-    );
+    this.progressTimer = setInterval(() => {
+      const n = this.activeGauges.length;
+      if (n) this.activeGauge = (this.activeGauge + 1) % n;
+    }, 3000);
+  }
+
+  destroy() {
+    this.isActive = false;
+    if (this.progressTimer) {
+      clearInterval(this.progressTimer);
+      this.progressTimer = null;
+    }
   }
 
   getJSON(path) {
@@ -176,6 +183,7 @@ export class FileGetter {
     if (!this.isActive) this.createProgressContent(modal);
     // this.activeGauge = path;
     const response = await fetch(path);
+    if (this.viewer.destroyed) return null;
     this.files[path].request = response;
     const total = response.headers.get("content-length");
     const reader = response.body && response.body.getReader();
@@ -192,6 +200,7 @@ export class FileGetter {
         // eslint-disable-next-line no-await-in-loop
         const { done, value } = await reader.read();
         if (done) break;
+        if (this.viewer.destroyed) return null;
         loaded += value.length;
         this.files[path].progress = total ? loaded / total : null;
         this.files[path].event = {
@@ -273,10 +282,13 @@ export class FileGetter {
        `
       );
 
-    const w = this.gaugeSVG.node().getBoundingClientRect().width;
+    const gaugeNode = this.gaugeSVG && this.gaugeSVG.node();
+    if (!gaugeNode) return;
+    const w = gaugeNode.getBoundingClientRect().width || 0;
+    if (w <= 0) return;
 
     const gauges = this.gaugeSVG.selectAll("g.gauge").data(this.activeGauges);
-    const current = this.activeGauge;
+    const current = Number.isFinite(this.activeGauge) ? this.activeGauge : 0;
 
     const gauge = gauges
       .enter()
@@ -284,7 +296,7 @@ export class FileGetter {
       .attr("class", "gauge")
       .attr("transform", (d, i) => `translate(0,${w * (i - current)})`);
 
-    const r = w / 2 - 10;
+    const r = Math.max(0, w / 2 - 10);
 
     const circunferencia = 2 * Math.PI * r;
     gauge
@@ -346,11 +358,20 @@ function isIpproLine(line) {
 }
 
 export const uploadLocalGPFile = (viewer, fileToRead) => {
+  if (!viewer || !fileToRead) return;
   const reader = new FileReader();
   reader.fileToRead = fileToRead;
+  const showError = (message) => {
+    if (viewer.modal && viewer.modal.showContent) {
+      viewer.modal.showContent(
+        `<h3><div class='error'>${message}</div></h3>`,
+        false
+      );
+    }
+  };
   reader.onload = (evt) => {
     try {
-      const firstline = evt.target.result.split("\n")[0];
+      const firstline = String(evt.target.result || "").split("\n")[0];
       if (isIpproLine(firstline)) {
         viewer.modal.showContent(
           "<h3><div class='loading'>◉</div>Calculation Genome Properties from InterProScan Data</h3>",
@@ -359,23 +380,25 @@ export const uploadLocalGPFile = (viewer, fileToRead) => {
 
         fetch(viewer.options.gp_server, {
           method: "POST",
-          body: `ipproname=${reader.fileToRead.name}&ipprotsv=${evt.target.result}`,
-          headers: new Headers({
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Access-Control-Request-Method": "POST",
-            "Access-Control-Request-Headers": "X-PINGOTHER, Content-Type",
+          body: new URLSearchParams({
+            ipproname: reader.fileToRead.name,
+            ipprotsv: evt.target.result,
           }),
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
         })
-          .then((response) => response.text())
+          .then((response) => {
+            if (!response.ok)
+              throw new Error(`${response.status} ${response.statusText}`);
+            return response.text();
+          })
           .then((x) => {
             viewer.loadGenomePropertiesText(reader.fileToRead.name, x);
             viewer.modal.setVisibility(false);
           })
           .catch(() => {
-            viewer.modal.showContent(
-              "<h3><div class='error'>Server Error processing the file</div></h3>",
-              false
-            );
+            showError("Server error processing the InterProScan file");
           });
       } else {
         viewer.loadGenomePropertiesText(
@@ -386,8 +409,11 @@ export const uploadLocalGPFile = (viewer, fileToRead) => {
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error(e);
+      showError(e.message || "Could not load the selected file");
     }
-    document.getElementById("newfile").value = null;
+  };
+  reader.onerror = () => {
+    showError("Could not read the selected file");
   };
   reader.readAsText(fileToRead);
 };

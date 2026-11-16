@@ -32,25 +32,32 @@ export default class GenomePropertiesController {
     }
 
     if (legends_element_selector) {
-      this.legends_component = d3.select(legends_element_selector).append("ul");
+      const host = d3.select(legends_element_selector);
+      host.selectAll("ul").remove();
+      this.legends_component = host.append("ul");
       this.draw_legends();
     }
 
     if (tooltip_selector) {
       this.tooltip_selector = tooltip_selector;
+      d3.select(tooltip_selector).selectAll("ul").remove();
       this.draw_tooltip(null, null, true);
     }
 
     this.text_filter = "";
     if (gp_text_filter_selector) {
-      d3.select(gp_text_filter_selector).on("keyup", (event) => {
+      this._textFilterSelector = gp_text_filter_selector;
+      const applyTextFilter = (event) => {
         this.text_filter =
           event.currentTarget.value.length > 2 ? event.currentTarget.value : "";
         if (this.text_filter !== this.gp_viewer.filter_text) {
           this.gp_viewer.filter_text = this.text_filter;
           this.moveScrollUp();
         }
-      });
+      };
+      d3.select(gp_text_filter_selector)
+        .on("input.gpfilter", applyTextFilter)
+        .on("keyup.gpfilter", applyTextFilter);
     }
     if (gp_label_selector) {
       d3.select(gp_label_selector).on("change", (event) => {
@@ -182,12 +189,27 @@ export default class GenomePropertiesController {
                 </ul>
             </div>`);
 
-    this.gp_component
-      .select(".options .all")
-      .on("click", () => this.update("ALL"));
-    this.gp_component
-      .select(".options .none")
-      .on("click", () => this.update("NONE"));
+    this.gp_component.select(".options .all").on("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      this.update("ALL");
+    });
+    this.gp_component.select(".options .none").on("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      this.update("NONE");
+    });
+    this.gp_component.on("click.gpselector", (event) => {
+      if (event.target.closest(".options")) return;
+      this.gp_component.classed("open", !this.gp_component.classed("open"));
+    });
+    this._onDocClick = (event) => {
+      const node = this.gp_component.node();
+      if (node && !node.contains(event.target)) {
+        this.gp_component.classed("open", false);
+      }
+    };
+    document.addEventListener("click", this._onDocClick);
 
     const tll = this.gp_component
       .select(".options ul")
@@ -206,11 +228,19 @@ export default class GenomePropertiesController {
         (d) => `2px solid ${this.hierarchy_contorller.color(d.id)}`
       )
       .style("border-radius", "50%")
-      .on("click", (event, d) => this.update(d));
+      .on("click", (event, d) => {
+        event.preventDefault();
+        event.stopPropagation();
+        this.update(d);
+      });
 
     li.append("a")
       .text((d) => this.hierarchy_contorller.nodes[d.id].name)
-      .on("click", (event, d) => this.update(d));
+      .on("click", (event, d) => {
+        event.preventDefault();
+        event.stopPropagation();
+        this.update(d);
+      });
   }
 
   update(d) {
@@ -260,14 +290,33 @@ export default class GenomePropertiesController {
     }
     this.gp_component
       .select(".options ul")
-      .selectAll(".top-level-option div")
+      .selectAll(".top-level-option")
+      .select("div")
       .style("background", (item) =>
-        d.enable ? this.hierarchy_contorller.color(item.id) : "#e3e3e3"
+        item.enable ? this.hierarchy_contorller.color(item.id) : "#e3e3e3"
       );
   }
 
   on(typename, callback) {
     this.dipatcher.on(typename, callback);
     return this;
+  }
+
+  destroy() {
+    if (this._onDocClick) {
+      document.removeEventListener("click", this._onDocClick);
+      this._onDocClick = null;
+    }
+    if (this._textFilterSelector) {
+      d3.select(this._textFilterSelector)
+        .on("input.gpfilter", null)
+        .on("keyup.gpfilter", null);
+    }
+    if (this.legends_component) this.legends_component.remove();
+    if (this.tooltip_component) this.tooltip_component.remove();
+    if (this.gp_component) {
+      this.gp_component.on("click.gpselector", null);
+      this.gp_component.html("");
+    }
   }
 }

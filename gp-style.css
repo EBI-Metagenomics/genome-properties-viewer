@@ -42,7 +42,7 @@ text.active,
 }
 
 g.node.loaded {
-  cursor: ns-resize;
+  cursor: ew-resize;
   opacity: 1;
 }
 g.node.loaded:hover .node-type {
@@ -79,7 +79,7 @@ g.node.loaded text.label-species {
   pointer-events: none;
 }
 .height-dragger {
-  cursor: ew-resize;
+  cursor: ns-resize;
   opacity: 0.7;
 }
 .height-dragger:hover {
@@ -90,8 +90,9 @@ g.node.loaded text.label-species {
   opacity: 0.7;
 }
 input[type="file"] {
-  color: transparent;
-  width: 150px;
+  color: inherit;
+  width: auto;
+  max-width: 220px;
 }
 .selector a {
   color: #3c67c1;
@@ -114,7 +115,8 @@ input[type="file"] {
   color: #666;
   text-align: right;
   margin-bottom: 2px;
-  cursor: context-menu;
+  cursor: pointer;
+  position: relative;
 }
 .selector::after {
   content: " ▾ ";
@@ -130,11 +132,15 @@ input[type="file"] {
   color: #666;
   padding: 5px;
   position: absolute;
-  z-index: 1;
+  left: 0;
+  top: 100%;
+  z-index: 20;
   border: 2px #ddd solid;
   text-align: left;
 }
-.selector:hover div.options {
+.selector:hover div.options,
+.selector.open div.options,
+.selector:focus-within div.options {
   visibility: visible;
 }
 .selector .current_status {
@@ -408,6 +414,7 @@ div.container .top-block {
   padding: 4px;
   background: #fafafa;
   position: relative;
+  z-index: 5;
 }
 div.container .top-block .minimise {
   position: absolute;
@@ -433,6 +440,11 @@ div.container .top-block .minimise.on::after {
 }
 .gpv-scrollbar rect.gpv-scrollbar-handle {
   fill: rgba(100, 100, 100, 0.6);
+}
+.gpv-scrollbar-x rect.gpv-scrollbar-handle {
+  cursor: ew-resize;
+}
+.gpv-scrollbar-y rect.gpv-scrollbar-handle {
   cursor: ns-resize;
 }
 .gpv-scrollbar rect.gpv-scrollbar-bg {
