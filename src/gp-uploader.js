@@ -34,7 +34,10 @@ export const classifyUpload = (filename, text) => {
   }
   if (IPR_RE.test(cols[0] || "")) return "assign";
   const value = String(cols[2] || "").toUpperCase();
-  if (ASSIGNMENT_VALUES.has(value) && (GENPROP_RE.test(cols[0] || "") || cols.length >= 3)) {
+  if (
+    ASSIGNMENT_VALUES.has(value) &&
+    (GENPROP_RE.test(cols[0] || "") || cols.length >= 3)
+  ) {
     return "summary";
   }
   return "unknown";
@@ -440,7 +443,8 @@ function sendToAssign(viewer, fileToRead, showError) {
   })
     .then(async (response) => {
       const text = await response.text();
-      if (!response.ok) throw new Error(assignErrorMessage(response.status, text));
+      if (!response.ok)
+        throw new Error(assignErrorMessage(response.status, text));
       return text;
     })
     .then((x) => {
@@ -448,7 +452,9 @@ function sendToAssign(viewer, fileToRead, showError) {
       viewer.modal.setVisibility(false);
     })
     .catch((error) => {
-      showError(error.message || "Could not calculate Genome Properties from this file");
+      showError(
+        error.message || "Could not calculate Genome Properties from this file"
+      );
     });
 }
 
