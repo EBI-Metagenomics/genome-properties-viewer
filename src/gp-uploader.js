@@ -52,7 +52,8 @@ const mergeObjectToData = (data, obj) => {
   for (const gp of Object.keys(obj || {})) {
     if (data[gp]) {
       for (const newOrg of Object.keys((obj[gp] && obj[gp].values) || {})) {
-        if (newOrg !== "TOTAL") data[gp].values[newOrg] = obj[gp].values[newOrg];
+        if (newOrg !== "TOTAL")
+          data[gp].values[newOrg] = obj[gp].values[newOrg];
       }
       const stepsObj = ((obj[gp] && obj[gp].steps) || []).reduce((agg, v) => {
         agg[String(v.step)] = v;
