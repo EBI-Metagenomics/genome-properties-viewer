@@ -61,7 +61,7 @@ export default class GenomePropertiesViewer {
     tax_label_selector = "#tax_label",
     tax_search_selector = "#tax-search",
     template_link_to_GP_page = "https://wwwdev.ebi.ac.uk/interpro/genomeproperties/#{}",
-    gp_server = "http://wwwdev.ebi.ac.uk/interpro/genomeproperties/cgi-bin/test.pl",
+    gp_server = "http://127.0.0.1:8000/api/v1/assign",
     dimensions = {
       tree: { width: 160 },
       labels: { width: 220 },
