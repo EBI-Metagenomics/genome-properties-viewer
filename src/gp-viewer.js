@@ -309,6 +309,9 @@ export default class GenomePropertiesViewer {
     if (this.controller && this.controller.destroy) {
       this.controller.destroy();
     }
+    if (this.modal && this.modal.destroy) {
+      this.modal.destroy();
+    }
     d3.select(this.options.element_selector).selectAll("*").remove();
   }
 
