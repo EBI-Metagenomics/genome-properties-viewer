@@ -197,21 +197,17 @@ Manager for a modla dialog, that has an overlay grey area and a dialog box in th
 **Kind**: global class  
 
 * [GPModal](#GPModal)
-    * [new GPModal(element)](#new_GPModal_new)
+    * [new GPModal()](#new_GPModal_new)
     * [.setVisibility(visibility)](#GPModal+setVisibility)
     * [.showContent(content, fixed)](#GPModal+showContent)
     * [.getContentElement()](#GPModal+getContentElement) ⇒ <code>D3Selector</code>
 
 <a name="new_GPModal_new"></a>
 
-### new GPModal(element)
+### new GPModal()
 Appends the divs for the modal overlay and the popup.
 Inside the popup creates a `div` element with a refence in `this.content`.
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| element | <code>HTMLElement</code> | DOM element where the modal should be appended. |
+The overlay is mounted on `document.body` so it stacks above page chrome.
 
 <a name="GPModal+setVisibility"></a>
 

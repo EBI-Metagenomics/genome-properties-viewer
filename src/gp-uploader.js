@@ -50,19 +50,21 @@ const isSummaryLine = (line) =>
 
 const mergeObjectToData = (data, obj) => {
   for (const gp of Object.keys(obj || {})) {
-    if (!data[gp]) continue;
-    for (const newOrg of Object.keys((obj[gp] && obj[gp].values) || {})) {
-      if (newOrg !== "TOTAL") data[gp].values[newOrg] = obj[gp].values[newOrg];
-    }
-    const stepsObj = ((obj[gp] && obj[gp].steps) || []).reduce((agg, v) => {
-      agg[String(v.step)] = v;
-      return agg;
-    }, {});
-    for (const step of data[gp].steps || []) {
-      const stepData = stepsObj[String(step.step)];
-      if (!stepData || !stepData.values) continue;
-      for (const newOrg of Object.keys(stepData.values)) {
-        step.values[newOrg] = stepData.values[newOrg];
+    if (data[gp]) {
+      for (const newOrg of Object.keys((obj[gp] && obj[gp].values) || {})) {
+        if (newOrg !== "TOTAL") data[gp].values[newOrg] = obj[gp].values[newOrg];
+      }
+      const stepsObj = ((obj[gp] && obj[gp].steps) || []).reduce((agg, v) => {
+        agg[String(v.step)] = v;
+        return agg;
+      }, {});
+      for (const step of data[gp].steps || []) {
+        const stepData = stepsObj[String(step.step)];
+        if (stepData && stepData.values) {
+          for (const newOrg of Object.keys(stepData.values)) {
+            step.values[newOrg] = stepData.values[newOrg];
+          }
+        }
       }
     }
   }

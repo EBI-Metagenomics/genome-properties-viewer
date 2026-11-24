@@ -6,9 +6,9 @@ class GPModal {
   /**
    * Appends the divs for the modal overlay and the popup.
    * Inside the popup creates a `div` element with a refence in `this.content`.
-   * @param {HTMLElement} element - DOM element where the modal should be appended.
+   * The overlay is mounted on `document.body` so it stacks above page chrome.
    */
-  constructor(element) {
+  constructor() {
     this.fixed = false;
     const host = d3.select("body");
     this.mask = host
