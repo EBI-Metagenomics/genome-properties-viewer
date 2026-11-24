@@ -1,6 +1,6 @@
 {
   "name": "@microbiome-informatics/genome-properties-viewer",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.3",
   "description": "A heatmap styled viewer for the genome properties",
   "main": "index.js",
   "files": [
