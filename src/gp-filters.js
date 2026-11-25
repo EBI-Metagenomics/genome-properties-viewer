@@ -13,28 +13,35 @@ import * as d3 from "./d3";
  * The current set of filters is in `viewer.legend_filters` and the filtered props will be saved in `viewer.props`.
  * @param {GernomeProperiesViewer} viewer - The instance of the genome properites viewer
  */
+const organismKeys = (viewer) =>
+  new Set((viewer.organisms || []).map((id) => String(id)));
+
+const valuesForLoadedOrganisms = (prop, viewer) => {
+  const loaded = organismKeys(viewer);
+  return d3
+    .entries(prop.values)
+    .filter((e) => e.key !== "TOTAL" && loaded.has(String(e.key)));
+};
+
 export const filterByLegend = (viewer) => {
   if (viewer.legend_filters) {
     for (const x of Object.keys(viewer.legend_filters)) {
       if (viewer.legend_filters[x] === "∀") {
         viewer.props = viewer.props.filter((prop) => {
-          const values = d3
-            .entries(prop.values)
-            .filter((e) => viewer.organisms.indexOf(e.key) !== -1);
-          return values.filter((e) => e.value === x).length === values.length;
+          const values = valuesForLoadedOrganisms(prop, viewer);
+          return (
+            values.length > 0 &&
+            values.filter((e) => e.value === x).length === values.length
+          );
         });
       } else if (viewer.legend_filters[x] === "∃") {
         viewer.props = viewer.props.filter((prop) => {
-          const values = d3
-            .entries(prop.values)
-            .filter((e) => viewer.organisms.indexOf(e.key) !== -1);
+          const values = valuesForLoadedOrganisms(prop, viewer);
           return values.filter((e) => e.value === x).length > 0;
         });
       } else if (viewer.legend_filters[x] === "∄") {
         viewer.props = viewer.props.filter((prop) => {
-          const values = d3
-            .entries(prop.values)
-            .filter((e) => viewer.organisms.indexOf(e.key) !== -1);
+          const values = valuesForLoadedOrganisms(prop, viewer);
           return values.filter((e) => e.value === x).length === 0;
         });
       }
@@ -49,7 +56,8 @@ export const filterByLegend = (viewer) => {
  */
 export const filterByHierarchy = (viewer) => {
   viewer.props = viewer.props.filter((e) => {
-    if (e.parent_top_properties === null) return true;
+    if (!e.parent_top_properties || e.parent_top_properties.length === 0)
+      return true;
     for (const p of e.parent_top_properties)
       for (const tp of viewer.gp_hierarchy.hierarchy_switch)
         if (p === tp.id && tp.enable) return true;

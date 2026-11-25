@@ -16,8 +16,6 @@ This Class manages the file that defines that hierarchy and uses is to allow fil
 ## Constants
 
 <dl>
-<dt><a href="#filterByLegend">filterByLegend</a></dt>
-<dd></dd>
 <dt><a href="#filterByHierarchy">filterByHierarchy</a></dt>
 <dd><p>Genome Properties are organised in a hierarchy. By invoking this function, the list of properties in <code>viewer.props</code> is filtered
 by only including those whose <code>parent_top_properties</code> are included in <code>viewer.gp_hierarchy</code></p>
@@ -26,7 +24,7 @@ by only including those whose <code>parent_top_properties</code> are included in
 <dd><p>Filters the list of properties in <code>viewer.props</code> by checnking if their name includes the text in <code>viewer.filter_text</code></p>
 </dd>
 <dt><a href="#transformByScroll">transformByScroll</a></dt>
-<dd><p>Updates this and othe components as if a scroll event happened.
+<dd><p>Updates this and other components as if a scroll event happened.
 It became the de-facto refresh of the whole viewer, as it groups the minimum necesary changes to trigger a full update.</p>
 </dd>
 <dt><a href="#drawScrollXBar">drawScrollXBar</a></dt>
@@ -34,7 +32,7 @@ It became the de-facto refresh of the whole viewer, as it groups the minimum nec
 It contains the elements to draw a simple horizontal srollbar, and attach the dragging events to them.</p>
 </dd>
 <dt><a href="#updateScrollBars">updateScrollBars</a></dt>
-<dd><p>A single method to trigger the update of all the scroll bars of the viewer. We currently only use 1.</p>
+<dd><p>A single method to trigger the update of all the scroll bars of the viewer.</p>
 </dd>
 <dt><a href="#createGradient">createGradient</a></dt>
 <dd><p>Appends a <code>defs</code> element in the main group of the viewer.
@@ -42,23 +40,21 @@ It contains the definitions of the gradients used in th masks around the heatmap
 </dd>
 <dt><a href="#drawMasks">drawMasks</a></dt>
 <dd><p>Appends a new group element into the mainGroup of the viewer.
-The group contains masks as rectangles to give the effect of new GP fading-in/out while horizontal scrolling</p>
+The group contains masks as rectangles to give the effect of fading around the heatmap</p>
 </dd>
 <dt><a href="#updateMasks">updateMasks</a></dt>
 <dd><p>Update the size and position of the masks</p>
 </dd>
 <dt><a href="#drawDragArea">drawDragArea</a></dt>
-<dd><p>Draws a draggable area ||| to redifine the widthassigned to the tree.</p>
+<dd><p>Draws a draggable area to redefine the height assigned to the taxonomy tree.</p>
 </dd>
 </dl>
 
 ## Functions
 
 <dl>
-<dt><a href="#updateScrollBarX">updateScrollBarX(viewer, visible_cols, current_col)</a></dt>
-<dd><p>Updates the size and position of the scrollbar.
-The size of the draggable is proportional to the number of visible columns in the graphic</p>
-</dd>
+<dt><a href="#organismKeys">organismKeys(viewer)</a></dt>
+<dd></dd>
 </dl>
 
 <a name="GenomePropertiesHierarchy"></a>
@@ -201,21 +197,17 @@ Manager for a modla dialog, that has an overlay grey area and a dialog box in th
 **Kind**: global class  
 
 * [GPModal](#GPModal)
-    * [new GPModal(element)](#new_GPModal_new)
+    * [new GPModal()](#new_GPModal_new)
     * [.setVisibility(visibility)](#GPModal+setVisibility)
     * [.showContent(content, fixed)](#GPModal+showContent)
     * [.getContentElement()](#GPModal+getContentElement) ⇒ <code>D3Selector</code>
 
 <a name="new_GPModal_new"></a>
 
-### new GPModal(element)
+### new GPModal()
 Appends the divs for the modal overlay and the popup.
 Inside the popup creates a `div` element with a refence in `this.content`.
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| element | <code>HTMLElement</code> | DOM element where the modal should be appended. |
+The overlay is mounted on `document.body` so it stacks above page chrome.
 
 <a name="GPModal+setVisibility"></a>
 
@@ -319,25 +311,6 @@ Add a new circular button into a panel
 | y | <code>Number</code> | Y coordinate in the panel |
 | r | <code>Number</code> | radius of the circles |
 
-<a name="filterByLegend"></a>
-
-## filterByLegend
-**Kind**: global constant  
-**Summary**: A cell in the heatmap can have 1 of 3 values: Yes, No or partial. Indicating if there is evidence that the GP is present in a given species.
-Given multiple species, this function filters the list of genome properties to which currentluy selected species match the given condition, For example:
-
-|Value    | Filter | JSON               | Explanation                                          |
-|---------|--------|--------------------|------------------------------------------------------|
-| YES     | ∀      | `{"YES": "∀"}`     | All the species have this GP                         |
-| NO      | ∃      | `{"NO": "∃"}`      | There is at least 1 species with this GP             |
-| PARTIAL | ∄      | `{"PARTIAL": "∄"}` | None of the species have partial evidence of this GP |
-
-The current set of filters is in `viewer.legend_filters` and the filtered props will be saved in `viewer.props`.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| viewer | <code>GernomeProperiesViewer</code> | The instance of the genome properites viewer |
-
 <a name="filterByHierarchy"></a>
 
 ## filterByHierarchy
@@ -364,7 +337,7 @@ Filters the list of properties in `viewer.props` by checnking if their name incl
 <a name="transformByScroll"></a>
 
 ## transformByScroll
-Updates this and othe components as if a scroll event happened.
+Updates this and other components as if a scroll event happened.
 It became the de-facto refresh of the whole viewer, as it groups the minimum necesary changes to trigger a full update.
 
 **Kind**: global constant  
@@ -388,15 +361,15 @@ It contains the elements to draw a simple horizontal srollbar, and attach the dr
 <a name="updateScrollBars"></a>
 
 ## updateScrollBars
-A single method to trigger the update of all the scroll bars of the viewer. We currently only use 1.
+A single method to trigger the update of all the scroll bars of the viewer.
 
 **Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | viewer | <code>GernomeProperiesViewer</code> | The instance of the genome properites viewer |
-| visible_cols | <code>Number</code> | Indicates how many columns are visible in the area assgined to the heatmap. |
-| current_col | <code>Number</code> | Indicates the index of the first visible column out of the total number of GP. |
+| visible_rows | <code>Number</code> | Visible property rows in the heatmap. |
+| current_row | <code>Number</code> | Index of the first visible property. |
 
 <a name="createGradient"></a>
 
@@ -414,7 +387,7 @@ It contains the definitions of the gradients used in th masks around the heatmap
 
 ## drawMasks
 Appends a new group element into the mainGroup of the viewer.
-The group contains masks as rectangles to give the effect of new GP fading-in/out while horizontal scrolling
+The group contains masks as rectangles to give the effect of fading around the heatmap
 
 **Kind**: global constant  
 
@@ -436,7 +409,7 @@ Update the size and position of the masks
 <a name="drawDragArea"></a>
 
 ## drawDragArea
-Draws a draggable area ||| to redifine the widthassigned to the tree.
+Draws a draggable area to redefine the height assigned to the taxonomy tree.
 
 **Kind**: global constant  
 
@@ -444,17 +417,22 @@ Draws a draggable area ||| to redifine the widthassigned to the tree.
 | --- | --- | --- |
 | viewer | <code>GernomeProperiesViewer</code> | The instance of the genome properites viewer |
 
-<a name="updateScrollBarX"></a>
+<a name="organismKeys"></a>
 
-## updateScrollBarX(viewer, visible_cols, current_col)
-Updates the size and position of the scrollbar.
-The size of the draggable is proportional to the number of visible columns in the graphic
-
+## organismKeys(viewer)
 **Kind**: global function  
+**Summary**: A cell in the heatmap can have 1 of 3 values: Yes, No or partial. Indicating if there is evidence that the GP is present in a given species.
+Given multiple species, this function filters the list of genome properties to which currentluy selected species match the given condition, For example:
+
+|Value    | Filter | JSON               | Explanation                                          |
+|---------|--------|--------------------|------------------------------------------------------|
+| YES     | ∀      | `{"YES": "∀"}`     | All the species have this GP                         |
+| NO      | ∃      | `{"NO": "∃"}`      | There is at least 1 species with this GP             |
+| PARTIAL | ∄      | `{"PARTIAL": "∄"}` | None of the species have partial evidence of this GP |
+
+The current set of filters is in `viewer.legend_filters` and the filtered props will be saved in `viewer.props`.  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | viewer | <code>GernomeProperiesViewer</code> | The instance of the genome properites viewer |
-| visible_cols | <code>Number</code> | Indicates how many columns are visible in the area assgined to the heatmap. |
-| current_col | <code>Number</code> | Indicates the index of the first visible column out of the total number of GP. |
 

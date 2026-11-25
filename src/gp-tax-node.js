@@ -128,16 +128,16 @@ export default class TaxonomyNodeManager {
             event.sourceEvent.stopPropagation();
             const g = d3.select(event.sourceEvent.target.closest("g.node"));
             if (d.has_loaded_leaves) {
-              g.attr("transform", (p) => `translate(${p.x},${event.y})`);
+              g.attr("transform", (p) => `translate(${event.x},${p.y})`);
             }
           })
           .on("end", (event, d) => {
             if (d.has_loaded_leaves) {
               const g = d3.select(event.sourceEvent.target.closest("g.node"));
               const w = this.main.cell_side;
-              const dy = event.y - d.y; // - w/2,
-              const d_row = Math.round(dy / w);
-              move_tree(d, d_row);
+              const dx = event.x - d.x;
+              const d_col = Math.round(dx / w);
+              move_tree(d, d_col);
               const time = d3.transition().duration(500);
               g.transition(time).attr(
                 "transform",
@@ -169,10 +169,14 @@ export default class TaxonomyNodeManager {
 
     g.append("text")
       .attr("class", "label-species")
-      .attr("x", -this.r / 2)
-      .attr("y", this.r + 4)
-      .style("text-anchor", "end")
-      // .style("transform", "rotate(-70deg)")
+      .attr("x", this.r)
+      .attr("y", this.r)
+      .style("text-anchor", "start")
+      .attr("transform", (d) =>
+        d.children || d._children
+          ? `translate(0,${-this.r - 2})`
+          : "rotate(-70)"
+      )
       .style("fill", (d) => (d.data.isFromFile ? "darkred" : null))
       .text((d) => {
         let label = "";

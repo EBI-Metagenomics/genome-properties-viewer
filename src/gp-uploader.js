@@ -1,19 +1,71 @@
 import { tsvParseRows, select } from "./d3";
 
-const isLineOK = (line) => line.length === 3;
+const ASSIGNMENT_VALUES = new Set(["YES", "PARTIAL", "NO"]);
+const IPR_RE = /^IPR\d{6}$/;
+const MD5_RE = /^[A-Fa-f0-9]{32}$/;
+const GENPROP_RE = /^GenProp\d{4}$/;
+
+const firstDataLine = (text) => {
+  const body = String(text || "").replace(/^\uFEFF/, "");
+  for (const raw of body.split(/\r?\n/)) {
+    if (raw && raw[0] !== "#") return raw;
+  }
+  return "";
+};
+
+export const classifyUpload = (filename, text) => {
+  const name = String(filename || "").toLowerCase();
+  if (name.endsWith(".gz")) return "assign";
+  const trimmed = String(text || "")
+    .replace(/^\uFEFF/, "")
+    .trim();
+  if (!trimmed) return "unknown";
+  if (trimmed.startsWith("{") || trimmed.startsWith("[")) return "json";
+  const cols = firstDataLine(text).split("\t");
+  if (cols[0] === "Accession" && cols[1] === "Name") return "assign";
+  if (
+    cols.length >= 11 &&
+    (MD5_RE.test(cols[1] || "") ||
+      (/^\d+$/.test(cols[2] || "") &&
+        /^\d+$/.test(cols[6] || "") &&
+        /^\d+$/.test(cols[7] || "")))
+  ) {
+    return "assign";
+  }
+  if (IPR_RE.test(cols[0] || "")) return "assign";
+  const value = String(cols[2] || "").toUpperCase();
+  if (
+    ASSIGNMENT_VALUES.has(value) &&
+    (GENPROP_RE.test(cols[0] || "") || cols.length >= 3)
+  ) {
+    return "summary";
+  }
+  return "unknown";
+};
+
+const isSummaryLine = (line) =>
+  Array.isArray(line) &&
+  line.length >= 3 &&
+  ASSIGNMENT_VALUES.has(String(line[2] || "").toUpperCase());
 
 const mergeObjectToData = (data, obj) => {
-  for (const gp of Object.keys(data)) {
-    for (const newOrg of Object.keys((obj[gp] && obj[gp].values) || {})) {
-      if (newOrg !== "TOTAL") data[gp].values[newOrg] = obj[gp].values[newOrg];
-    }
-    const stepsObj = ((obj[gp] && obj[gp].steps) || []).reduce((agg, v) => {
-      agg[v.step] = v;
-      return agg;
-    }, {});
-    for (const step of data[gp].steps) {
-      for (const newOrg of Object.keys(stepsObj[step.step].values)) {
-        step.values[newOrg] = stepsObj[step.step].values[newOrg];
+  for (const gp of Object.keys(obj || {})) {
+    if (data[gp]) {
+      for (const newOrg of Object.keys((obj[gp] && obj[gp].values) || {})) {
+        if (newOrg !== "TOTAL")
+          data[gp].values[newOrg] = obj[gp].values[newOrg];
+      }
+      const stepsObj = ((obj[gp] && obj[gp].steps) || []).reduce((agg, v) => {
+        agg[String(v.step)] = v;
+        return agg;
+      }, {});
+      for (const step of data[gp].steps || []) {
+        const stepData = stepsObj[String(step.step)];
+        if (stepData && stepData.values) {
+          for (const newOrg of Object.keys(stepData.values)) {
+            step.values[newOrg] = stepData.values[newOrg];
+          }
+        }
       }
     }
   }
@@ -59,10 +111,14 @@ export const loadGenomePropertiesText = (
     let allLinesAreOK = true;
     const errorLines = [];
     tsvParseRows(text, (d, i) => {
-      if (!isLineOK(d)) {
+      if (!d || (d.length === 1 && !d[0])) return;
+      if (!isSummaryLine(d)) {
+        if (i === 0 && (d[0] === "Accession" || d[0] === "property")) return;
         allLinesAreOK = false;
         errorLines.push([i, d]);
+        return;
       }
+      const value = String(d[2]).toUpperCase();
       if (wl && wl.indexOf(d[0]) === -1) return;
       if (!(d[0] in viewer.data))
         viewer.data[d[0]] = {
@@ -87,9 +143,9 @@ export const loadGenomePropertiesText = (
           isShowingSteps: false,
         };
       if (tax_id in viewer.data[d[0]].values) return;
-      viewer.data[d[0]].values[tax_id] = d[2];
-      viewer.data[d[0]].values.TOTAL[d[2]]++;
-      viewer.organism_totals[tax_id][d[2]]++;
+      viewer.data[d[0]].values[tax_id] = value;
+      viewer.data[d[0]].values.TOTAL[value]++;
+      viewer.organism_totals[tax_id][value]++;
       // TODO: Replace for actual steps information
       viewer.data[d[0]].steps.forEach(
         (step) => (step.values[tax_id] = Math.random() > 0.5)
@@ -152,14 +208,18 @@ export class FileGetter {
     this.viewer = viewer;
     this.activeGauge = 0;
     this.activeGauges = [];
-    setInterval(
-      (_this) => {
-        _this.activeGauge =
-          (_this.activeGauge + 1) % Object.values(_this.activeGauges).length;
-      },
-      3000,
-      this
-    );
+    this.progressTimer = setInterval(() => {
+      const n = this.activeGauges.length;
+      if (n) this.activeGauge = (this.activeGauge + 1) % n;
+    }, 3000);
+  }
+
+  destroy() {
+    this.isActive = false;
+    if (this.progressTimer) {
+      clearInterval(this.progressTimer);
+      this.progressTimer = null;
+    }
   }
 
   getJSON(path) {
@@ -176,6 +236,7 @@ export class FileGetter {
     if (!this.isActive) this.createProgressContent(modal);
     // this.activeGauge = path;
     const response = await fetch(path);
+    if (this.viewer.destroyed) return null;
     this.files[path].request = response;
     const total = response.headers.get("content-length");
     const reader = response.body && response.body.getReader();
@@ -192,6 +253,7 @@ export class FileGetter {
         // eslint-disable-next-line no-await-in-loop
         const { done, value } = await reader.read();
         if (done) break;
+        if (this.viewer.destroyed) return null;
         loaded += value.length;
         this.files[path].progress = total ? loaded / total : null;
         this.files[path].event = {
@@ -273,10 +335,13 @@ export class FileGetter {
        `
       );
 
-    const w = this.gaugeSVG.node().getBoundingClientRect().width;
+    const gaugeNode = this.gaugeSVG && this.gaugeSVG.node();
+    if (!gaugeNode) return;
+    const w = gaugeNode.getBoundingClientRect().width || 0;
+    if (w <= 0) return;
 
     const gauges = this.gaugeSVG.selectAll("g.gauge").data(this.activeGauges);
-    const current = this.activeGauge;
+    const current = Number.isFinite(this.activeGauge) ? this.activeGauge : 0;
 
     const gauge = gauges
       .enter()
@@ -284,7 +349,7 @@ export class FileGetter {
       .attr("class", "gauge")
       .attr("transform", (d, i) => `translate(0,${w * (i - current)})`);
 
-    const r = w / 2 - 10;
+    const r = Math.max(0, w / 2 - 10);
 
     const circunferencia = 2 * Math.PI * r;
     gauge
@@ -340,54 +405,94 @@ export const loadGenomePropertiesFile = (viewer, tax_id) => {
     });
 };
 
-function isIpproLine(line) {
-  const parts = line.split("\t");
-  return !(parts.length < 11 || parts[1].length !== 32);
+function assignErrorMessage(status, body) {
+  try {
+    const parsed = JSON.parse(body);
+    const detail = parsed && parsed.detail;
+    if (typeof detail === "string" && detail.trim()) return detail;
+    if (Array.isArray(detail) && detail.length) {
+      return detail
+        .map((item) => (item && (item.msg || item.message)) || "")
+        .filter(Boolean)
+        .join(" ");
+    }
+  } catch (_error) {
+    // keep the HTTP status fallback
+  }
+  return `Could not calculate Genome Properties (${status}).`;
+}
+
+async function isGzipFile(file) {
+  if (/\.gz$/i.test(file.name || "")) return true;
+  const head = new Uint8Array(await file.slice(0, 2).arrayBuffer());
+  return head[0] === 0x1f && head[1] === 0x8b;
+}
+
+function sendToAssign(viewer, fileToRead, showError) {
+  if (!viewer.options.gp_server) {
+    showError("Genome Properties assignment is not configured.");
+    return Promise.resolve();
+  }
+  viewer.modal.showContent(
+    "<h3><div class='loading'>◉</div>Calculating Genome Properties from InterPro data</h3>",
+    true
+  );
+  const body = new FormData();
+  body.append("file", fileToRead);
+  body.append("ipproname", fileToRead.name);
+  return fetch(viewer.options.gp_server, {
+    method: "POST",
+    body,
+  })
+    .then(async (response) => {
+      const text = await response.text();
+      if (!response.ok)
+        throw new Error(assignErrorMessage(response.status, text));
+      return text;
+    })
+    .then((x) => {
+      viewer.loadGenomePropertiesText(fileToRead.name, x);
+      viewer.modal.setVisibility(false);
+    })
+    .catch((error) => {
+      showError(
+        error.message || "Could not calculate Genome Properties from this file"
+      );
+    });
 }
 
 export const uploadLocalGPFile = (viewer, fileToRead) => {
-  const reader = new FileReader();
-  reader.fileToRead = fileToRead;
-  reader.onload = (evt) => {
-    try {
-      const firstline = evt.target.result.split("\n")[0];
-      if (isIpproLine(firstline)) {
-        viewer.modal.showContent(
-          "<h3><div class='loading'>◉</div>Calculation Genome Properties from InterProScan Data</h3>",
-          true
-        );
-
-        fetch(viewer.options.gp_server, {
-          method: "POST",
-          body: `ipproname=${reader.fileToRead.name}&ipprotsv=${evt.target.result}`,
-          headers: new Headers({
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Access-Control-Request-Method": "POST",
-            "Access-Control-Request-Headers": "X-PINGOTHER, Content-Type",
-          }),
-        })
-          .then((response) => response.text())
-          .then((x) => {
-            viewer.loadGenomePropertiesText(reader.fileToRead.name, x);
-            viewer.modal.setVisibility(false);
-          })
-          .catch(() => {
-            viewer.modal.showContent(
-              "<h3><div class='error'>Server Error processing the file</div></h3>",
-              false
-            );
-          });
-      } else {
-        viewer.loadGenomePropertiesText(
-          reader.fileToRead.name,
-          evt.target.result
-        );
-      }
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(e);
+  if (!viewer || !fileToRead) return;
+  const showError = (message) => {
+    if (viewer.modal && viewer.modal.showContent) {
+      viewer.modal.showContent(
+        `<h3><div class='error'>${message}</div></h3>`,
+        false
+      );
     }
-    document.getElementById("newfile").value = null;
   };
-  reader.readAsText(fileToRead);
+  const run = async () => {
+    if (await isGzipFile(fileToRead)) {
+      await sendToAssign(viewer, fileToRead, showError);
+      return;
+    }
+    const text = await fileToRead.text();
+    const kind = classifyUpload(fileToRead.name, text);
+    if (kind === "assign") {
+      await sendToAssign(viewer, fileToRead, showError);
+      return;
+    }
+    if (kind === "unknown") {
+      showError(
+        "This is not an InterProScan TSV, an InterPro entry export, or a Genome Properties summary file."
+      );
+      return;
+    }
+    viewer.loadGenomePropertiesText(fileToRead.name, text);
+  };
+  run().catch((error) => {
+    // eslint-disable-next-line no-console
+    console.error(error);
+    showError(error.message || "Could not load the selected file");
+  });
 };

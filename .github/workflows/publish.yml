@@ -24,6 +24,8 @@ jobs:
           PKG="$(node -p "require('./package.json').version")"
           test "$TAG" = "$PKG"
       - name: Publish to npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           VERSION="$(node -p "require('./package.json').version")"
           if [[ "$VERSION" == *-* ]]; then

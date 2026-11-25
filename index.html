@@ -79,7 +79,7 @@
                 element_selector: "#gp-viewer",
                 controller_element_selector: "#gp-selector",
                 model_species_path: "https://raw.githubusercontent.com/ProteinsWebTeam/genome-properties-viewer/master/test-files/JSON_MERGED",
-                gp_server: 'http://wwwdev.ebi.ac.uk/interpro/genomeproperties/cgi-bin/test.pl',
+                gp_server: 'http://127.0.0.1:8000/api/v1/assign',
             });
     viewer.update_viewer();
     d3.select("#upload-button").on("click", function() {
@@ -118,8 +118,6 @@
         viewer.gp_taxonomy.show_tree = showTaxonomy;
         viewer.update_viewer();
     });
-
-    const gp_server = 'http://wwwdev.ebi.ac.uk/interpro/genomeproperties/cgi-bin/test.pl';
 
     //TODO: Move this logic inside the component.
     function uploadFile() {
